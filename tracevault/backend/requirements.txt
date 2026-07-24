@@ -1,0 +1,100 @@
+# ==============================================================================
+# TraceVault Backend Dependencies
+# Pinned for reproducibility and security
+# Python 3.13+
+# ==============================================================================
+
+# Web Framework
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+python-multipart==0.0.12
+
+# Database
+sqlalchemy[asyncio]==2.0.36
+asyncpg==0.30.0
+alembic==1.14.0
+
+# Pydantic v2 + Settings
+pydantic==2.10.3
+pydantic-settings==2.6.1
+pydantic[email]
+
+# Security
+python-jose[cryptography]==3.3.0
+passlib[argon2]==1.7.4
+argon2-cffi==23.1.0
+cryptography==44.0.0
+
+# Redis + Celery
+redis==5.2.1
+celery[redis]==5.4.0
+flower==2.0.1
+
+# AI / ML
+faster-whisper==1.1.0
+pyannote.audio==3.3.2
+torch>=2.0.0
+torchaudio>=2.0.0
+numpy>=1.26.0
+scipy>=1.11.0
+
+# NER
+gliner==0.2.12
+transformers>=4.44.0
+
+# Embeddings
+sentence-transformers>=3.0.0
+qdrant-client[fastembed]==1.12.1
+
+# Noise Reduction (DeepFilterNet)
+deepfilternet==0.5.6
+
+# Emotion Analysis
+speechbrain==1.0.0
+
+# Ollama Client
+ollama==0.4.2
+httpx==0.28.1
+
+# Audio Processing
+librosa==0.10.2
+soundfile==0.12.1
+pydub==0.25.1
+
+# Report Generation
+reportlab==4.2.5
+openpyxl==3.1.5
+python-docx==1.1.2
+markdown==3.7
+
+# Storage
+aiofiles==24.1.0
+boto3==1.35.76  # Future S3 support
+
+# Logging
+structlog==24.4.0
+python-json-logger==2.0.7
+
+# HTTP Client
+httpx==0.28.1
+aiohttp==3.11.10
+
+# Utilities
+python-magic==0.4.27
+mutagen==1.47.0
+ffmpeg-python==0.2.0
+python-dateutil==2.9.0
+pytz==2024.2
+shortuuid==1.0.13
+xxhash==3.5.0
+
+# Rate Limiting
+slowapi==0.1.9
+
+# Testing
+pytest==8.3.4
+pytest-asyncio==0.24.0
+pytest-cov==6.0.0
+httpx==0.28.1
+factory-boy==3.3.1
+faker==33.1.0

@@ -1,0 +1,601 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   CSS DESIGN SYSTEM — TraceVault
+   Enterprise Investigation Intelligence Platform
+   ============================================================ */
+
+@layer base {
+  :root {
+    /* === Sidebar Dimensions === */
+    --sidebar-width: 260px;
+    --sidebar-collapsed-width: 60px;
+    --copilot-width: 420px;
+    --header-height: 60px;
+
+    /* === Light Theme === */
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Primary: Deep Indigo */
+    --primary: 240 71% 58%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary: Slate Blue */
+    --secondary: 215 28% 94%;
+    --secondary-foreground: 222 47% 25%;
+
+    /* Accent: Teal */
+    --accent: 175 72% 56%;
+    --accent-foreground: 175 100% 10%;
+
+    /* Muted */
+    --muted: 210 30% 96%;
+    --muted-foreground: 215 25% 50%;
+
+    /* Destructive: Soft Red */
+    --destructive: 355 78% 56%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Warning: Amber */
+    --warning: 38 92% 50%;
+    --warning-foreground: 38 100% 10%;
+
+    /* Success: Emerald */
+    --success: 152 76% 40%;
+    --success-foreground: 0 0% 100%;
+
+    --border: 214 20% 91%;
+    --input: 214 20% 91%;
+    --ring: 240 71% 58%;
+
+    --radius: 0.625rem;
+
+    /* === Sidebar === */
+    --sidebar: 0 0% 100%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-accent: 240 71% 58%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 214 20% 91%;
+    --sidebar-ring: 240 71% 58%;
+  }
+
+  .dark {
+    --background: 222 47% 7%;
+    --foreground: 210 30% 95%;
+
+    --card: 222 47% 10%;
+    --card-foreground: 210 30% 95%;
+
+    --popover: 222 47% 10%;
+    --popover-foreground: 210 30% 95%;
+
+    --primary: 240 71% 65%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 222 40% 16%;
+    --secondary-foreground: 210 30% 90%;
+
+    --accent: 175 60% 50%;
+    --accent-foreground: 175 100% 5%;
+
+    --muted: 222 40% 14%;
+    --muted-foreground: 215 20% 55%;
+
+    --destructive: 355 70% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --warning: 38 90% 55%;
+    --warning-foreground: 38 100% 5%;
+
+    --success: 152 60% 45%;
+    --success-foreground: 0 0% 100%;
+
+    --border: 222 40% 16%;
+    --input: 222 40% 16%;
+    --ring: 240 71% 65%;
+
+    --sidebar: 222 47% 5%;
+    --sidebar-foreground: 210 30% 88%;
+    --sidebar-accent: 240 65% 60%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 222 40% 11%;
+    --sidebar-ring: 240 71% 65%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* Improved focus ring for keyboard navigation */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/30;
+  }
+
+  /* Selection highlight */
+  ::selection {
+    @apply bg-primary/20 text-foreground;
+  }
+}
+
+/* ============================================================
+   COMPONENT LAYER
+   ============================================================ */
+@layer components {
+
+  /* === Cards === */
+  .tv-card {
+    @apply bg-card text-card-foreground rounded-xl border border-border shadow-card;
+    @apply transition-shadow duration-200;
+  }
+
+  .tv-card-hover {
+    @apply tv-card hover:shadow-card-hover hover:border-primary/20;
+  }
+
+  /* === Stat Cards === */
+  .tv-stat-card {
+    @apply tv-card p-4 flex flex-col gap-2;
+  }
+
+  /* === Status Badges === */
+  .tv-badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium;
+  }
+
+  .tv-badge-critical {
+    @apply tv-badge bg-red-100 text-red-700 dark:bg-red-950/50 dark:text-red-400;
+  }
+
+  .tv-badge-high {
+    @apply tv-badge bg-orange-100 text-orange-700 dark:bg-orange-950/50 dark:text-orange-400;
+  }
+
+  .tv-badge-medium {
+    @apply tv-badge bg-yellow-100 text-yellow-700 dark:bg-yellow-950/50 dark:text-yellow-400;
+  }
+
+  .tv-badge-low {
+    @apply tv-badge bg-green-100 text-green-700 dark:bg-green-950/50 dark:text-green-400;
+  }
+
+  .tv-badge-info {
+    @apply tv-badge bg-blue-100 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400;
+  }
+
+  .tv-badge-neutral {
+    @apply tv-badge bg-muted text-muted-foreground;
+  }
+
+  /* === Processing Status === */
+  .tv-badge-processing {
+    @apply tv-badge bg-indigo-100 text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-400;
+  }
+
+  .tv-badge-completed {
+    @apply tv-badge-low;
+  }
+
+  .tv-badge-failed {
+    @apply tv-badge-critical;
+  }
+
+  .tv-badge-queued {
+    @apply tv-badge-neutral;
+  }
+
+  /* === Navigation Items === */
+  .tv-nav-item {
+    @apply flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium;
+    @apply text-sidebar-foreground/75 hover:text-sidebar-foreground hover:bg-muted/70;
+    @apply transition-all duration-150 cursor-pointer;
+  }
+
+  .tv-nav-item-active {
+    @apply tv-nav-item text-white bg-primary shadow-glow-primary;
+    @apply hover:bg-primary/90 hover:text-white;
+  }
+
+  /* === Buttons (supplements shadcn) === */
+  .tv-btn-ghost-primary {
+    @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium;
+    @apply text-primary hover:bg-primary/10 transition-colors duration-150;
+  }
+
+  /* === Page Header === */
+  .tv-page-header {
+    @apply flex items-start justify-between gap-4 mb-6;
+  }
+
+  .tv-page-title {
+    @apply text-2xl font-bold text-foreground tracking-tight;
+  }
+
+  .tv-page-subtitle {
+    @apply text-sm text-muted-foreground mt-0.5;
+  }
+
+  /* === Table === */
+  .tv-table-row {
+    @apply border-b border-border hover:bg-muted/30 transition-colors duration-100;
+  }
+
+  .tv-table-cell {
+    @apply px-4 py-3 text-sm text-foreground;
+  }
+
+  .tv-table-header-cell {
+    @apply px-4 py-2.5 text-xs font-medium text-muted-foreground uppercase tracking-wide;
+    @apply border-b border-border bg-muted/30;
+  }
+
+  /* === AI Confidence Indicator === */
+  .tv-confidence-bar {
+    @apply h-1.5 rounded-full bg-muted overflow-hidden;
+  }
+
+  .tv-confidence-fill {
+    @apply h-full rounded-full transition-all duration-500;
+  }
+
+  /* === Evidence Integrity Badge === */
+  .tv-integrity-verified {
+    @apply inline-flex items-center gap-1.5 text-xs font-medium text-green-600 dark:text-green-400;
+  }
+
+  .tv-integrity-warning {
+    @apply inline-flex items-center gap-1.5 text-xs font-medium text-yellow-600 dark:text-yellow-400;
+  }
+
+  .tv-integrity-failed {
+    @apply inline-flex items-center gap-1.5 text-xs font-medium text-red-600 dark:text-red-400;
+  }
+
+  /* === Loading Skeleton === */
+  .tv-skeleton {
+    @apply bg-muted animate-pulse rounded;
+  }
+
+  /* === Waveform Container === */
+  .tv-waveform {
+    @apply bg-muted/50 rounded-lg overflow-hidden;
+  }
+
+  /* === Transcript === */
+  .tv-transcript-segment {
+    @apply flex gap-3 py-2 px-3 rounded-lg hover:bg-muted/30 transition-colors duration-100;
+    @apply cursor-pointer border border-transparent hover:border-border;
+  }
+
+  .tv-transcript-segment-active {
+    @apply tv-transcript-segment bg-primary/5 border-primary/20;
+  }
+
+  .tv-transcript-segment-threat {
+    @apply tv-transcript-segment bg-red-50 border-red-200 dark:bg-red-950/20 dark:border-red-800/30;
+  }
+
+  /* === Copilot Panel === */
+  .tv-copilot-panel {
+    @apply fixed right-0 top-0 h-full bg-card border-l border-border;
+    @apply transition-all duration-300 ease-smooth shadow-card-lg;
+    @apply flex flex-col overflow-hidden;
+    z-index: theme(zIndex.copilot);
+  }
+
+  /* === Timeline === */
+  .tv-timeline-event {
+    @apply flex gap-3 pb-4 relative;
+  }
+
+  .tv-timeline-connector {
+    @apply absolute left-5 top-8 bottom-0 w-px bg-border;
+  }
+
+  /* === Entity Chip === */
+  .tv-entity-chip {
+    @apply inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-xs font-medium;
+    @apply bg-muted/60 text-foreground border border-border;
+    @apply hover:bg-primary/10 hover:border-primary/30 cursor-pointer transition-colors duration-150;
+  }
+
+  /* === Threat Card === */
+  .tv-threat-card {
+    @apply tv-card-hover p-4 border-l-4;
+  }
+
+  .tv-threat-card-critical {
+    @apply tv-threat-card border-l-red-500;
+  }
+
+  .tv-threat-card-high {
+    @apply tv-threat-card border-l-orange-500;
+  }
+
+  .tv-threat-card-medium {
+    @apply tv-threat-card border-l-yellow-500;
+  }
+
+  .tv-threat-card-low {
+    @apply tv-threat-card border-l-green-500;
+  }
+
+  /* === Glass Effect (for modals/overlays) === */
+  .tv-glass {
+    @apply backdrop-blur-md bg-background/90;
+  }
+
+  /* === Dashboard Widget === */
+  .tv-widget {
+    @apply tv-card p-5;
+  }
+
+  .tv-widget-header {
+    @apply flex items-center justify-between mb-4;
+  }
+
+  .tv-widget-title {
+    @apply text-sm font-semibold text-foreground;
+  }
+
+  /* === Input enhanced === */
+  .tv-input {
+    @apply flex h-9 w-full rounded-lg border border-input bg-card px-3 py-1.5 text-sm;
+    @apply placeholder:text-muted-foreground focus-visible:outline-none;
+    @apply focus-visible:ring-1 focus-visible:ring-ring transition-shadow duration-150;
+    @apply file:border-0 file:bg-transparent file:text-sm file:font-medium;
+    @apply disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  /* === Sidebar Section Header === */
+  .tv-sidebar-section {
+    @apply px-3 mb-1 mt-5 first:mt-2;
+  }
+
+  .tv-sidebar-section-title {
+    @apply text-2xs font-semibold uppercase tracking-widest text-sidebar-foreground/40;
+  }
+
+  /* === Empty State === */
+  .tv-empty-state {
+    @apply flex flex-col items-center justify-center py-16 px-8 text-center;
+  }
+
+  .tv-empty-state-icon {
+    @apply w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mb-4;
+  }
+
+  .tv-empty-state-title {
+    @apply text-base font-semibold text-foreground mb-1;
+  }
+
+  .tv-empty-state-description {
+    @apply text-sm text-muted-foreground max-w-sm;
+  }
+
+  /* === Replay Mode === */
+  .tv-replay-panel {
+    @apply bg-card border border-border rounded-xl overflow-hidden flex flex-col;
+  }
+
+  /* === Knowledge Graph === */
+  .tv-graph-container {
+    @apply relative overflow-hidden rounded-xl border border-border bg-muted/10;
+  }
+}
+
+/* ============================================================
+   UTILITY LAYER
+   ============================================================ */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+
+  /* === Gradient Text === */
+  .tv-gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
+  }
+
+  /* === Status Dot === */
+  .tv-status-dot {
+    @apply w-2 h-2 rounded-full flex-shrink-0;
+  }
+
+  .tv-status-dot-active {
+    @apply tv-status-dot bg-green-500 animate-pulse;
+  }
+
+  .tv-status-dot-processing {
+    @apply tv-status-dot bg-indigo-500 animate-pulse;
+  }
+
+  .tv-status-dot-idle {
+    @apply tv-status-dot bg-muted-foreground/50;
+  }
+
+  .tv-status-dot-error {
+    @apply tv-status-dot bg-red-500;
+  }
+
+  /* === Layout === */
+  .tv-main-layout {
+    @apply flex h-screen bg-background overflow-hidden;
+  }
+
+  .tv-content-area {
+    @apply flex-1 flex flex-col overflow-hidden;
+    margin-left: var(--sidebar-width);
+    transition: margin-left 0.3s ease;
+  }
+
+  .tv-content-area-collapsed {
+    @apply tv-content-area;
+    margin-left: var(--sidebar-collapsed-width);
+  }
+
+  .tv-main-content {
+    @apply flex-1 overflow-auto p-6;
+  }
+
+  /* === Audio Wave Animation === */
+  .tv-wave-bar {
+    @apply inline-block w-1 bg-primary rounded-full;
+    animation: wave-form 1.2s ease-in-out infinite;
+  }
+
+  .tv-wave-bar:nth-child(2) { animation-delay: 0.1s; }
+  .tv-wave-bar:nth-child(3) { animation-delay: 0.2s; }
+  .tv-wave-bar:nth-child(4) { animation-delay: 0.3s; }
+  .tv-wave-bar:nth-child(5) { animation-delay: 0.4s; }
+
+  /* === Truncate with ellipsis === */
+  .tv-truncate-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .tv-truncate-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    :root {
+      --border: 222 47% 20%;
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ============================================================
+   SPECIAL COMPONENTS
+   ============================================================ */
+
+/* Command Palette Overlay */
+.tv-command-overlay {
+  @apply fixed inset-0 z-50 flex items-start justify-center pt-[15vh];
+  background: hsl(222 47% 7% / 0.6);
+  backdrop-filter: blur(6px);
+}
+
+/* Processing Progress Bar */
+.tv-processing-bar {
+  @apply h-1 bg-gradient-to-r from-primary via-accent to-primary;
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+/* Waveform highlight on hover */
+.tv-transcript-timestamp {
+  @apply text-xs text-primary font-mono cursor-pointer hover:underline;
+}
+
+/* Copilot thinking animation */
+.tv-copilot-thinking {
+  @apply flex gap-1 items-center;
+}
+
+.tv-copilot-thinking-dot {
+  @apply w-1.5 h-1.5 rounded-full bg-primary;
+  animation: wave-form 1s ease-in-out infinite;
+}
+
+.tv-copilot-thinking-dot:nth-child(2) { animation-delay: 0.2s; }
+.tv-copilot-thinking-dot:nth-child(3) { animation-delay: 0.4s; }
+
+/* Evidence integrity pulse */
+.tv-integrity-pulse {
+  @apply animate-pulse;
+}
+
+/* Threat highlight in transcript */
+.tv-threat-highlight {
+  @apply bg-red-100/60 dark:bg-red-950/30 rounded px-0.5 border-b-2 border-red-500 cursor-pointer;
+}
+
+.tv-entity-highlight {
+  @apply bg-primary/10 rounded px-0.5 border-b border-primary/40 cursor-pointer;
+}
+
+/* Print styles */
+@media print {
+  .tv-no-print { display: none !important; }
+  .tv-print-only { display: block !important; }
+
+  body {
+    @apply bg-white text-black;
+    font-size: 12pt;
+  }
+
+  .tv-card {
+    @apply shadow-none border border-gray-300;
+  }
+}

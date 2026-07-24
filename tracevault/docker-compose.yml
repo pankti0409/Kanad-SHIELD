@@ -1,0 +1,262 @@
+version: "3.9"
+
+services:
+  # ============================================================
+  # PostgreSQL Database
+  # ============================================================
+  postgres:
+    image: postgres:17-alpine
+    container_name: tracevault_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-tracevault}
+      POSTGRES_USER: ${POSTGRES_USER:-tracevault}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql:ro
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tracevault} -d ${POSTGRES_DB:-tracevault}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - tracevault_network
+    security_opt:
+      - no-new-privileges:true
+
+  # ============================================================
+  # Redis (Cache + Celery Broker)
+  # ============================================================
+  redis:
+    image: redis:7-alpine
+    container_name: tracevault_redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-tracevault_redis}
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - tracevault_network
+    security_opt:
+      - no-new-privileges:true
+
+  # ============================================================
+  # Qdrant Vector Database
+  # ============================================================
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: tracevault_qdrant
+    restart: unless-stopped
+    volumes:
+      - qdrant_data:/qdrant/storage
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:6333/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - tracevault_network
+
+  # ============================================================
+  # Ollama (Local LLM)
+  # ============================================================
+  ollama:
+    image: ollama/ollama:latest
+    container_name: tracevault_ollama
+    restart: unless-stopped
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - "11434:11434"
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:11434/api/tags || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - tracevault_network
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  # ============================================================
+  # Backend API
+  # ============================================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../docker/backend.Dockerfile
+      target: production
+    container_name: tracevault_backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=postgres
+      - REDIS_HOST=redis
+      - QDRANT_HOST=qdrant
+      - OLLAMA_HOST=ollama
+    volumes:
+      - storage_data:/app/storage
+      - ./backend:/app:ro
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - tracevault_network
+    security_opt:
+      - no-new-privileges:true
+
+  # ============================================================
+  # Celery Worker
+  # ============================================================
+  celery_worker:
+    build:
+      context: ./backend
+      dockerfile: ../docker/backend.Dockerfile
+      target: production
+    container_name: tracevault_celery_worker
+    restart: unless-stopped
+    command: celery -A app.tasks.celery_app worker --loglevel=info --concurrency=2 -Q default,ai_pipeline,reports,exports
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=postgres
+      - REDIS_HOST=redis
+      - QDRANT_HOST=qdrant
+      - OLLAMA_HOST=ollama
+    volumes:
+      - storage_data:/app/storage
+      - ./backend:/app:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - tracevault_network
+    security_opt:
+      - no-new-privileges:true
+
+  # ============================================================
+  # Celery Beat (Scheduler)
+  # ============================================================
+  celery_beat:
+    build:
+      context: ./backend
+      dockerfile: ../docker/backend.Dockerfile
+      target: production
+    container_name: tracevault_celery_beat
+    restart: unless-stopped
+    command: celery -A app.tasks.celery_app beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=postgres
+      - REDIS_HOST=redis
+    volumes:
+      - ./backend:/app:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - tracevault_network
+    security_opt:
+      - no-new-privileges:true
+
+  # ============================================================
+  # Frontend
+  # ============================================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../docker/frontend.Dockerfile
+      target: production
+    container_name: tracevault_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - tracevault_network
+    security_opt:
+      - no-new-privileges:true
+
+  # ============================================================
+  # Nginx Reverse Proxy
+  # ============================================================
+  nginx:
+    image: nginx:alpine
+    container_name: tracevault_nginx
+    restart: unless-stopped
+    volumes:
+      - ./infrastructure/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./infrastructure/nginx/conf.d:/etc/nginx/conf.d:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - tracevault_network
+    security_opt:
+      - no-new-privileges:true
+
+# ============================================================
+# Volumes
+# ============================================================
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  qdrant_data:
+    driver: local
+  ollama_data:
+    driver: local
+  storage_data:
+    driver: local
+
+# ============================================================
+# Networks
+# ============================================================
+networks:
+  tracevault_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
