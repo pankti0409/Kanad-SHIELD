@@ -1,391 +1,416 @@
-You are responsible for engineering TraceVault — Secure AI-Powered Multilingual Call Intelligence & Investigation Platform.
+STOP PATCHING THE EXISTING SYSTEM.
 
-This is not a prototype.
+Do not attempt to fix individual bugs one by one.
 
-This is not a UI mockup.
+Instead, perform a complete engineering audit of the entire TraceVault project and rebuild any subsystem that prevents the platform from reaching production quality.
 
-This is not a proof of concept.
+The current implementation is NOT acceptable.
 
-Engineer this as if it will eventually be deployed for law enforcement, intelligence agencies, legal investigators, and government organizations.
+Current issues include (but are not limited to):
 
-====================================================================================================
-PROJECT SPECIFICATION
-====================================================================================================
+• Audio upload workflow is broken.
+• Upload does not properly accept or validate supported audio formats.
+• Backend processing fails after upload.
+• Transcript generation is unreliable or incomplete.
+• The entire transcript is not being processed as a single coherent document.
+• Multiple file upload workflow is not production ready.
+• Error handling is insufficient.
+• The UI and UX are incomplete and do not feel like a finished enterprise application.
 
-The repository contains the project specification.
+Do not preserve existing architecture simply because it already exists.
 
-Read the following completely before writing any code:
+If a subsystem is poorly designed, replace it.
 
-1. plan.md (PRIMARY SPECIFICATION)
-2. README.md
+If an algorithm is not appropriate, replace it.
 
-There is NO master.md.
+If a workflow is broken, redesign it.
 
-Do not expect one.
+Always choose the architecture that best satisfies the project requirements.
 
-Treat plan.md as the single authoritative specification for:
+================================================================================
 
-• architecture
-• features
-• AI pipeline
-• database
-• security
-• workflows
-• UI
-• UX
-• testing
-• deployment
-• engineering standards
-• completion requirements
+TARGET WORKFLOW
 
-Do not begin implementation until you fully understand the entire specification.
+The complete workflow must be:
 
-====================================================================================================
-YOUR ROLE
-====================================================================================================
+1.
 
-Operate as an autonomous multidisciplinary software engineering organization.
+User creates or opens an Investigation Case.
 
-Your team consists of:
+↓
 
-• Principal Software Architect
-• Senior Frontend Engineer
-• Senior Backend Engineer
-• AI/ML Engineer
-• Security Engineer
-• Database Engineer
-• DevOps Engineer
-• Performance Engineer
-• QA Automation Engineer
-• Accessibility Specialist
-• Product Designer
-• UI/UX Designer
+2.
 
-Every engineering decision should reflect the combined expertise of this team.
+User uploads one or more supported audio recordings.
 
-Do not behave like a code generator.
+Supported formats include at least:
 
-Think.
+WAV
+MP3
+M4A
+AAC
+FLAC
+OGG
+OPUS
+AMR
+WMA
+3GP
+MP4 (audio extraction)
+MKV (audio extraction)
+WEBM (audio extraction)
 
-Plan.
+The upload component must:
 
-Validate.
+• support drag-and-drop
+• support multiple files
+• show upload progress
+• validate files
+• display meaningful errors
+• allow retry
+• queue multiple uploads
 
-Implement.
+↓
 
-Review.
+3.
 
-Refactor when necessary.
+Backend validates every uploaded file.
 
-Test.
+↓
 
-Optimize.
+4.
 
-Then continue.
+Generate SHA-256 hash immediately.
 
-====================================================================================================
-REPOSITORY REVIEW
-====================================================================================================
+↓
 
-Before implementation:
+5.
 
-Review the repository.
+Perform audio preprocessing:
 
-Review README.md.
+• format normalization
+• sample rate normalization
+• channel normalization
+• silence trimming where appropriate
+• noise reduction
+• voice activity detection
 
-Verify documentation accuracy.
+↓
 
-Correct documentation when implementation changes.
+6.
 
-Ensure documentation always reflects the current project.
+Run multilingual Speech-to-Text using Faster-Whisper Large-v3 (or another high-quality open-source model if demonstrably better for the project requirements).
 
-Do not document features that do not exist.
+Requirements:
 
-Do not claim benchmarks that are not measured.
+• Hindi
+• Gujarati
+• English
+• mixed-language conversations
 
-Do not invent functionality.
+The transcript must be generated for the ENTIRE conversation.
 
-====================================================================================================
-IMPLEMENTATION STRATEGY
-====================================================================================================
+Do not split the transcript into unrelated fragments.
 
-Build incrementally.
+Preserve timestamps.
 
-Respect dependencies.
+Preserve ordering.
 
-Never skip foundational work.
+↓
 
-Never implement isolated features that ignore the architecture.
+7.
 
-Always integrate with the existing system.
+Run speaker diarization.
 
-Never duplicate
+The output must clearly indicate:
 
-components
+Speaker 1
 
-services
+Speaker 2
 
-utilities
+Speaker 3
 
-database models
+...
 
-business logic
+Every transcript segment must identify the speaker and timestamps.
 
-API endpoints
+↓
 
-AI pipelines
+8.
 
-shared hooks
+Run transcript intelligence extraction.
 
-state
+Extract at minimum:
 
-styles
+• people
+• aliases
+• organisations
+• locations
+• phone numbers
+• account numbers
+• monetary values
+• dates
+• times
+• addresses
+• vehicles (if mentioned)
+• weapons (if mentioned)
+• case-relevant identifiers
 
-configuration
+Use evidence-backed extraction only.
 
-Refactor instead of duplicating.
+Do not fabricate entities.
 
-Prefer maintainability over short-term convenience.
+↓
 
-====================================================================================================
-ARCHITECTURE
-====================================================================================================
+9.
 
-Maintain a clean layered modular architecture.
+Run threat analysis.
 
-Separate concerns clearly.
+Identify evidence of:
 
-Keep business logic independent from UI.
+• extortion
+• fraud
+• scam
+• kidnapping
+• violence
+• bribery
+• blackmail
+• coercion
+• illegal transactions
+• suspicious coordination
 
-Keep AI processing modular.
+Every finding must include supporting transcript evidence.
 
-Keep APIs predictable.
+↓
 
-Keep database models normalized.
+10.
 
-Prefer reusable abstractions.
+Run emotion and conversation analysis.
 
-Avoid unnecessary complexity.
+Where supported by the chosen models:
 
-====================================================================================================
-UI / UX
-====================================================================================================
+• anger
+• fear
+• stress
+• urgency
+• neutral
+• calm
 
-The UI must NOT resemble a generated AI dashboard.
+Do not invent emotions.
 
-Avoid
+Only report confidence-supported results.
 
-generic Tailwind layouts
+↓
 
-gradient overload
+11.
 
-glassmorphism everywhere
+Generate a structured investigation report.
 
-random colors
+The report should include:
 
-template dashboards
+Executive Summary
 
-oversized cards
+Languages
 
-poor spacing
+Speakers
 
-Instead build a handcrafted enterprise interface.
+Conversation Summary
 
-Design goals:
+Named Entities
 
-• elegant pastel palette
-• premium typography
-• excellent spacing
-• subtle motion
-• responsive layouts
-• polished components
-• accessible interactions
-• beautiful dark mode
-• beautiful light mode
+Threat Indicators
 
-The visual quality should feel comparable to modern enterprise products while remaining original and appropriate for investigative workflows.
+Emotion Timeline
 
-Every page should feel intentionally designed.
+Important Quotes
 
-====================================================================================================
-AI SYSTEM
-====================================================================================================
+Timeline of Important Events
 
-Every AI-generated conclusion should be grounded in evidence.
+Evidence References
 
-Where appropriate:
+Confidence Information
 
-• reference transcript segments
-• include timestamps
-• include confidence
-• avoid unsupported conclusions
-• state uncertainty when evidence is insufficient
+Evidence Integrity
 
-Never fabricate entities, threats, or relationships.
+Recommendations
 
-====================================================================================================
-SECURITY
-====================================================================================================
+Chain of Custody Information
 
-Assume every uploaded recording may become legal evidence.
+Audit Metadata
 
-Prioritize:
+↓
 
-authentication
+12.
 
-authorization
+Store every result in the database.
 
-audit logging
+↓
 
-chain of custody
+13.
 
-evidence integrity
+Update dashboard analytics.
 
-input validation
+↓
 
-secure file handling
+14.
 
-least privilege
+Allow investigators to:
 
-privacy
+search
 
-Do not expose secrets.
+filter
 
-Use environment variables.
+sort
 
-====================================================================================================
-QUALITY CONTROL
-====================================================================================================
+bookmark
 
-After every completed feature:
+annotate
 
-Build the project.
+export
 
-Resolve build errors.
+generate PDF
 
-Resolve TypeScript errors.
+generate CSV
 
-Resolve Python errors.
+generate JSON
 
-Resolve lint issues.
+================================================================================
 
-Verify routing.
+QUALITY REQUIREMENTS
 
-Verify APIs.
+This is NOT a hackathon prototype.
 
-Verify database interactions.
+Build it like enterprise software.
 
-Verify AI workflows.
+The application must feel complete.
 
-Verify responsiveness.
+Every page must have:
 
-Verify accessibility.
+loading states
 
-Verify dark mode.
+empty states
 
-Verify light mode.
+error states
 
-Verify loading states.
+success states
 
-Verify empty states.
+responsive layouts
 
-Verify error handling.
+consistent typography
 
-Ensure existing functionality still works.
+consistent spacing
 
-Do not continue while known issues remain.
+proper accessibility
 
-====================================================================================================
-TESTING
-====================================================================================================
+light theme
 
-Where practical:
+dark theme
 
-Write or update tests for critical business logic.
+================================================================================
 
-Validate important workflows.
+AI REQUIREMENTS
 
-Test edge cases.
+The system should prioritise accuracy over creativity.
 
-Verify error handling.
+Never hallucinate.
 
-Confirm permission enforcement.
+Never invent entities.
 
-Ensure regressions are not introduced.
+Never invent threats.
 
-====================================================================================================
-PERFORMANCE
-====================================================================================================
+Never invent people.
 
-Continuously improve:
+Never invent locations.
 
-rendering
+If confidence is insufficient, explicitly state that evidence is insufficient.
 
-database queries
+Every AI conclusion should reference supporting transcript segments whenever applicable.
 
-memory usage
+================================================================================
 
-background processing
+ENGINEERING REQUIREMENTS
 
-API latency
+Review the entire backend.
 
-bundle size
+Review the entire frontend.
 
-Avoid premature optimization, but do not leave obvious inefficiencies unresolved.
+Review the database.
 
-====================================================================================================
-DOCUMENTATION
-====================================================================================================
+Review APIs.
 
-Keep documentation synchronized with implementation.
+Review AI pipeline.
 
-If architecture changes,
+Review routing.
 
-update documentation.
+Review authentication.
 
-If endpoints change,
+Review uploads.
 
-update documentation.
+Review storage.
 
-If workflows change,
+Review background processing.
 
-update documentation.
+Review state management.
 
-README should always describe the current project.
+Review security.
 
-====================================================================================================
-COMPLETION CRITERIA
-====================================================================================================
+Replace weak implementations where necessary.
 
-Do NOT consider the project complete because:
+Do not preserve bad architecture.
 
-• the code compiles
-• the application starts
-• the UI renders
-• APIs respond
+================================================================================
 
-The project is complete only when:
+BUG FIXING
 
-✓ Every requirement in plan.md has been implemented.
+Do not only fix the reported upload issue.
 
-✓ README accurately reflects the implementation.
+Search for every bug in the application.
 
-✓ Critical workflows function correctly.
+Resolve runtime errors.
 
-✓ The application builds successfully.
+Resolve logic errors.
 
-✓ No critical or high-severity issues remain.
+Resolve UI issues.
 
-✓ No placeholder code, mock implementations, or TODOs remain in production code.
+Resolve API issues.
 
-✓ The UI is visually polished and internally consistent.
+Resolve state management issues.
 
-✓ Security-sensitive functionality has been verified.
+Resolve database issues.
 
-✓ Documentation matches the repository.
+Resolve concurrency issues.
 
-✓ The platform is stable, maintainable, and suitable for a polished hackathon demonstration.
+Resolve upload issues.
 
-If a requirement cannot be implemented due to a genuine technical limitation, document the reason clearly rather than silently omitting it.
+Resolve processing issues.
 
-Your objective is to deliver a cohesive, high-quality investigation platform that is reliable, explainable, maintainable, and demonstrates sound software engineering—not merely a collection of implemented features.
+Resolve report generation issues.
+
+Resolve export issues.
+
+Verify every complete workflow from upload to report generation.
+
+================================================================================
+
+FINAL VALIDATION
+
+Do not stop because the project compiles.
+
+Do not stop because the UI loads.
+
+Do not stop because the backend starts.
+
+The implementation is complete only when:
+
+• audio upload works reliably
+• multiple uploads work reliably
+• transcription works end-to-end
+• diarization works
+• transcript intelligence works
+• threat analysis works
+• reports are generated
+• exports function
+• dashboard updates correctly
+• no critical runtime errors remain
+• the entire upload → analysis → report workflow has been verified successfully.
+
+If rebuilding a subsystem results in a cleaner, more reliable architecture, prefer rebuilding over patching.

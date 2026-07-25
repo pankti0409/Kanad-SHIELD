@@ -1,3 +1,12 @@
+# ==============================================================================
+# TRACEVAULT — COMPREHENSIVE .GITIGNORE
+# Single source of truth for the entire monorepo
+# ==============================================================================
+
+# ==============================================================================
+# PYTHON / BACKEND
+# ==============================================================================
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -55,7 +64,7 @@ pytestdebug.log
 # IPython
 .ipython/
 
-# Virtual Environments
+# Virtual environments
 venv/
 venv*/
 env/
@@ -65,30 +74,103 @@ env.bak/
 venv.bak/
 .venv/
 
-# Environment Variables & Secrets
-.env
-.env.*
-!.env.example
+# ==============================================================================
+# DATABASES
+# ==============================================================================
 
-# Node.js & Frontend
+*.db
+*.sqlite
+*.sqlite3
+
+# ==============================================================================
+# NODE.JS / FRONTEND
+# ==============================================================================
+
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 .pnpm-debug.log*
-.vite/
+
+# Build output
 dist/
 dist-ssr/
+*.local
 
-# Storage & Uploads
+# Vite
+.vite/
+
+# ==============================================================================
+# ENVIRONMENT VARIABLES & SECRETS
+# ==============================================================================
+
+.env
+.env.*
+!.env.example
+
+# ==============================================================================
+# AUDIO / MEDIA FILES
+# ==============================================================================
+
+# Sample / test audio files should not be committed
+*.wav
+*.mp3
+*.m4a
+*.aac
+*.ogg
+*.flac
+*.opus
+*.amr
+*.wma
+*.3gp
+
+# ==============================================================================
+# STORAGE & UPLOADS
+# ==============================================================================
+
 backend/app/storage/uploads/*
 !backend/app/storage/uploads/.gitkeep
+backend/app/storage/processed/*
+!backend/app/storage/processed/.gitkeep
+backend/app/storage/reports/*
+!backend/app/storage/reports/.gitkeep
+backend/app/storage/temp/*
+!backend/app/storage/temp/.gitkeep
 
-# IDEs & Editors
-.vscode/
+# ==============================================================================
+# LOGS
+# ==============================================================================
+
+logs/
+*.log
+
+# ==============================================================================
+# IDEs & EDITORS
+# ==============================================================================
+
+.vscode/*
+!.vscode/extensions.json
 .idea/
 *.swp
 *.swo
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
 *~
+
+# ==============================================================================
+# OS FILES
+# ==============================================================================
+
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# ==============================================================================
+# DOCKER
+# ==============================================================================
+
+.docker/
