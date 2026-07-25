@@ -1,0 +1,125 @@
+Sequence,Start (s),End (s),Speaker,Confidence,Text,Has Threat,Has Entity
+0,0.0,1.0,Speaker_00,0.9,Hello.,False,False
+1,1.0,2.0,Speaker_01,0.9,What are you saying?,False,False
+2,2.0,3.0,Speaker_00,0.9,Tell me.,False,False
+3,3.0,4.0,Speaker_01,0.9,Tell me.,False,False
+4,4.0,5.0,Speaker_00,0.9,Tell me.,False,False
+5,5.0,6.0,Speaker_01,0.9,Tell me.,False,False
+6,6.0,7.0,Speaker_00,0.9,Namaste.,False,False
+7,7.0,9.0,Speaker_01,0.9,Sangeeta saying.,False,False
+8,9.0,10.0,Speaker_00,0.9,Vastanan Saris.,False,False
+9,10.0,11.0,Speaker_01,0.9,Okay.,False,False
+10,11.0,14.0,Speaker_00,0.9,What is this?,False,False
+11,14.0,15.0,Speaker_01,0.9,You.,False,False
+12,15.0,16.0,Speaker_00,0.9,You.,False,False
+13,16.0,17.0,Speaker_01,0.9,Okay.,False,False
+14,17.0,18.0,Speaker_00,0.9,You.,False,False
+15,18.0,20.0,Speaker_01,0.9,You had come to my side at my side.,False,False
+16,20.0,22.0,Speaker_00,0.9,Did anyone see?,False,False
+17,22.0,25.0,Speaker_01,0.9,"Sir, you are looking for a book.",False,False
+18,25.0,27.0,Speaker_00,0.9,Who is the writer?,False,False
+19,28.0,29.0,Speaker_01,0.9,A doctor is trouble?,False,False
+20,29.0,30.0,Speaker_00,0.9,Very good.,False,False
+21,30.0,35.0,Speaker_01,0.9,I got such an example from myself that you called Pee Satanj.,False,False
+22,35.0,41.0,Speaker_00,0.9,You were talking about him.,False,False
+23,41.0,45.0,Speaker_01,0.9,"Goong Jee, singa millionaire Lal.",False,False
+24,45.0,46.0,Speaker_00,0.9,"Vastan, how do you feel?",False,False
+25,46.0,47.0,Speaker_01,0.9,It should be deferred.,False,False
+26,47.0,50.0,Speaker_00,0.9,Why did you take me here?,False,False
+27,50.0,51.0,Speaker_01,0.9,Lolen ochat 걝 costly.,False,False
+28,51.0,53.0,Speaker_00,0.9,Vastan and some of your 思ies?,False,False
+29,53.0,55.0,Speaker_01,0.9,Vastan and Sareis.,False,False
+30,55.0,57.0,Speaker_00,0.9,書y rainbow!!,False,False
+31,61.18,63.18,Speaker_01,0.9,Did you take all these problems?,False,False
+32,63.18,66.92,Speaker_00,0.9,no problem,False,False
+33,67.94,70.66,Speaker_01,0.9,What kind of problem?,False,False
+34,70.66,73.0,Speaker_00,0.9,Nothing,False,False
+35,73.0,76.0,Speaker_01,0.9,a book,False,False
+36,79.56,83.68,Speaker_00,0.9,check out,False,False
+37,83.68,84.82,Speaker_01,0.9,"najmniej個nesday нуж了,二e toon",False,False
+38,84.82,86.08,Speaker_00,0.9,Hoje 6-6年 Ay ko channo target,False,True
+39,86.08,86.48,Speaker_01,0.9,main娘,False,False
+40,86.48,88.04,Speaker_00,0.9,Alla żebyößi,False,False
+41,89.16,90.6,Speaker_01,0.9,Ok,False,False
+42,90.8,92.38,Speaker_00,0.9,Ind陽職s,False,False
+43,93.68,94.82,Speaker_01,0.9,Some position to do,False,False
+44,94.94,96.3,Speaker_00,0.9,You can say anything,False,False
+45,96.3,97.66,Speaker_01,0.9,want to watch when you return,False,False
+46,99.46,99.72,Speaker_00,0.9,Ok,False,False
+47,100.24,101.28,Speaker_01,0.9,He has come to do,False,False
+48,101.72,102.38,Speaker_00,0.9,Other side,False,False
+49,102.4,103.06,Speaker_01,0.9,Eating,False,False
+50,103.06,104.24,Speaker_00,0.9,I will place another order,False,False
+51,105.6,105.96,Speaker_01,0.9,Ok madam,False,False
+52,107.0,108.36,Speaker_00,0.9,I can play about the time,False,False
+53,110.36,111.32,Speaker_01,0.9,first,False,False
+54,111.44,112.36,Speaker_00,0.9,Why dont squeeze in the Oi,False,False
+55,112.36,112.9,Speaker_01,0.9,3,False,True
+56,112.9,113.04,Speaker_00,0.9,Confirm,False,False
+57,113.04,119.04,Speaker_01,0.9,Okay. Okay madam.,False,False
+58,119.04,121.04,Speaker_00,0.9,Thank you.,False,False
+59,121.04,122.04,Speaker_01,0.9,See you.,False,False
+60,122.04,124.04,Speaker_00,0.9,"So, book has been done.",False,False
+61,124.04,126.04,Speaker_01,0.9,Book has been done.,False,False
+62,126.04,129.04,Speaker_00,0.9,"Yes, it is a famous art.",False,False
+63,129.04,131.04,Speaker_01,0.9,It is a famous art.,False,False
+64,131.04,132.04,Speaker_00,0.9,"Oh, it is a famous art.",False,False
+65,132.04,134.04,Speaker_01,0.9,It is a famous art.,False,False
+66,134.04,136.04,Speaker_00,0.9,It is a famous art.,False,False
+67,136.04,137.04,Speaker_01,0.9,It is a famous art.,False,False
+68,137.04,139.04,Speaker_00,0.9,It is a famous art.,False,False
+69,140.04,141.04,Speaker_01,0.9,Hello.,False,False
+70,141.04,142.04,Speaker_00,0.9,Isn't it a famous art?,False,False
+71,142.04,143.04,Speaker_01,0.9,A second Rukeji.,False,False
+72,143.04,145.04,Speaker_00,0.9,I will check it.,False,False
+73,145.04,147.04,Speaker_01,0.9,Please.,False,False
+74,147.04,149.04,Speaker_00,0.9,A second ji.,False,False
+75,149.04,151.04,Speaker_01,0.9,Yes.,False,False
+76,155.04,157.04,Speaker_00,0.9,It is not a famous art.,False,False
+77,157.04,158.04,Speaker_01,0.9,No one has been talking about it.,False,False
+78,158.04,159.04,Speaker_00,0.9,You have been given the word.,False,False
+79,159.04,160.04,Speaker_01,0.9,It is not a tension.,False,False
+80,160.04,161.04,Speaker_00,0.9,"So, order.",False,False
+81,161.04,162.04,Speaker_01,0.9,Okay.,False,False
+82,162.04,163.04,Speaker_00,0.9,Please.,False,False
+83,163.04,164.04,Speaker_01,0.9,Please.,False,False
+84,164.04,165.04,Speaker_00,0.9,Come on.,False,False
+85,165.04,166.04,Speaker_01,0.9,Take a look.,False,False
+86,166.04,167.04,Speaker_00,0.9,Okay madam.,False,False
+87,167.04,168.04,Speaker_01,0.9,Take care.,False,False
+88,168.04,169.04,Speaker_00,0.9,Take care.,False,False
+89,169.04,170.04,Speaker_01,0.9,Take care.,False,False
+90,170.04,171.04,Speaker_00,0.9,Take care.,False,False
+91,171.04,172.04,Speaker_01,0.9,Bangalore valayadra.,False,False
+92,172.04,173.04,Speaker_00,0.9,Okay madam.,False,False
+93,173.04,175.04,Speaker_01,0.9,Thank you.,False,False
+94,175.04,176.04,Speaker_00,0.9,God bless you.,False,False
+95,176.04,177.04,Speaker_01,0.9,Okay.,False,False
+96,177.04,179.04,Speaker_00,0.9,Bangalore valayadra.,False,False
+97,179.04,181.04,Speaker_01,0.9,This is 191st morning.,False,True
+98,181.04,185.04,Speaker_00,0.9,"First main first cross,",False,False
+99,185.04,187.04,Speaker_01,0.9,"For the first morning,",False,False
+100,187.04,188.04,Speaker_00,0.9,"If we go to Bangalore,",False,False
+101,188.04,189.04,Speaker_01,0.9,5600.,False,True
+102,189.04,191.04,Speaker_00,0.9,"Yes madam, we go.",False,False
+103,191.04,192.04,Speaker_01,0.9,Take care.,False,False
+104,192.04,193.04,Speaker_00,0.9,Okay.,False,False
+105,193.04,196.04,Speaker_01,0.9,"Kali ji, and quality kaya Maharam.",False,False
+106,197.04,198.04,Speaker_00,0.9,"Oh, has he?",False,False
+107,198.04,200.04,Speaker_01,0.9,He has not come yet. He can't sit yet.,False,False
+108,202.04,203.04,Speaker_00,0.9,Bhilko ji.,False,False
+109,203.04,204.04,Speaker_01,0.9,Hello.,False,False
+110,206.04,207.04,Speaker_00,0.9,Okay Maharam.,False,False
+111,207.04,208.04,Speaker_01,0.9,Come.,False,False
+112,208.04,209.04,Speaker_00,0.9,Kali ji.,False,False
+113,211.04,212.04,Speaker_01,0.9,Okay.,False,False
+114,212.04,213.04,Speaker_00,0.9,Total 250 rupee horayi ji.,False,True
+115,214.04,216.04,Speaker_01,0.9,95 rupee ji.,False,True
+116,217.04,218.04,Speaker_00,0.9,Okay Maharam.,False,False
+117,218.04,219.04,Speaker_01,0.9,Okay Kali ji.,False,False
+118,220.04,222.04,Speaker_00,0.9,So final kar retyu ji?,False,False
+119,222.04,224.04,Speaker_01,0.9,Okay Maharam.,False,False
+120,225.04,227.04,Speaker_00,0.9,"Very, very shookri ji.",False,False
+121,227.04,228.04,Speaker_01,0.9,Order place.,False,False
+122,228.04,229.04,Speaker_00,0.9,Okay Maharam.,False,False
+123,229.04,230.04,Speaker_01,0.9,Okay. Thank you Maharam.,False,False

@@ -76,6 +76,7 @@ class AISettings(BaseSettings):
 
     # Whisper
     WHISPER_MODEL: str = "large-v3"
+    WHISPER_MODEL_SIZE: str = "large-v3"  # Alias used in some code paths
     WHISPER_DEVICE: str = "auto"  # auto, cuda, cpu
     WHISPER_COMPUTE_TYPE: str = "float16"
 
@@ -83,14 +84,19 @@ class AISettings(BaseSettings):
     EMBEDDING_MODEL: str = "BAAI/bge-m3"
     EMBEDDING_BATCH_SIZE: int = 32
 
+    # Gemini (primary LLM for NER + threat analysis)
+    GEMINI_API_KEY: Optional[str] = None
+    LLM_API_KEY: Optional[str] = None  # Alias
+
     # Ollama
-    OLLAMA_HOST: str = "ollama"
+    OLLAMA_HOST: str = "localhost"
     OLLAMA_PORT: int = 11434
     OLLAMA_BASE_URL: Optional[str] = None
     OLLAMA_MODEL: str = "qwen2.5:7b-instruct"
 
     # NER
     NER_MODEL: str = "knowledgator/gliner-multitask-large-v0.5"
+    GLINER_MODEL_NAME: str = "knowledgator/gliner-multitask-large-v0.5"
 
     # Emotion
     EMOTION_MODEL: str = "speechbrain/emotion-recognition-wav2vec2-IEMOCAP"
@@ -99,7 +105,7 @@ class AISettings(BaseSettings):
     HF_TOKEN: Optional[SecretStr] = None
 
     # Qdrant
-    QDRANT_HOST: str = "qdrant"
+    QDRANT_HOST: str = "localhost"
     QDRANT_PORT: int = 6333
     QDRANT_URL: Optional[str] = None
 
@@ -111,6 +117,9 @@ class AISettings(BaseSettings):
 
     @model_validator(mode="after")
     def build_urls(self) -> "AISettings":
+        # Sync GEMINI_API_KEY from LLM_API_KEY alias if not set
+        if not self.GEMINI_API_KEY and self.LLM_API_KEY:
+            self.GEMINI_API_KEY = self.LLM_API_KEY
         if not self.OLLAMA_BASE_URL:
             self.OLLAMA_BASE_URL = f"http://{self.OLLAMA_HOST}:{self.OLLAMA_PORT}"
         if not self.QDRANT_URL:
@@ -121,10 +130,10 @@ class AISettings(BaseSettings):
 class StorageSettings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    UPLOAD_DIRECTORY: str = "/app/storage/uploads"
-    PROCESSED_DIRECTORY: str = "/app/storage/processed"
-    REPORT_DIRECTORY: str = "/app/storage/reports"
-    TEMP_DIRECTORY: str = "/app/storage/temp"
+    UPLOAD_DIRECTORY: str = "./storage/uploads"
+    PROCESSED_DIRECTORY: str = "./storage/processed"
+    REPORT_DIRECTORY: str = "./storage/reports"
+    TEMP_DIRECTORY: str = "./storage/temp"
     MAX_UPLOAD_SIZE_MB: int = 500
     ALLOWED_AUDIO_FORMATS: str = "wav,mp3,m4a,aac,ogg,flac,opus"
 
@@ -147,7 +156,20 @@ class SecuritySettings(BaseSettings):
     ACCOUNT_LOCKOUT_MINUTES: int = 30
     PASSWORD_MIN_LENGTH: int = 12
     SESSION_IDLE_TIMEOUT_MINUTES: int = 60
-    ALLOWED_ORIGINS: list[str] = ["http://localhost:3000", "http://localhost:80"]
+    CORS_ORIGINS: Optional[str] = None  # JSON string from env
+    ALLOWED_ORIGINS: list[str] = ["http://localhost:3000", "http://localhost:5173", "http://localhost:80"]
+
+    @model_validator(mode="after")
+    def parse_cors_origins(self) -> "SecuritySettings":
+        import json
+        if self.CORS_ORIGINS:
+            try:
+                parsed = json.loads(self.CORS_ORIGINS)
+                if isinstance(parsed, list):
+                    self.ALLOWED_ORIGINS = parsed
+            except Exception:
+                pass
+        return self
 
 
 class Settings(BaseSettings):

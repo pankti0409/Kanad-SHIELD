@@ -3,7 +3,7 @@ from app.models.user import User, UserRole, UserStatus, UserSession, RefreshToke
 from app.models.case import Case, CaseMember, CaseStatus, CasePriority, CaseCategory, InvestigatorNote, CaseTask
 from app.models.recording import (
     Recording, Speaker, Transcript, TranscriptSegment, ProcessingLog,
-    ProcessingStatus, RiskLevel
+    ProcessingStatus, RiskLevel, ChainOfCustodyEvent
 )
 from app.models.intelligence import (
     Entity, Keyword, Topic, EmotionAnalysis, ThreatIndicator, RiskScore,
@@ -11,7 +11,7 @@ from app.models.intelligence import (
     EmbeddingMetadata, ThreatCategory, EmotionType, SentimentType
 )
 from app.models.evidence import (
-    EvidenceFile, ChainOfCustodyEvent, Report, ReportExport, EvidenceType
+    EvidenceFile, Report, ReportExport, EvidenceType
 )
 from app.models.audit import AuditLog, Notification, SystemAlert
 

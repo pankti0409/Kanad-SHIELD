@@ -30,13 +30,22 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     # Ensure storage directories exist
     settings.ensure_storage_dirs()
 
-    # Initialize Qdrant collections
+    # Auto-create database tables (dev/SQLite mode)
+    if not settings.is_production:
+        try:
+            from app.database.engine import create_all_tables
+            await create_all_tables()
+            logger.info("Database tables initialized")
+        except Exception as exc:
+            logger.error("Database table creation failed", error=str(exc))
+
+    # Initialize Qdrant collections (optional)
     try:
         from app.ai.embeddings.qdrant_client import initialize_qdrant_collections
         await initialize_qdrant_collections()
         logger.info("Qdrant collections initialized")
     except Exception as exc:
-        logger.warning("Qdrant initialization failed", error=str(exc))
+        logger.warning("Qdrant initialization skipped", error=str(exc))
 
     logger.info("TraceVault ready to accept requests")
     yield

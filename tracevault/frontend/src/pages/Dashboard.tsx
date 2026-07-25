@@ -17,7 +17,6 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CallMetricsHeader } from "@/components/shared/CallMetricsHeader";
-import { EvaluationOrbits } from "@/components/shared/EvaluationOrbits";
 import { LiveInterceptSimulator } from "@/components/shared/LiveInterceptSimulator";
 import { AudioForensicsPlayer } from "@/components/shared/AudioForensicsPlayer";
 import { cn } from "@/lib/utils";
@@ -86,9 +85,6 @@ export function Dashboard() {
 
       {/* Call Flow & Metrics Header Row */}
       <CallMetricsHeader />
-
-      {/* Evaluation Orbits Interactive Tier Navigation */}
-      <EvaluationOrbits />
 
       {/* Creative Interactive Widgets: Live Intercept Stream & Forensic Audio Player */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

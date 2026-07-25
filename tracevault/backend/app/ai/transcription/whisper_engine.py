@@ -1,187 +1,292 @@
 """
-TraceVault AI Engine — Speech-to-Text & Audio Transcription (Whisper)
-Converts speech audio files to accurate text transcripts using Whisper and SpeechRecognition.
+TraceVault AI Engine — Speech-to-Text & Audio Transcription
+Prioritizes faster-whisper (best performance), falls back to openai-whisper,
+then SpeechRecognition as last resort.
 """
-from pathlib import Path
-import os
+from __future__ import annotations
+
+import asyncio
 import wave
+from pathlib import Path
+from typing import Any, Optional
 import structlog
-from typing import Dict, Any, List
 
 logger = structlog.get_logger(__name__)
 
-# Try importing openai-whisper / faster-whisper / SpeechRecognition
-HAS_WHISPER = False
+# ── Detect available transcription backends ────────────────────────────────
+
+HAS_FASTER_WHISPER = False
+HAS_OPENAI_WHISPER = False
 HAS_SPEECH_RECOGNITION = False
 
 try:
-    import whisper
-    HAS_WHISPER = True
+    from faster_whisper import WhisperModel as FasterWhisperModel
+    HAS_FASTER_WHISPER = True
+    logger.debug("faster_whisper available")
 except ImportError:
+    pass
+
+if not HAS_FASTER_WHISPER:
     try:
-        from faster_whisper import WhisperModel
-        HAS_FASTER_WHISPER = True
+        import whisper as openai_whisper
+        HAS_OPENAI_WHISPER = True
+        logger.debug("openai_whisper available")
     except ImportError:
-        HAS_FASTER_WHISPER = False
+        pass
 
 try:
     import speech_recognition as sr
     HAS_SPEECH_RECOGNITION = True
+    logger.debug("speech_recognition available")
 except ImportError:
-    HAS_SPEECH_RECOGNITION = False
+    pass
 
 
 class WhisperTranscriptionEngine:
-    """Whisper Speech-to-Text engine supporting real audio transcription."""
+    """
+    Speech-to-Text engine.
+    Backend priority: faster-whisper > openai-whisper > SpeechRecognition
+    """
 
     def __init__(self, model_size: str = "base", device: str = "auto") -> None:
-        self.model_size = model_size
+        # Clamp model size to avoid OOM on dev machines
+        safe_models = {"tiny", "base", "small", "medium", "large", "large-v2", "large-v3"}
+        self.model_size = model_size if model_size in safe_models else "base"
         self.device = device
-        self._whisper_model = None
+        self._fw_model = None
+        self._ow_model = None
 
-    def _get_whisper_model(self):
-        if self._whisper_model is None and HAS_WHISPER:
+    # ── Model loaders ─────────────────────────────────────────────────────
+
+    def _get_faster_whisper_model(self):
+        if self._fw_model is None and HAS_FASTER_WHISPER:
             try:
-                # Load Whisper base/small model
-                self._whisper_model = whisper.load_model("base")
-                logger.info("openai_whisper_loaded", model="base")
-            except Exception as e:
-                logger.warning("openai_whisper_load_failed", error=str(e))
-                self._whisper_model = None
-        return self._whisper_model
+                # Use CPU + int8 for universal compatibility
+                compute_type = "int8"
+                self._fw_model = FasterWhisperModel(
+                    self.model_size,
+                    device="cpu",
+                    compute_type=compute_type,
+                )
+                logger.info("faster_whisper_loaded", model=self.model_size)
+            except Exception as exc:
+                logger.warning("faster_whisper_load_failed", error=str(exc))
+                self._fw_model = None
+        return self._fw_model
 
-    def _probe_audio_duration(self, file_path: Path) -> float:
-        """Estimate audio duration in seconds from audio header or file size."""
+    def _get_openai_whisper_model(self):
+        if self._ow_model is None and HAS_OPENAI_WHISPER:
+            try:
+                self._ow_model = openai_whisper.load_model(self.model_size)
+                logger.info("openai_whisper_loaded", model=self.model_size)
+            except Exception as exc:
+                logger.warning("openai_whisper_load_failed", error=str(exc))
+                self._ow_model = None
+        return self._ow_model
+
+    # ── Audio utilities ───────────────────────────────────────────────────
+
+    def _probe_audio_duration(self, path: Path) -> float:
+        """Estimate audio duration from file header or size."""
         try:
-            if file_path.suffix.lower() in [".wav", ".wave"]:
-                with wave.open(str(file_path), "rb") as wf:
+            if path.suffix.lower() in (".wav", ".wave"):
+                with wave.open(str(path), "rb") as wf:
                     frames = wf.getnframes()
                     rate = wf.getframerate()
                     if rate > 0:
                         return float(frames) / rate
         except Exception:
             pass
+        size_bytes = path.stat().st_size
+        return min(max(3.0, round(size_bytes / 32000.0, 1)), 7200.0)
 
-        size_bytes = file_path.stat().st_size
-        est_sec = max(3.0, round(size_bytes / 32000.0, 1))
-        return min(est_sec, 1800.0)
+    # ── Transcription backends ────────────────────────────────────────────
 
-    def _transcribe_with_speech_recognition(self, path: Path) -> str:
-        """Transcribe WAV audio file using SpeechRecognition Google Web Speech API."""
-        if not HAS_SPEECH_RECOGNITION:
-            return ""
+    def _transcribe_faster_whisper(
+        self, path: Path, language: Optional[str] = None
+    ) -> dict[str, Any]:
+        model = self._get_faster_whisper_model()
+        if model is None:
+            return {}
+
         try:
+            lang_arg = None if language in (None, "auto") else language
+            segments_gen, info = model.transcribe(
+                str(path),
+                language=lang_arg,
+                beam_size=5,
+                vad_filter=True,
+                vad_parameters={"min_silence_duration_ms": 500},
+            )
+
+            segments_list = list(segments_gen)  # materialize generator
+            full_text = " ".join(seg.text.strip() for seg in segments_list)
+            detected_lang = info.language if info.language else (language or "en")
+            duration = info.duration if info.duration else self._probe_audio_duration(path)
+
+            raw_segments = []
+            for idx, seg in enumerate(segments_list):
+                text = seg.text.strip()
+                if text:
+                    avg_logprob = getattr(seg, "avg_logprob", -0.15)
+                    confidence = min(1.0, max(0.0, 1.0 + avg_logprob))
+                    raw_segments.append({
+                        "sequence_number": idx,
+                        "start": round(float(seg.start), 2),
+                        "end": round(float(seg.end), 2),
+                        "text": text,
+                        "confidence": round(confidence, 3),
+                    })
+
+            return {
+                "full_text": full_text,
+                "detected_language": detected_lang,
+                "duration": duration,
+                "confidence": 0.92,
+                "segments": raw_segments,
+                "model_used": f"faster-whisper-{self.model_size}",
+            }
+        except Exception as exc:
+            logger.warning("faster_whisper_transcribe_failed", error=str(exc))
+            return {}
+
+    def _transcribe_openai_whisper(
+        self, path: Path, language: Optional[str] = None
+    ) -> dict[str, Any]:
+        model = self._get_openai_whisper_model()
+        if model is None:
+            return {}
+
+        try:
+            lang_arg = None if language in (None, "auto") else language
+            result = model.transcribe(
+                str(path),
+                language=lang_arg,
+                beam_size=1,
+                best_of=1,
+                fp16=False,
+            )
+            full_text = result.get("text", "").strip()
+            detected_lang = result.get("language", language or "en")
+
+            raw_segments = []
+            for idx, seg in enumerate(result.get("segments", [])):
+                text = seg.get("text", "").strip()
+                if text:
+                    raw_segments.append({
+                        "sequence_number": idx,
+                        "start": round(float(seg.get("start", 0.0)), 2),
+                        "end": round(float(seg.get("end", 0.0)), 2),
+                        "text": text,
+                        "confidence": 0.90,
+                    })
+
+            return {
+                "full_text": full_text,
+                "detected_language": detected_lang,
+                "duration": self._probe_audio_duration(path),
+                "confidence": 0.90,
+                "segments": raw_segments,
+                "model_used": f"openai-whisper-{self.model_size}",
+            }
+        except Exception as exc:
+            logger.warning("openai_whisper_transcribe_failed", error=str(exc))
+            return {}
+
+    def _transcribe_speech_recognition(self, path: Path) -> dict[str, Any]:
+        if not HAS_SPEECH_RECOGNITION:
+            return {}
+        try:
+            import speech_recognition as sr
             r = sr.Recognizer()
             with sr.AudioFile(str(path)) as source:
                 audio_data = r.record(source)
                 text = r.recognize_google(audio_data)
-                return text.strip()
-        except Exception as e:
-            logger.debug("speech_recognition_fallback_skipped", reason=str(e))
-            return ""
+            duration = self._probe_audio_duration(path)
+            return {
+                "full_text": text.strip(),
+                "detected_language": "en",
+                "duration": duration,
+                "confidence": 0.80,
+                "segments": [{"sequence_number": 0, "start": 0.0, "end": duration, "text": text.strip(), "confidence": 0.80}],
+                "model_used": "speech-recognition-google",
+            }
+        except Exception as exc:
+            logger.debug("speech_recognition_failed", error=str(exc))
+            return {}
+
+    # ── Public API ────────────────────────────────────────────────────────
 
     async def transcribe(
         self,
         audio_path: str,
         language: str = "auto",
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
-        Transcribe audio file to spoken text with segment timestamps and confidence.
+        Transcribe audio file. Returns segments with timestamps and metadata.
+        Runs blocking model inference in a thread executor to avoid blocking the event loop.
         """
         path = Path(audio_path)
         if not path.exists():
             raise FileNotFoundError(f"Audio file not found: {audio_path}")
 
         duration = self._probe_audio_duration(path)
-        filename = path.name.lower()
-        
-        segments: List[Dict[str, Any]] = []
-        detected_language = "en" if language == "auto" else language
-        full_text = ""
-        model_used = "Whisper Speech Engine"
+        lang = None if language == "auto" else language
 
-        # Attempt 1: Official OpenAI Whisper model
-        model = self._get_whisper_model()
-        if model is not None:
-            try:
-                lang_arg = None if language == "auto" else language
-                w_res = model.transcribe(
-                    str(path),
-                    language=lang_arg,
-                    beam_size=1,
-                    best_of=1,
-                    fp16=False,
-                )
-                full_text = w_res.get("text", "").strip()
-                detected_language = w_res.get("language", detected_language)
-                model_used = f"OpenAI Whisper ({self.model_size})"
+        loop = asyncio.get_event_loop()
 
-                w_segments = w_res.get("segments", [])
-                for idx, seg in enumerate(w_segments):
-                    seg_text = seg.get("text", "").strip()
-                    if seg_text:
-                        segments.append({
-                            "sequence_number": idx + 1,
-                            "start": round(float(seg.get("start", 0.0)), 2),
-                            "end": round(float(seg.get("end", duration)), 2),
-                            "text": seg_text,
-                            "confidence": 0.95,
-                        })
-            except Exception as exc:
-                logger.warning("whisper_transcribe_exception", error=str(exc))
-                full_text = ""
+        # Try faster-whisper first
+        if HAS_FASTER_WHISPER:
+            result = await loop.run_in_executor(
+                None, self._transcribe_faster_whisper, path, lang
+            )
+            if result.get("full_text"):
+                return self._format_result(result, duration)
 
-        # Attempt 2: SpeechRecognition fallback for WAV/audio files
-        if not full_text:
-            sr_text = self._transcribe_with_speech_recognition(path)
-            if sr_text:
-                full_text = sr_text
-                model_used = "SpeechRecognition Engine"
-                segments = [
-                    {
-                        "sequence_number": 1,
-                        "start": 0.0,
-                        "end": round(duration, 2),
-                        "text": sr_text,
-                        "confidence": 0.94,
-                    }
-                ]
+        # Try openai-whisper
+        if HAS_OPENAI_WHISPER:
+            result = await loop.run_in_executor(
+                None, self._transcribe_openai_whisper, path, lang
+            )
+            if result.get("full_text"):
+                return self._format_result(result, duration)
 
-        # If audio contains silence / no recognizable speech, record genuine status
-        if not full_text:
-            full_text = f"Audio recording {path.name} processed ({duration:.1f}s duration). No audible speech detected in audio stream."
-            segments = [
-                {
-                    "sequence_number": 1,
-                    "start": 0.0,
-                    "end": round(duration, 1),
-                    "text": full_text,
-                    "confidence": 0.90,
-                }
-            ]
+        # Try SpeechRecognition (WAV only)
+        if HAS_SPEECH_RECOGNITION and path.suffix.lower() in (".wav", ".wave"):
+            result = await loop.run_in_executor(
+                None, self._transcribe_speech_recognition, path
+            )
+            if result.get("full_text"):
+                return self._format_result(result, duration)
 
-        word_count = len(full_text.split())
-        char_count = len(full_text)
+        # No speech detected / no backend available
+        logger.warning("no_transcription_backend_succeeded", audio=str(path))
+        return self._empty_result(path.name, duration, language)
 
-        result = {
-            "language": detected_language,
-            "language_confidence": 0.98,
-            "full_text": full_text,
-            "duration_seconds": duration,
-            "word_count": word_count,
-            "character_count": char_count,
-            "segments": segments,
-            "model_used": model_used,
+    def _format_result(self, result: dict, fallback_duration: float) -> dict[str, Any]:
+        """Normalise result dict into the standard output format."""
+        return {
+            "language": result.get("detected_language", "en"),
+            "language_confidence": 0.95,
+            "full_text": result.get("full_text", ""),
+            "duration_seconds": result.get("duration") or fallback_duration,
+            "word_count": len(result.get("full_text", "").split()),
+            "character_count": len(result.get("full_text", "")),
+            "confidence": result.get("confidence", 0.85),
+            "segments": result.get("segments", []),
+            "model_used": result.get("model_used", "unknown"),
         }
 
-        logger.info(
-            "whisper_transcription_completed",
-            audio=str(path),
-            language=detected_language,
-            word_count=word_count,
-            segments_count=len(segments),
-            duration=duration,
-        )
-        return result
-
-
+    def _empty_result(self, filename: str, duration: float, language: str) -> dict[str, Any]:
+        text = f"[No audible speech detected in recording: {filename}]"
+        return {
+            "language": language if language != "auto" else "en",
+            "language_confidence": 0.5,
+            "full_text": text,
+            "duration_seconds": duration,
+            "word_count": 0,
+            "character_count": len(text),
+            "confidence": 0.0,
+            "segments": [{"sequence_number": 0, "start": 0.0, "end": duration, "text": text, "confidence": 0.0}],
+            "model_used": "none",
+        }

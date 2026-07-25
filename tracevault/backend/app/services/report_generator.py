@@ -1,11 +1,21 @@
 """
 TraceVault Forensic Report Generator Service
-Generates court-ready PDF and text forensic reports with SHA-256 evidence verification.
+Generates court-ready PDF, JSON, and CSV forensic reports with SHA-256 evidence verification.
+Saves report metadata to the database.
 """
+from __future__ import annotations
+
+import csv
+import json
 from pathlib import Path
 from datetime import datetime, timezone
 import structlog
 from typing import Dict, Any, List, Optional
+from sqlalchemy import update
+
+from app.config import get_settings
+from app.models.recording import Recording
+from app.models.evidence import Report
 
 logger = structlog.get_logger(__name__)
 
@@ -20,7 +30,106 @@ except ImportError:
 
 
 class ReportGeneratorService:
-    """Generates structured forensic investigation reports."""
+    """Generates structured forensic investigation reports in PDF, JSON, and CSV formats."""
+
+    async def generate_report(
+        self,
+        recording: Recording,
+        segments: List[Dict[str, Any]],
+        analysis: Dict[str, Any],
+    ) -> str:
+        """
+        Main pipeline report generator.
+        Generates PDF, JSON, and CSV reports, then saves a Report record in the database.
+        """
+        from app.database.engine import AsyncSessionLocal
+        import uuid
+
+        settings = get_settings()
+        report_dir = Path(settings.storage.REPORT_DIRECTORY)
+        report_dir.mkdir(parents=True, exist_ok=True)
+
+        report_id = str(uuid.uuid4())
+        pdf_path = report_dir / f"report_{recording.id}_{report_id}.pdf"
+        json_path = report_dir / f"report_{recording.id}_{report_id}.json"
+        csv_path = report_dir / f"report_{recording.id}_{report_id}.csv"
+
+        recording_meta = {
+            "filename": recording.original_filename,
+            "sha256_hash": recording.sha256_hash,
+            "duration_seconds": recording.duration_seconds or 0.0,
+            "warrant_number": recording.warrant_number or "WR-UNASSIGNED",
+            "case_id": recording.case_id or "UNASSIGNED",
+            "language": recording.detected_language or "en",
+        }
+
+        # 1. Generate PDF
+        self.generate_report_pdf(
+            output_path=str(pdf_path),
+            recording_meta=recording_meta,
+            segments=segments,
+            analysis=analysis,
+            report_title=f"Forensic Audit Report - {recording.original_filename}",
+        )
+
+        # 2. Generate JSON
+        report_data = {
+            "metadata": recording_meta,
+            "analysis": {
+                "summary": analysis.get("summary", ""),
+                "primary_topic": analysis.get("primary_topic", "General"),
+                "threat_present": analysis.get("threat_present", False),
+                "threat_category": analysis.get("threat_category", "none"),
+                "risk_score": analysis.get("risk_score", 0.0),
+                "risk_level": analysis.get("risk_level", "low"),
+                "entities": analysis.get("entities", []),
+                "keywords": analysis.get("keywords", []),
+                "locations_discussed": analysis.get("locations_discussed", []),
+                "times_discussed": analysis.get("times_discussed", []),
+            },
+            "segments": segments,
+        }
+        json_path.write_text(json.dumps(report_data, indent=2, ensure_ascii=False), encoding="utf-8")
+
+        # 3. Generate CSV
+        with open(csv_path, mode="w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow(["Sequence", "Start (s)", "End (s)", "Speaker", "Confidence", "Text", "Has Threat", "Has Entity"])
+            for idx, seg in enumerate(segments):
+                writer.writerow([
+                    idx,
+                    seg.get("start_time", seg.get("start", 0.0)),
+                    seg.get("end_time", seg.get("end", 0.0)),
+                    seg.get("speaker_label", "Speaker"),
+                    seg.get("confidence", 1.0),
+                    seg.get("text", ""),
+                    seg.get("has_threat", False),
+                    seg.get("has_entity", False),
+                ])
+
+        # 4. Save Report model to DB
+        async with AsyncSessionLocal() as session:
+            db_report = Report(
+                id=report_id,
+                case_id=recording.case_id if (recording.case_id and recording.case_id not in ("None", "null", "undefined", "")) else "00000000-0000-0000-0000-000000000000", # Fallback case
+                recording_id=recording.id,
+                created_by=recording.uploaded_by_id,
+                report_type="Forensic Call Report",
+                title=f"Forensic Intelligence Report - {recording.original_filename}",
+                description=f"Automated forensic transcript audit and threat extraction for {recording.original_filename}.",
+                status="completed",
+                content=analysis.get("summary", ""),
+                content_json=report_data,
+                model_used=analysis.get("model_used", "gemini"),
+                pdf_path=str(pdf_path),
+                json_path=str(json_path),
+                csv_path=str(csv_path),
+            )
+            session.add(db_report)
+            await session.commit()
+
+        logger.info("Forensic reports generated successfully", report_id=report_id, recording_id=recording.id)
+        return str(pdf_path)
 
     def generate_report_text(
         self,
@@ -52,19 +161,18 @@ class ReportGeneratorService:
             f"Language Processing:   {recording_meta.get('language', 'Auto-detect')}",
             "",
             "[AUTOMATED CALL ANALYSIS SUMMARY]",
-            f"Transcript Timestamp:  {analysis.get('transcriptDateTime', now_str)}",
-            f"Analysis Timestamp:    {analysis.get('analysisDateTime', now_str)}",
             f"Executive Summary:     {analysis.get('summary', 'N/A')}",
+            f"Primary Topic:         {analysis.get('primary_topic', 'General')}",
+            f"Risk Level:            {analysis.get('risk_level', 'low').upper()} (Score: {analysis.get('risk_score', 0.0)})",
             "",
             "[THREAT AUDIT EVALUATION]",
-            f"Threat Flagged:        {'YES' if analysis.get('threatPresent') else 'NO'}",
-            f"Threat Category:       {analysis.get('threatCategory', 'None')}",
-            f"Threat Audit Details:  {analysis.get('threatDetails', 'None')}",
+            f"Threat Flagged:        {'YES' if analysis.get('threat_present') or analysis.get('threatPresent') else 'NO'}",
+            f"Threat Category:       {analysis.get('threat_category', analysis.get('threatCategory', 'None'))}",
+            f"Threat Audit Details:  {analysis.get('threat_description', analysis.get('threatDetails', 'None'))}",
             "",
             "[EXTRACTED ENTITIES & INTELLIGENCE]",
-            f"Locations Discussed:   {', '.join(analysis.get('locationsDiscussed', []))}",
-            f"Times/Dates Discussed: {', '.join(analysis.get('timesDiscussed', []))}",
-            f"Chain of Custody Info: {analysis.get('otherInfo', 'N/A')}",
+            f"Locations Discussed:   {', '.join(analysis.get('locations_discussed') or analysis.get('locationsDiscussed') or [])}",
+            f"Times/Dates Discussed: {', '.join(analysis.get('times_discussed') or analysis.get('timesDiscussed') or [])}",
             "",
             "[DIARIZED TRANSCRIPT TIMELINE]",
             "-" * 72,
@@ -108,7 +216,7 @@ class ReportGeneratorService:
 
         doc = SimpleDocTemplate(str(path), pagesize=letter, leftMargin=36, rightMargin=36, topMargin=36, bottomMargin=36)
         styles = getSampleStyleSheet()
-        
+
         title_style = ParagraphStyle(
             "DocTitle",
             parent=styles["Heading1"],
@@ -143,7 +251,7 @@ class ReportGeneratorService:
         elements = []
 
         # Title Block
-        elements.append(Paragraph(f"TRACEVAULT FORENSIC REPORT", title_style))
+        elements.append(Paragraph("TRACEVAULT FORENSIC REPORT", title_style))
         elements.append(Paragraph(f"<b>Report Type:</b> {report_title} | <b>Integrity:</b> SHA-256 Verified", body_style))
         elements.append(HRFlowable(width="100%", thickness=1.5, color=colors.HexColor("#475569"), spaceBefore=8, spaceAfter=12))
 
@@ -166,19 +274,22 @@ class ReportGeneratorService:
 
         # Executive Summary & Threat
         elements.append(Paragraph("AI Intelligence & Threat Evaluation", h2_style))
-        threat_color = "#ef4444" if analysis.get("threatPresent") else "#10b981"
-        elements.append(Paragraph(f"<b>Threat Status:</b> <font color='{threat_color}'><b>{analysis.get('threatCategory')}</b></font>", body_style))
+        threat_present = analysis.get("threat_present") or analysis.get("threatPresent") or False
+        threat_color = "#ef4444" if threat_present else "#10b981"
+        threat_category = analysis.get("threat_category", analysis.get("threatCategory", "None"))
+        elements.append(Paragraph(f"<b>Threat Status:</b> <font color='{threat_color}'><b>{threat_category.upper()}</b></font>", body_style))
+        elements.append(Paragraph(f"<b>Risk Level:</b> {analysis.get('risk_level', 'low').upper()} (Score: {analysis.get('risk_score', 0.0)})", body_style))
         elements.append(Paragraph(f"<b>Executive Summary:</b> {analysis.get('summary')}", body_style))
-        elements.append(Paragraph(f"<b>Locations Discussed:</b> {', '.join(analysis.get('locationsDiscussed', []))}", body_style))
-        elements.append(Paragraph(f"<b>Times / Dates Mentioned:</b> {', '.join(analysis.get('timesDiscussed', []))}", body_style))
+        elements.append(Paragraph(f"<b>Locations Discussed:</b> {', '.join(analysis.get('locations_discussed') or analysis.get('locationsDiscussed') or [])}", body_style))
+        elements.append(Paragraph(f"<b>Times / Dates Mentioned:</b> {', '.join(analysis.get('times_discussed') or analysis.get('timesDiscussed') or [])}", body_style))
         elements.append(Spacer(1, 10))
 
         # Diarized Segments
         elements.append(Paragraph("Diarized Transcript Breakdown", h2_style))
         for seg in segments:
             spk = seg.get("speaker_label", "Speaker")
-            st = seg.get("start_time", 0.0)
-            et = seg.get("end_time", 0.0)
+            st = seg.get("start_time", seg.get("start", 0.0))
+            et = seg.get("end_time", seg.get("end", 0.0))
             text = seg.get("text", "")
             seg_p = Paragraph(f"<b>[{st:.1f}s - {et:.1f}s] {spk}:</b> {text}", body_style)
             elements.append(seg_p)

@@ -1,0 +1,288 @@
+========================================================================
+TRACEVAULT FORENSIC INTELLIGENCE REPORT — FORENSIC AUDIT REPORT - CALL-RECORDING-1782130919643.WAV
+========================================================================
+Generated: 2026-07-25 12:08:18 UTC
+Evidence Integrity Status: SECURE (SHA-256 Cryptographic Verification)
+
+[EVIDENCE FILE METADATA]
+File Name:             call-recording-1782130919643.wav
+SHA-256 Checksum:      401158d4f89d47907ca96b950c49282ea3db38de65117be224f0532a09e7a886
+Duration:              307.4 seconds
+Assigned Case ID:      UNASSIGNED
+Court Warrant Reference: WR-2026-9901
+Language Processing:   hi
+
+[AUTOMATED CALL ANALYSIS SUMMARY]
+Executive Summary:     Call transcript processed (484 words). Threat indicators detected: weapon_discussion.
+Primary Topic:         weapon_discussion
+Risk Level:            LOW (Score: 25.0)
+
+[THREAT AUDIT EVALUATION]
+Threat Flagged:        YES
+Threat Category:       weapon_discussion
+Threat Audit Details:  None
+
+[EXTRACTED ENTITIES & INTELLIGENCE]
+Locations Discussed:   surat
+Times/Dates Discussed: 
+
+[DIARIZED TRANSCRIPT TIMELINE]
+------------------------------------------------------------------------
+[30.0s - 59.6s] Speaker_00 (90% Confidence):
+  "bereyshebh Kamayabkarama de Baqkam roshnuga"
+
+[60.0s - 87.5s] Speaker_01 (90% Confidence):
+  "Five months?"
+
+[87.5s - 99.4s] Speaker_00 (90% Confidence):
+  "Pr"
+
+[99.4s - 99.8s] Speaker_01 (90% Confidence):
+  "16-15 ou pythonJaponie at夠mu"
+
+[100.9s - 102.3s] Speaker_00 (90% Confidence):
+  "ح升1來"
+
+[102.3s - 104.0s] Speaker_01 (90% Confidence):
+  "五〚役"
+
+[104.0s - 105.4s] Speaker_00 (90% Confidence):
+  "So tattoo avasître"
+
+[105.7s - 108.0s] Speaker_01 (90% Confidence):
+  "7th"
+
+[108.2s - 108.7s] Speaker_00 (90% Confidence):
+  "payment"
+
+[109.1s - 112.2s] Speaker_01 (90% Confidence):
+  "Ahora, 2-10"
+
+[112.4s - 114.7s] Speaker_00 (90% Confidence):
+  "15"
+
+[115.2s - 117.6s] Speaker_01 (90% Confidence):
+  "All implementations"
+
+[117.8s - 119.9s] Speaker_00 (90% Confidence):
+  "pride"
+
+[120.1s - 123.7s] Speaker_01 (90% Confidence):
+  "Now pineswar"
+
+[124.0s - 125.1s] Speaker_00 (90% Confidence):
+  "Money"
+
+[125.1s - 126.8s] Speaker_01 (90% Confidence):
+  "1.舌сяال honesty"
+
+[127.3s - 131.7s] Speaker_00 (90% Confidence):
+  "Armani range is softer than something."
+
+[132.0s - 142.5s] Speaker_01 (90% Confidence):
+  "Still trong band's"
+
+[142.5s - 145.6s] Speaker_00 (90% Confidence):
+  "In last 20 min.."
+
+[145.7s - 147.9s] Speaker_01 (90% Confidence):
+  "…I am available in switch.."
+
+[148.0s - 148.4s] Speaker_00 (90% Confidence):
+  "After 30 minutes.."
+
+[148.4s - 149.7s] Speaker_01 (90% Confidence):
+  "…he is up to 20-40…"
+
+[149.7s - 154.0s] Speaker_00 (90% Confidence):
+  "…and you have completed Grava-ktu after 30 minutes."
+
+[154.2s - 155.7s] Speaker_01 (90% Confidence):
+  "We have teamwork of good health so that consciousness changes."
+
+[155.9s - 157.8s] Speaker_00 (90% Confidence):
+  "Though our mind still fits now."
+
+[157.9s - 160.5s] Speaker_01 (90% Confidence):
+  "Thats also小 material of K ederny."
+
+[160.6s - 162.2s] Speaker_00 (90% Confidence):
+  "So our belief is to improve."
+
+[162.2s - 163.5s] Speaker_01 (90% Confidence):
+  "Our belief is to improve."
+
+[163.5s - 165.6s] Speaker_00 (90% Confidence):
+  "Usually for크래 Cross Weakers..."
+
+[165.6s - 167.7s] Speaker_01 (90% Confidence):
+  "…must Hoffa Cro."
+
+[167.8s - 172.3s] Speaker_00 (90% Confidence):
+  "We Teltergames were my стоatch."
+
+[172.3s - 175.8s] Speaker_01 (90% Confidence):
+  "Suruath, alleralach colors hizayo, khuto zee."
+
+[175.8s - 177.8s] Speaker_00 (90% Confidence):
+  "Flash, you you have been tired."
+
+[177.8s - 179.9s] Speaker_01 (90% Confidence):
+  "Now, now, who is shaa'e sse bath kar hai?"
+
+[179.9s - 183.2s] Speaker_00 (90% Confidence):
+  "Takhi me samadu kuru ki, apte, transporter ki hai sab rega."
+
+[183.2s - 185.4s] Speaker_01 (90% Confidence):
+  "Uni marash ko."
+
+[185.4s - 187.8s] Speaker_00 (90% Confidence):
+  "Uni, Arigya."
+
+[187.8s - 192.2s] Speaker_01 (90% Confidence):
+  "Uni me tau abna..."
+
+[192.2s - 193.2s] Speaker_00 (90% Confidence):
+  "Kafi ka' mein."
+
+[193.2s - 200.2s] Speaker_01 (90% Confidence):
+  "So, we don't have any chance to call you sir."
+
+[200.2s - 203.2s] Speaker_00 (90% Confidence):
+  "Sir, there is no such thing as my office in the office."
+
+[204.2s - 207.2s] Speaker_01 (90% Confidence):
+  "Okay, can I show you? What do you want to say?"
+
+[208.2s - 211.2s] Speaker_00 (90% Confidence):
+  "I am talking about Surat. I am also talking about Surat."
+
+[211.2s - 212.2s] Speaker_01 (90% Confidence):
+  "Surat is a new video."
+
+[212.2s - 214.2s] Speaker_00 (90% Confidence):
+  "Bombay is a new app now."
+
+[214.2s - 216.2s] Speaker_01 (90% Confidence):
+  "Sir, what is your name?"
+
+[216.2s - 217.2s] Speaker_00 (90% Confidence):
+  "Surat."
+
+[217.2s - 218.2s] Speaker_01 (90% Confidence):
+  "Surat."
+
+[218.2s - 219.2s] Speaker_00 (90% Confidence):
+  "Surat."
+
+[219.2s - 220.2s] Speaker_01 (90% Confidence):
+  "Surat."
+
+[223.2s - 227.2s] Speaker_00 (90% Confidence):
+  "And, there is a 4 example in that this meter is for you."
+
+[227.2s - 230.2s] Speaker_01 (90% Confidence):
+  "Not a meter, but 10 cups for you."
+
+[230.2s - 232.2s] Speaker_00 (90% Confidence):
+  "I am going to buy black color."
+
+[232.2s - 235.2s] Speaker_01 (90% Confidence):
+  "And, if you want to buy a black color, then you will have to buy a green color."
+
+[235.2s - 239.2s] Speaker_00 (90% Confidence):
+  "So, how much is the cost of the short film?"
+
+[241.2s - 243.2s] Speaker_01 (90% Confidence):
+  "Sir, what is your question?"
+
+[243.2s - 246.2s] Speaker_00 (90% Confidence):
+  "You are talking about the short film."
+
+[246.2s - 247.2s] Speaker_01 (90% Confidence):
+  "We are talking about short films."
+
+[247.2s - 248.2s] Speaker_00 (90% Confidence):
+  "We are talking about short films."
+
+[248.2s - 250.2s] Speaker_01 (90% Confidence):
+  "We are talking about short films."
+
+[250.2s - 252.2s] Speaker_00 (90% Confidence):
+  "So, we are talking about the road to road."
+
+[252.2s - 255.2s] Speaker_01 (90% Confidence):
+  "If you are talking about short films, then as per your opinion,"
+
+[255.2s - 261.2s] Speaker_00 (90% Confidence):
+  "and if you are talking about the road, then you will have to be a 10-per meter."
+
+[261.2s - 264.2s] Speaker_01 (90% Confidence):
+  "I will tell you about your name."
+
+[264.2s - 267.2s] Speaker_00 (90% Confidence):
+  "So, I will tell you about your details and catalog."
+
+[267.2s - 269.2s] Speaker_01 (90% Confidence):
+  "So, what is your question?"
+
+[271.2s - 272.2s] Speaker_00 (90% Confidence):
+  "Okay, let's share it."
+
+[275.2s - 276.2s] Speaker_01 (90% Confidence):
+  "And, please, let's go."
+
+[276.2s - 277.2s] Speaker_00 (90% Confidence):
+  "What is your question?"
+
+[277.2s - 279.2s] Speaker_01 (90% Confidence):
+  "And, what is your question?"
+
+[279.2s - 280.2s] Speaker_00 (90% Confidence):
+  "I am asking you."
+
+[280.2s - 283.2s] Speaker_01 (90% Confidence):
+  "Suraj Bhishoverma, I am going to tell you about the road to road to road."
+
+[285.2s - 286.2s] Speaker_00 (90% Confidence):
+  "Very few years."
+
+[286.2s - 289.2s] Speaker_01 (90% Confidence):
+  "You have to know your name and your name and your name."
+
+[289.2s - 291.2s] Speaker_00 (90% Confidence):
+  "And, if you don't know your name, then you will have to be a 10-per meter."
+
+[291.2s - 294.2s] Speaker_01 (90% Confidence):
+  "So, if you don't know your name, then you will have to be a 10-per meter."
+
+[294.2s - 295.2s] Speaker_00 (90% Confidence):
+  "So, let's go."
+
+[295.2s - 296.2s] Speaker_01 (90% Confidence):
+  "Let's go."
+
+[296.2s - 297.2s] Speaker_00 (90% Confidence):
+  "Let's go."
+
+[297.2s - 300.2s] Speaker_01 (90% Confidence):
+  "It means, if you don't know the road, then you will have to be a 10-per meter."
+
+[300.2s - 303.2s] Speaker_00 (90% Confidence):
+  "It is a very good name."
+
+[303.2s - 304.2s] Speaker_01 (90% Confidence):
+  "Very good name."
+
+[304.2s - 305.2s] Speaker_00 (90% Confidence):
+  "Whereops."
+
+[305.2s - 306.2s] Speaker_01 (90% Confidence):
+  "Indum solid name."
+
+[306.2s - 307.2s] Speaker_00 (90% Confidence):
+  "Suraj Bhai."
+
+------------------------------------------------------------------------
+CONFIDENTIALITY NOTICE: This document contains legal evidence and restricted law enforcement data.
+========================================================================

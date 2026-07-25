@@ -1,6 +1,7 @@
 """
 TraceVault Case Management Models
 Investigation cases, members, status tracking.
+Uses generic SQLAlchemy types for cross-database compatibility.
 """
 from __future__ import annotations
 
@@ -14,13 +15,12 @@ from sqlalchemy import (
     DateTime,
     Enum,
     ForeignKey,
-    Index,
     Integer,
+    JSON,
     String,
     Text,
     UniqueConstraint,
 )
-from sqlalchemy.dialects.postgresql import ARRAY, JSON, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base, BaseModel, SoftDeleteMixin
@@ -28,8 +28,7 @@ from app.database.base import Base, BaseModel, SoftDeleteMixin
 if TYPE_CHECKING:
     from app.models.user import User
     from app.models.recording import Recording
-    from app.models.evidence import EvidenceFile
-    from app.models.report import Report
+    from app.models.evidence import EvidenceFile, Report
     from app.models.audit import AuditLog
 
 
@@ -79,11 +78,6 @@ class Case(BaseModel, SoftDeleteMixin):
     __tablename__ = "cases"
     __table_args__ = (
         UniqueConstraint("case_number", name="uq_cases_case_number"),
-        
-        
-        
-        
-        
     )
 
     # Identity
@@ -113,14 +107,14 @@ class Case(BaseModel, SoftDeleteMixin):
     tags: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
 
     # People
-    lead_investigator_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True),
+    lead_investigator_id: Mapped[Optional[str]] = mapped_column(
+        String(36),
         ForeignKey("users.id", ondelete="SET NULL"),
         nullable=True,
         index=True,
     )
-    created_by: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    created_by: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("users.id", ondelete="RESTRICT"),
         nullable=False,
     )
@@ -179,18 +173,16 @@ class CaseMember(BaseModel):
     __tablename__ = "case_members"
     __table_args__ = (
         UniqueConstraint("case_id", "user_id", name="uq_case_members_case_user"),
-        
-        
     )
 
-    case_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    case_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("cases.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
     )
-    user_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    user_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("users.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -200,9 +192,7 @@ class CaseMember(BaseModel):
         default=CaseMemberRole.MEMBER,
         nullable=False,
     )
-    added_by: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True), nullable=True
-    )
+    added_by: Mapped[Optional[str]] = mapped_column(String(36), nullable=True)
     can_upload: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     can_export: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     can_edit: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
@@ -215,29 +205,22 @@ class CaseMember(BaseModel):
 class InvestigatorNote(BaseModel, SoftDeleteMixin):
     """Investigator notes attached to cases, recordings, or segments."""
     __tablename__ = "investigator_notes"
-    __table_args__ = (
-        
-        
-        
-    )
 
-    case_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    case_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("cases.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
     )
-    recording_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True),
+    recording_id: Mapped[Optional[str]] = mapped_column(
+        String(36),
         ForeignKey("recordings.id", ondelete="SET NULL"),
         nullable=True,
         index=True,
     )
-    segment_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True), nullable=True
-    )
-    author_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    segment_id: Mapped[Optional[str]] = mapped_column(String(36), nullable=True)
+    author_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("users.id", ondelete="RESTRICT"),
         nullable=False,
         index=True,
@@ -260,26 +243,21 @@ class InvestigatorNote(BaseModel, SoftDeleteMixin):
 class CaseTask(BaseModel):
     """Tasks assigned within cases."""
     __tablename__ = "case_tasks"
-    __table_args__ = (
-        
-        
-        
-    )
 
-    case_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    case_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("cases.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
     )
-    assigned_to_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True),
+    assigned_to_id: Mapped[Optional[str]] = mapped_column(
+        String(36),
         ForeignKey("users.id", ondelete="SET NULL"),
         nullable=True,
         index=True,
     )
-    created_by: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    created_by: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("users.id", ondelete="RESTRICT"),
         nullable=False,
     )
@@ -289,12 +267,10 @@ class CaseTask(BaseModel):
     priority: Mapped[str] = mapped_column(String(20), default="medium", nullable=False)
     due_date: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
     completed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
-    related_evidence_id: Mapped[Optional[uuid.UUID]] = mapped_column(UUID(as_uuid=True), nullable=True)
-    related_recording_id: Mapped[Optional[uuid.UUID]] = mapped_column(UUID(as_uuid=True), nullable=True)
+    related_evidence_id: Mapped[Optional[str]] = mapped_column(String(36), nullable=True)
+    related_recording_id: Mapped[Optional[str]] = mapped_column(String(36), nullable=True)
 
     # Relationships
     case: Mapped["Case"] = relationship("Case", back_populates="tasks")
     assignee: Mapped[Optional["User"]] = relationship("User", foreign_keys=[assigned_to_id])
     creator: Mapped["User"] = relationship("User", foreign_keys=[created_by])
-
-

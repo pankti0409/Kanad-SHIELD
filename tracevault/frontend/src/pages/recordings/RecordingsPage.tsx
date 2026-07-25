@@ -71,6 +71,7 @@ export function RecordingsPage() {
   const [warrantNumber, setWarrantNumber] = useState("WR-2026-9901");
   const [caseNumber, setCaseNumber] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const [processingQueue, setProcessingQueue] = useState<ProcessingCallItem[]>([]);
   const navigate = useNavigate();
 
@@ -80,8 +81,7 @@ export function RecordingsPage() {
     return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   };
 
-  const handleSimulatedFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
+  const handleFileUpload = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
 
     const fileList = Array.from(files);
@@ -94,7 +94,7 @@ export function RecordingsPage() {
     }));
 
     setIsUploading(true);
-    setProcessingQueue(initialQueue);
+    setProcessingQueue((prev) => [...initialQueue, ...prev]);
 
     for (let i = 0; i < fileList.length; i++) {
       const file = fileList[i];
@@ -112,45 +112,92 @@ export function RecordingsPage() {
         const formData = new FormData();
         formData.append("file", file);
 
-        updateItem({ status: "Whisper STT", progress: 40 });
-
-        const res = await api.upload<RecordingUploadResponse>(
+        const res = await api.upload<{ recording: any; message: string; task_id: string }>(
           `/recordings/upload?case_id=${caseNumber}&warrant_number=${warrantNumber}&language=${selectedLanguage}`,
           formData,
           (percent) => {
             updateItem({
-              progress: Math.min(90, 10 + Math.round((percent / 100) * 80)),
+              progress: Math.min(30, Math.round((percent / 100) * 30)),
             });
           }
         );
 
-        updateItem({ status: "Diarization", progress: 85 });
-        await new Promise((r) => setTimeout(r, 200));
+        const recId = res.recording.id;
+        updateItem({ status: "Queued", progress: 30, recId });
 
-        updateItem({ status: "Intelligence", progress: 95 });
-        await new Promise((r) => setTimeout(r, 200));
+        let isDone = false;
+        let attempts = 0;
+        const maxAttempts = 120;
 
-        const durSec = res.recording.duration_seconds || 15.0;
-        const newRec: RecordingItem = {
-          id: res.recording.id,
-          filename: res.recording.filename,
-          format: res.recording.filename.split(".").pop()?.toUpperCase() || "AUDIO",
-          sizeMb: parseFloat((res.recording.file_size / (1024 * 1024)).toFixed(2)) || 0.5,
-          duration: formatDurationStr(durSec),
-          language: res.recording.language === "auto" ? "English / Auto" : res.recording.language,
-          caseNumber: res.recording.case_id || "Unassigned",
-          warrantNumber: res.recording.warrant_number || "WR-2026-TEMP",
-          sha256Hash: res.recording.sha256_hash,
-          status: "completed",
-          uploadedAt: new Date(res.recording.created_at).toLocaleString(),
-          snrBoostDb: 18.2,
-          threatCount: res.analysis.threatPresent ? 1 : 0,
-        };
+        while (!isDone && attempts < maxAttempts) {
+          await new Promise((r) => setTimeout(r, 1500));
+          attempts++;
 
-        addRecording(newRec, res.segments, res.analysis);
-        updateItem({ status: "Completed", progress: 100, recId: res.recording.id });
+          const pollRes = await api.get<{ recording: any; transcript: any; analysis: any }>(
+            `/recordings/${recId}`
+          );
+
+          const r = pollRes.recording;
+          const status = r.processing_status;
+          const progress = r.processing_progress;
+
+          let statusText: ProcessingCallItem["status"] = "Queued";
+          if (status === "preparing") statusText = "Uploading";
+          else if (status === "transcribing") statusText = "Whisper STT";
+          else if (status === "detecting_speakers") statusText = "Diarization";
+          else if (status === "running_ai" || status === "saving_results") statusText = "Intelligence";
+          else if (status === "completed") statusText = "Completed";
+          else if (status === "failed") statusText = "Error";
+
+          updateItem({
+            status: statusText,
+            progress: Math.min(99, 30 + Math.round((progress / 100) * 69)),
+          });
+
+          if (status === "completed") {
+            isDone = true;
+            const durSec = r.duration_seconds || 15.0;
+            const newRec: RecordingItem = {
+              id: r.id,
+              filename: r.filename,
+              format: r.filename.split(".").pop()?.toUpperCase() || "AUDIO",
+              sizeMb: parseFloat((r.file_size_bytes / (1024 * 1024)).toFixed(2)) || 0.5,
+              duration: formatDurationStr(durSec),
+              language: r.detected_language || "English / Auto",
+              caseNumber: r.case_id || "Unassigned",
+              warrantNumber: r.warrant_number || "WR-2026-TEMP",
+              sha256Hash: r.sha256_hash,
+              status: "completed",
+              uploadedAt: new Date(r.created_at).toLocaleString(),
+              snrBoostDb: 18.2,
+              threatCount: r.threat_count || 0,
+            };
+
+            addRecording(newRec, pollRes.transcript?.segments || [], pollRes.analysis || {
+              transcriptDateTime: new Date(r.created_at).toLocaleString(),
+              analysisDateTime: new Date(r.updated_at).toLocaleString(),
+              summary: "Analysis complete.",
+              threatPresent: false,
+              threatCategory: "none",
+              threatDetails: "No threat detected.",
+              locationsDiscussed: [],
+              timesDiscussed: [],
+              otherInfo: "",
+            });
+
+            updateItem({ status: "Completed", progress: 100 });
+          } else if (status === "failed" || status === "cancelled") {
+            isDone = true;
+            updateItem({ status: "Error", progress: 0, error: r.processing_error || "Pipeline failed." });
+          }
+        }
+
+        if (attempts >= maxAttempts) {
+          updateItem({ status: "Error", progress: 0, error: "Processing timed out." });
+        }
+
       } catch (err: any) {
-        console.error("Upload failed for file", file.name, err);
+        console.error("Upload failed", err);
         const detailMsg = err?.detail || err?.error || err?.message || "Failed to process audio recording.";
         updateItem({ status: "Error", progress: 0, error: detailMsg });
       }
@@ -227,12 +274,22 @@ export function RecordingsPage() {
         </div>
 
         {/* Drag & Drop File Zone */}
-        <div className="relative border-2 border-dashed border-primary/30 hover:border-primary/60 rounded-2xl p-8 text-center transition-all bg-muted/20 hover:bg-muted/40 cursor-pointer group">
+        <div
+          className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-all cursor-pointer group ${
+            isDragging
+              ? "border-primary bg-primary/10 shadow-glow-primary/20 scale-[1.01]"
+              : "border-primary/30 hover:border-primary/60 bg-muted/20 hover:bg-muted/40"
+          }`}
+        >
           <input
             type="file"
-            accept=".wav,.mp3,.m4a,.flac,.ogg,.opus,.amr,.wma,.mp4,.mkv,.webm,.3gp,.aac,.wav,.MP3,.WAV"
+            accept="audio/*,video/*,.wav,.mp3,.m4a,.flac,.ogg,.opus,.amr,.wma,.mp4,.mkv,.webm,.3gp,.aac"
             multiple
-            onChange={handleSimulatedFileUpload}
+            onChange={(e) => handleFileUpload(e.target.files)}
+            onDragEnter={() => setIsDragging(true)}
+            onDragOver={() => setIsDragging(true)}
+            onDragLeave={() => setIsDragging(false)}
+            onDrop={() => setIsDragging(false)}
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
           />
 

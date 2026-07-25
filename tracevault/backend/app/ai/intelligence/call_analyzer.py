@@ -1,166 +1,266 @@
 """
-TraceVault AI Engine — Call Intelligence & Text Analyzer
-Extracts executive summary, topic discussed, threat status, locations, dates/times, and entities from transcript.
+TraceVault AI Engine — Call Intelligence Analyzer
+Uses Gemini API for NER and threat classification.
+Falls back to regex + keyword patterns if Gemini unavailable.
 """
+from __future__ import annotations
+
+import json
 import re
 from datetime import datetime, timezone
+from typing import Any, Optional
 import structlog
-from typing import Dict, Any, List
 
 logger = structlog.get_logger(__name__)
 
+ENTITY_TYPES = [
+    "PERSON", "ALIAS", "ORGANIZATION", "PHONE_NUMBER", "ACCOUNT_NUMBER",
+    "MONETARY_AMOUNT", "LOCATION", "ADDRESS", "DATE_TIME", "VEHICLE",
+    "WEAPON", "DRUG", "EMAIL", "URL", "ID_NUMBER",
+]
+
+THREAT_KEYWORDS = {
+    "violence": ["kill", "murder", "shoot", "attack", "beat", "harm", "hurt", "stab", "shoot", "eliminate", "finish"],
+    "extortion": ["extort", "blackmail", "ransom", "pay up", "money or else", "consequences", "suffer"],
+    "fraud": ["fake", "forged", "cheat", "swindle", "deceive", "fraud", "scam"],
+    "drug_activity": ["drug", "narcotics", "supari", "ganja", "cocaine", "heroin", "stuff", "packet"],
+    "weapon_discussion": ["gun", "pistol", "rifle", "bomb", "explosive", "knife", "blade", "firearm", "weapon"],
+    "money_laundering": ["laundering", "black money", "hawala", "untrace", "cash without receipt"],
+    "kidnapping": ["kidnap", "abduct", "hostage", "take away", "hold captive"],
+    "human_trafficking": ["trafficking", "sell person", "sold", "supply people"],
+    "coercion": ["family safe", "family ko dekh", "children safe", "don't involve police", "keep quiet"],
+    "suspicious_coordination": ["code word", "signal", "abort", "change plan", "new location"],
+}
+
 
 class CallAnalyzer:
-    """Analyzes transcribed text for intelligence parameters."""
+    """
+    Intelligence analysis engine.
+    Extracts entities, threats, summary, emotion indicators from transcripts.
+    Uses Gemini API (primary) with regex/keyword fallback.
+    """
+
+    def __init__(self) -> None:
+        self._gemini_client = None
+        self._gemini_ready = False
+        self._init_gemini()
+
+    def _init_gemini(self) -> None:
+        """Initialize Gemini API client if API key is available."""
+        try:
+            from app.config import get_settings
+            settings = get_settings()
+            api_key = settings.ai.GEMINI_API_KEY
+            if not api_key:
+                return
+
+            import google.generativeai as genai
+            genai.configure(api_key=api_key)
+            self._gemini_client = genai.GenerativeModel("gemini-1.5-flash")
+            self._gemini_ready = True
+            logger.info("gemini_client_ready")
+        except Exception as exc:
+            logger.warning("gemini_init_failed", error=str(exc))
+            self._gemini_ready = False
+
+    # ── Gemini-powered analysis ───────────────────────────────────────────
+
+    def _analyze_with_gemini(
+        self,
+        full_text: str,
+        language: str,
+    ) -> Optional[dict[str, Any]]:
+        """Send transcript to Gemini for deep NER + threat classification."""
+        if not self._gemini_ready or not self._gemini_client:
+            return None
+
+        prompt = f"""You are a forensic intelligence analyst for law enforcement. Analyze this call transcript and extract structured information.
+
+TRANSCRIPT (language: {language}):
+---
+{full_text[:8000]}
+---
+
+Respond ONLY with a valid JSON object in this exact structure:
+{{
+  "summary": "<2-4 sentence factual summary of the conversation>",
+  "primary_topic": "<one phrase describing main topic>",
+  "threat_present": <true|false>,
+  "threat_category": "<one of: violence|extortion|fraud|drug_activity|weapon_discussion|money_laundering|kidnapping|human_trafficking|coercion|suspicious_coordination|other|none>",
+  "threat_severity": "<critical|high|medium|low|none>",
+  "threat_description": "<specific description of threat if present, else 'No threat detected'>",
+  "threat_evidence": "<direct quote from transcript supporting threat assessment>",
+  "threat_confidence": <0.0-1.0>,
+  "risk_score": <0.0-100.0>,
+  "risk_level": "<critical|high|medium|low|very_low>",
+  "entities": [
+    {{
+      "type": "<PERSON|ALIAS|ORGANIZATION|PHONE_NUMBER|ACCOUNT_NUMBER|MONETARY_AMOUNT|LOCATION|ADDRESS|DATE_TIME|VEHICLE|WEAPON|DRUG|EMAIL|URL|ID_NUMBER>",
+      "value": "<extracted entity text>",
+      "normalized": "<standardized form if applicable>",
+      "context": "<surrounding sentence>",
+      "confidence": <0.0-1.0>
+    }}
+  ],
+  "keywords": ["<significant keyword 1>", "<significant keyword 2>"],
+  "locations_discussed": ["<location1>", "<location2>"],
+  "times_discussed": ["<time/date 1>", "<time/date 2>"],
+  "emotion_indicators": {{
+    "overall": "<angry|fearful|stressed|calm|urgent|neutral>",
+    "urgency_level": "<high|medium|low>"
+  }},
+  "model_confidence": <0.0-1.0>
+}}
+
+CRITICAL RULES:
+- Do NOT hallucinate entities. Only extract what is explicitly in the transcript.
+- If uncertain about threat, set threat_present=false.
+- All fields are required. Use empty arrays [] for missing list fields.
+"""
+
+        try:
+            response = self._gemini_client.generate_content(
+                prompt,
+                generation_config={"temperature": 0.1, "max_output_tokens": 2048},
+            )
+            text = response.text.strip()
+            # Strip markdown code blocks if present
+            if text.startswith("```"):
+                text = re.sub(r"```(?:json)?\s*", "", text).rstrip("```").strip()
+            data = json.loads(text)
+            data["model_used"] = "gemini-1.5-flash"
+            return data
+        except json.JSONDecodeError as exc:
+            logger.warning("gemini_json_parse_failed", error=str(exc))
+            return None
+        except Exception as exc:
+            logger.warning("gemini_analysis_failed", error=str(exc))
+            return None
+
+    # ── Regex/Keyword fallback ────────────────────────────────────────────
+
+    def _analyze_with_regex(
+        self,
+        full_text: str,
+        segments: list[dict],
+    ) -> dict[str, Any]:
+        """Rule-based NER + threat detection as fallback."""
+        text_lower = full_text.lower()
+
+        # Entity extraction — phones, amounts, basic patterns
+        entities: list[dict] = []
+
+        # Phone numbers (Indian format primarily)
+        for match in re.finditer(r"\b(?:\+91[-\s]?)?[6-9]\d{9}\b", full_text):
+            entities.append({"type": "PHONE_NUMBER", "value": match.group(), "confidence": 0.85, "context": "", "normalized": match.group().replace(" ", "").replace("-", "")})
+
+        # Monetary amounts
+        for match in re.finditer(r"(?:rs\.?|inr|₹)\s*[\d,]+(?:\.\d{2})?|[\d,]+\s*(?:lakh|crore|thousand|k)\b", full_text, re.IGNORECASE):
+            entities.append({"type": "MONETARY_AMOUNT", "value": match.group(), "confidence": 0.80, "context": "", "normalized": match.group()})
+
+        # Threat detection
+        detected_threats: list[tuple[str, list[str]]] = []
+        for category, keywords in THREAT_KEYWORDS.items():
+            found = [kw for kw in keywords if kw in text_lower]
+            if found:
+                detected_threats.append((category, found))
+
+        threat_present = len(detected_threats) > 0
+        threat_category = detected_threats[0][0] if detected_threats else "none"
+        threat_severity = "high" if len(detected_threats) >= 2 else ("medium" if detected_threats else "none")
+        risk_score = min(100.0, len(detected_threats) * 25.0 + len(entities) * 5.0)
+
+        # Location hints
+        locations = re.findall(r"\b(?:mumbai|delhi|surat|ahmedabad|bangalore|pune|hyderabad|chennai|kolkata|jaipur|lucknow|chandigarh|zurich|london|dubai)\b", text_lower)
+
+        # Time/date hints
+        times = re.findall(r"\b(?:\d{1,2}(?::\d{2})?\s*(?:am|pm|बजे)|(?:tomorrow|today|yesterday|kal|aaj|sunday|monday|tuesday|wednesday|thursday|friday|saturday))\b", text_lower)
+
+        word_count = len(full_text.split())
+        summary = f"Call transcript processed ({word_count} words). " + (
+            f"Threat indicators detected: {', '.join(t[0] for t in detected_threats)}." if detected_threats else "No explicit threat indicators detected."
+        )
+
+        return {
+            "summary": summary,
+            "primary_topic": threat_category if threat_category != "none" else "General Conversation",
+            "threat_present": threat_present,
+            "threat_category": threat_category,
+            "threat_severity": threat_severity,
+            "threat_description": f"Keywords detected: {', '.join(detected_threats[0][1])}" if detected_threats else "No threat detected.",
+            "threat_evidence": "",
+            "threat_confidence": 0.65 if threat_present else 0.0,
+            "risk_score": risk_score,
+            "risk_level": "high" if risk_score >= 60 else ("medium" if risk_score >= 30 else "low"),
+            "entities": entities,
+            "keywords": [kw for _, kws in detected_threats for kw in kws[:3]],
+            "locations_discussed": list(set(locations)),
+            "times_discussed": list(set(times)),
+            "emotion_indicators": {"overall": "neutral", "urgency_level": "low"},
+            "model_confidence": 0.60,
+            "model_used": "regex-keyword-fallback",
+        }
+
+    # ── Main Analysis ─────────────────────────────────────────────────────
 
     def analyze(
         self,
         full_text: str,
-        filename: str,
-        sha256_hash: str,
-        warrant_number: str = "",
-    ) -> Dict[str, Any]:
-        text = full_text.strip()
-        text_lower = text.lower()
-        now = datetime.now(timezone.utc)
-        dt_str = now.strftime("%Y-%m-%d %H:%M:%S UTC")
+        segments: Optional[list[dict]] = None,
+        language: str = "en",
+    ) -> dict[str, Any]:
+        """
+        Analyze transcript for entities, threats, summary, and risk score.
+        Returns structured dict for DB persistence.
+        """
+        segments = segments or []
+        now = datetime.now(timezone.utc).isoformat()
 
-        # ----------------------------------------------------
-        # 1. Threat Detection & Classification
-        # ----------------------------------------------------
-        threat_present = False
-        threat_category = "No Threat / Legitimate Conversation"
-        threat_details = "No threat detected in conversation."
+        # Try Gemini first
+        result: Optional[dict] = None
+        if full_text.strip() and self._gemini_ready:
+            result = self._analyze_with_gemini(full_text, language)
 
-        extortion_keywords = ["extortion", "blackmail", "ransom", "family safe", "involve police", "destroy sim", "burn sim", "destroy evidence"]
-        violence_keywords = ["kill", "die", "attack", "gun", "bomb", "murder", "shoot"]
-        smuggling_keywords = ["contraband", "illegal shipment", "smuggle", "heroin", "cocaine", "weapons"]
+        # Fall back to regex/keyword
+        if result is None:
+            result = self._analyze_with_regex(full_text, segments)
 
-        if any(k in text_lower for k in extortion_keywords) or any(k in filename.lower() for k in ["extortion", "blackmail", "ransom"]):
-            threat_present = True
-            threat_category = "Extortion & Financial Coercion"
-            threat_details = "Extortion threat signatures detected. High-risk demand for fund transfer or action."
-        elif any(k in text_lower for k in violence_keywords):
-            threat_present = True
-            threat_category = "Threat to Life / Violence"
-            threat_details = "Critical threat to life or violent intent expressed in recording."
-        elif any(k in text_lower for k in smuggling_keywords) or any(k in filename.lower() for k in ["smuggling", "contraband"]):
-            threat_present = True
-            threat_category = "Smuggling & Illegal Logistics"
-            threat_details = "Illegal logistics and contraband transit coordination signatures detected."
+        # Build threat records for DB
+        threats: list[dict] = []
+        if result.get("threat_present"):
+            threats.append({
+                "category": result.get("threat_category", "other"),
+                "severity": result.get("threat_severity", "medium"),
+                "description": result.get("threat_description", ""),
+                "evidence_text": result.get("threat_evidence", ""),
+                "confidence": result.get("threat_confidence", 0.7),
+                "reasoning": result.get("summary", ""),
+                "model_used": result.get("model_used", "fallback"),
+            })
 
-        # ----------------------------------------------------
-        # 2. Dynamic Location & Address Extraction
-        # ----------------------------------------------------
-        locations_found: List[str] = []
-
-        # Extract address components (Nagar, Road, Cross, Main, City, Pincode/Pincord)
-        # e.g. "Anapuraneshwari Nagar", "Mudla Pala Nagar", "Bavi Road", "Pincode 56072"
-        address_patterns = [
-            r'([A-Z][a-zA-Z0-9\s]+(?:Nagar|Road|Cross|Main|Street|Colony|Layout|Marg|Pala|Bavi|Town|City))',
-            r'(?:pincode|pincord|pin|code)\s*:?\s*(\d{5,6})',
-            r'(\d{5,6})',
-            r'(Number\s+\d+[^,.\n]*)',
-        ]
-
-        # Extract specific place names or keywords
-        known_places = [
-            "Anapuraneshwari Nagar", "Mudla Pala Nagar", "Bavi Road", "Banglul", "Bengaluru",
-            "Bangalore", "Mumbai", "Mumbai port", "Surat", "Delhi", "Zurich", "Sector 4", "Dubai", "London"
-        ]
-        for place in known_places:
-            if place.lower() in text_lower and place not in locations_found:
-                locations_found.append(place)
-
-        # Regex address extraction
-        for pat in address_patterns:
-            matches = re.findall(pat, text, re.IGNORECASE)
-            for m in matches:
-                clean_m = m.strip() if isinstance(m, str) else str(m).strip()
-                if len(clean_m) > 2 and clean_m not in locations_found:
-                    # Filter out plain generic numbers unless it's a pincode/number
-                    if clean_m.isdigit() and len(clean_m) in [5, 6]:
-                        locations_found.append(f"Pincode {clean_m}")
-                    elif not clean_m.isdigit():
-                        locations_found.append(clean_m)
-
-        # Clean duplicates while preserving order
-        unique_locations = []
-        for loc in locations_found:
-            if loc not in unique_locations and len(loc) < 50:
-                unique_locations.append(loc)
-
-        # ----------------------------------------------------
-        # 3. Dynamic Money & Amounts Extraction
-        # ----------------------------------------------------
-        amounts_found: List[str] = []
-        money_matches = re.findall(r'(\d+\s*(?:rupee|rupees|rs|inr|\$|total))', text, re.IGNORECASE)
-        money_matches2 = re.findall(r'((?:rupee|rupees|rs|total|amount)\s*:?\s*\d+)', text, re.IGNORECASE)
-        for m in money_matches + money_matches2:
-            if m not in amounts_found:
-                amounts_found.append(m)
-
-        # ----------------------------------------------------
-        # 4. Times & Scheduling Extraction
-        # ----------------------------------------------------
-        times_found: List[str] = []
-        time_patterns = [
-            r'(\d{1,2}:\d{2}\s*(?:am|pm|hrs|utc)?)',
-            r'(tomorrow\s*(?:morning|evening|afternoon|night)?)',
-            r'(today|tonight|15:30|10:45|11:00)',
-        ]
-        for pat in time_patterns:
-            for m in re.findall(pat, text, re.IGNORECASE):
-                clean_t = m.strip()
-                if clean_t and clean_t not in times_found:
-                    times_found.append(clean_t)
-
-        # ----------------------------------------------------
-        # 5. Dynamic Topic Extraction
-        # ----------------------------------------------------
-        topic_discussed = "General Operational Dialogue"
-        if threat_category == "Extortion & Financial Coercion":
-            topic_discussed = "Extortion & Financial Demands"
-        elif threat_category == "Smuggling & Illegal Logistics":
-            topic_discussed = "Smuggling & Cargo Logistics"
-        elif any(k in text_lower for k in ["address", "adres", "nagar", "road", "pincode", "pincord", "order", "delivery"]):
-            topic_discussed = "Order Confirmation & Delivery Address Details"
-        elif any(k in text_lower for k in ["rupee", "rupees", "payment", "total", "chaaj", "charge", "price"]):
-            topic_discussed = "Order Payment & Financial Summary"
-        elif any(k in text_lower for k in ["meeting", "project", "schedule", "work", "office", "call"]):
-            topic_discussed = "Business & Operational Coordination"
-
-        # ----------------------------------------------------
-        # 6. Executive Summary Generation
-        # ----------------------------------------------------
-        if threat_present:
-            summary = (
-                f"Call recording analysis flags active {threat_category}. "
-                f"Main topic discussed: {topic_discussed}. "
-                f"Transcript reveals explicit coordination regarding locations ({', '.join(unique_locations) or 'Unspecified'}) "
-                f"and scheduled timings ({', '.join(times_found) or 'Unspecified'})."
-            )
-        else:
-            loc_str = f"locations ({', '.join(unique_locations[:3])})" if unique_locations else "address details"
-            amount_str = f" and total amount ({', '.join(amounts_found[:2])})" if amounts_found else ""
-            summary = (
-                f"No threat detected in conversation. Main topic discussed: {topic_discussed}. "
-                f"Spoken transcript contains legitimate order placement and verification covering {loc_str}{amount_str}."
-            )
-
-        other_info = f"SHA-256 checksum: {sha256_hash}. Ingested under Warrant #{warrant_number or 'Unspecified'}."
+        # Mark threat segments
+        if segments and threats:
+            threat_evidence_lower = (result.get("threat_evidence", "") + " " + " ".join(result.get("keywords", []))).lower()
+            for seg in segments:
+                if any(kw in seg.get("text", "").lower() for kw in result.get("keywords", [])):
+                    seg["has_threat"] = True
 
         return {
-            "transcriptDateTime": dt_str,
-            "analysisDateTime": dt_str,
-            "summary": summary,
-            "topicDiscussed": topic_discussed,
-            "threatPresent": threat_present,
-            "threatCategory": threat_category,
-            "threatDetails": threat_details,
-            "locationsDiscussed": unique_locations if unique_locations else ["Unspecified Location"],
-            "timesDiscussed": times_found if times_found else ["Unspecified Time"],
-            "otherInfo": other_info,
+            "summary": result.get("summary", ""),
+            "primary_topic": result.get("primary_topic", "General Conversation"),
+            "threat_present": result.get("threat_present", False),
+            "threat_category": result.get("threat_category", "none"),
+            "threat_severity": result.get("threat_severity", "none"),
+            "threats": threats,
+            "entities": result.get("entities", []),
+            "keywords": result.get("keywords", []),
+            "locations_discussed": result.get("locations_discussed", []),
+            "times_discussed": result.get("times_discussed", []),
+            "emotion_indicators": result.get("emotion_indicators", {}),
+            "risk_score": result.get("risk_score", 0.0),
+            "risk_level": result.get("risk_level", "low"),
+            "confidence": result.get("model_confidence", 0.7),
+            "model_used": result.get("model_used", "unknown"),
+            "transcript_datetime": now,
+            "analysis_datetime": now,
         }
-
-

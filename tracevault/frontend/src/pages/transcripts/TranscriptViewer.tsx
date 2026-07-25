@@ -38,10 +38,62 @@ export function TranscriptViewer() {
     return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const downloadReport = () => {
+  const getDurationSeconds = (dur: string | number) => {
+    if (typeof dur === "number") return dur;
+    if (!dur) return 30;
+    const parts = dur.split(":");
+    if (parts.length === 2) {
+      return parseInt(parts[0], 10) * 60 + parseFloat(parts[1]);
+    }
+    if (parts.length === 3) {
+      return parseInt(parts[0], 10) * 3600 + parseInt(parts[1], 10) * 60 + parseFloat(parts[2]);
+    }
+    const parsed = parseFloat(dur);
+    return isNaN(parsed) ? 30 : parsed;
+  };
+
+  const downloadReport = (format: "pdf" | "csv" | "json" | "txt") => {
     if (!activeRec || !activeAnalysis) return;
 
-    const reportContent = `======================================================================
+    // Check if we can download from backend first
+    try {
+      const backendUrl = `http://localhost:8000/api/v1/reports/download/rep-${activeRec.id}?format=${format}`;
+      const link = document.createElement("a");
+      link.href = backendUrl;
+      link.target = "_blank";
+      link.download = `Forensic_Report_${activeRec.id}.${format}`;
+      link.click();
+      return;
+    } catch (e) {
+      // Fallback to client-side generation
+    }
+
+    let blob: Blob;
+    let filename = `Forensic_Report_${activeRec.filename.replace(/\.[^/.]+$/, "")}`;
+
+    if (format === "json") {
+      const data = {
+        metadata: activeRec,
+        analysis: activeAnalysis,
+        segments: activeSegments,
+      };
+      blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      filename += ".json";
+    } else if (format === "csv") {
+      const headers = ["Start (s)", "End (s)", "Speaker", "Confidence", "Text", "Threat"];
+      const rows = activeSegments.map((s) => [
+        s.start_time,
+        s.end_time,
+        s.speaker_label,
+        s.confidence,
+        s.text.replace(/"/g, '""'),
+        s.has_threat ? "YES" : "NO",
+      ]);
+      const csvContent = [headers.join(","), ...rows.map((r) => r.map((cell) => `"${cell}"`).join(","))].join("\n");
+      blob = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
+      filename += ".csv";
+    } else {
+      const reportContent = `======================================================================
 TRACEVAULT FORENSIC INTELLIGENCE REPORT
 ======================================================================
 Generated: ${new Date().toLocaleString()}
@@ -49,8 +101,6 @@ Evidence Integrity: SECURE (SHA-256 Verified)
 
 [EVIDENCE METADATA]
 File Name: ${activeRec.filename}
-Format: ${activeRec.format}
-File Size: ${activeRec.sizeMb} MB
 SHA-256 Hash: ${activeRec.sha256Hash}
 Language Ingest Mode: ${activeRec.language}
 Warrant reference: ${activeRec.warrantNumber}
@@ -71,7 +121,6 @@ Threat Details: ${activeAnalysis.threatDetails}
 [EXTRACTED ENTITIES DISCUSSED]
 Locations Discussed: ${activeAnalysis.locationsDiscussed.join(", ") || "None"}
 Times / Dates Discussed: ${activeAnalysis.timesDiscussed.join(", ") || "None"}
-Other Info: ${activeAnalysis.otherInfo}
 
 [FULL DIARIZED TRANSCRIPT]
 ----------------------------------------------------------------------
@@ -80,12 +129,14 @@ ${activeSegments.map(seg => `[${formatTime(seg.start_time)} - ${formatTime(seg.e
 ----------------------------------------------------------------------
 CONFIDENTIALITY NOTICE: This document contains sensitive law enforcement intelligence.
 ======================================================================`;
+      blob = new Blob([reportContent], { type: "text/plain;charset=utf-8" });
+      filename += ".txt";
+    }
 
-    const blob = new Blob([reportContent], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `Forensic_Report_${activeRec.filename.replace(/\.[^/.]+$/, "")}.txt`;
+    link.download = filename;
     link.click();
     URL.revokeObjectURL(url);
   };
@@ -134,13 +185,37 @@ CONFIDENTIALITY NOTICE: This document contains sensitive law enforcement intelli
           <h1 className="tv-page-title">Transcript Intelligence & Speaker Diarization</h1>
         </div>
         <div className="flex items-center gap-2">
-          <button
-            onClick={downloadReport}
-            className="px-3 py-1.5 bg-primary text-white rounded-lg text-xs font-semibold hover:bg-primary/90 transition-all flex items-center gap-1.5 shadow-glow-primary"
-          >
-            <Download className="w-3.5 h-3.5" />
-            <span>Download Forensic Report</span>
-          </button>
+          <span className="text-xs text-muted-foreground font-medium">Export:</span>
+          <div className="flex bg-muted/60 border border-border rounded-lg overflow-hidden">
+            <button
+              onClick={() => downloadReport("pdf")}
+              className="px-3 py-1.5 text-[10px] font-bold text-foreground hover:bg-primary/15 hover:text-primary transition-all border-r border-border flex items-center gap-1"
+            >
+              <FileText className="w-3 h-3 text-red-500" />
+              <span>PDF</span>
+            </button>
+            <button
+              onClick={() => downloadReport("csv")}
+              className="px-3 py-1.5 text-[10px] font-bold text-foreground hover:bg-primary/15 hover:text-primary transition-all border-r border-border flex items-center gap-1"
+            >
+              <FileText className="w-3 h-3 text-emerald-500" />
+              <span>CSV</span>
+            </button>
+            <button
+              onClick={() => downloadReport("json")}
+              className="px-3 py-1.5 text-[10px] font-bold text-foreground hover:bg-primary/15 hover:text-primary transition-all border-r border-border flex items-center gap-1"
+            >
+              <Brain className="w-3 h-3 text-blue-500" />
+              <span>JSON</span>
+            </button>
+            <button
+              onClick={() => downloadReport("txt")}
+              className="px-3 py-1.5 text-[10px] font-bold text-foreground hover:bg-primary/15 hover:text-primary transition-all flex items-center gap-1"
+            >
+              <Download className="w-3 h-3" />
+              <span>TXT</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -157,12 +232,12 @@ CONFIDENTIALITY NOTICE: This document contains sensitive law enforcement intelli
           <div className="flex-1 space-y-1">
             <div className="flex items-center justify-between text-xs text-muted-foreground font-mono">
               <span>{formatTime(currentTime)}</span>
-              <span>{activeRec.duration}</span>
+              <span>{typeof activeRec.duration === 'string' ? activeRec.duration : formatTime(activeRec.duration_seconds || 30)}</span>
             </div>
             <div className="h-2 rounded-full bg-muted overflow-hidden relative cursor-pointer">
               <div
                 className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-100"
-                style={{ width: `${(currentTime / (activeRec.duration === "00:20" ? 20 : 13)) * 100}%` }}
+                style={{ width: `${Math.min(100, (currentTime / getDurationSeconds(activeRec.duration_seconds || activeRec.duration)) * 100)}%` }}
               />
             </div>
           </div>
@@ -184,7 +259,7 @@ CONFIDENTIALITY NOTICE: This document contains sensitive law enforcement intelli
               </span>
             </div>
             <p className="text-xs text-foreground font-medium leading-relaxed bg-background/80 p-3 rounded-lg border border-border">
-              "{activeSegments.map(s => s.text).join(" ")}"
+              {activeSegments.map((s) => s.text).join(" ")}
             </p>
           </div>
 

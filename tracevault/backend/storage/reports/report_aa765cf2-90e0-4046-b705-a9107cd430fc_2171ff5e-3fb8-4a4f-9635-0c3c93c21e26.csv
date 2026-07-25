@@ -1,0 +1,86 @@
+Sequence,Start (s),End (s),Speaker,Confidence,Text,Has Threat,Has Entity
+0,30.0,59.64,Speaker_00,0.9,bereyshebh Kamayabkarama de Baqkam roshnuga,False,False
+1,60.0,87.5,Speaker_01,0.9,Five months?,False,False
+2,87.5,99.44,Speaker_00,0.9,Pr,False,False
+3,99.44,99.78,Speaker_01,0.9,16-15 ou pythonJaponie at夠mu,False,True
+4,100.92,102.34,Speaker_00,0.9,ح升1來,False,True
+5,102.34,104.04,Speaker_01,0.9,五〚役,False,False
+6,104.04,105.36,Speaker_00,0.9,So tattoo avasître,False,False
+7,105.66,107.96,Speaker_01,0.9,7th,False,True
+8,108.22,108.72,Speaker_00,0.9,payment,False,False
+9,109.12,112.18,Speaker_01,0.9,"Ahora, 2-10",False,True
+10,112.44,114.74,Speaker_00,0.9,15,False,True
+11,115.22,117.56,Speaker_01,0.9,All implementations,False,False
+12,117.84,119.88,Speaker_00,0.9,pride,False,False
+13,120.12,123.7,Speaker_01,0.9,Now pineswar,False,False
+14,124.02,125.06,Speaker_00,0.9,Money,False,False
+15,125.06,126.78,Speaker_01,0.9,1.舌сяال honesty,False,True
+16,127.28,131.68,Speaker_00,0.9,Armani range is softer than something.,False,False
+17,131.98,142.46,Speaker_01,0.9,Still trong band's,False,False
+18,142.46,145.64,Speaker_00,0.9,In last 20 min..,False,True
+19,145.66,147.9,Speaker_01,0.9,…I am available in switch..,False,False
+20,147.96,148.36,Speaker_00,0.9,After 30 minutes..,False,True
+21,148.42,149.66,Speaker_01,0.9,…he is up to 20-40…,False,True
+22,149.74,154.0,Speaker_00,0.9,…and you have completed Grava-ktu after 30 minutes.,False,True
+23,154.2,155.68,Speaker_01,0.9,We have teamwork of good health so that consciousness changes.,False,False
+24,155.92,157.82,Speaker_00,0.9,Though our mind still fits now.,False,False
+25,157.9,160.5,Speaker_01,0.9,Thats also小 material of K ederny.,False,False
+26,160.58,162.18,Speaker_00,0.9,So our belief is to improve.,False,False
+27,162.22,163.48,Speaker_01,0.9,Our belief is to improve.,False,False
+28,163.5,165.58,Speaker_00,0.9,Usually for크래 Cross Weakers...,False,False
+29,165.64,167.74,Speaker_01,0.9,…must Hoffa Cro.,False,False
+30,167.78,172.28,Speaker_00,0.9,We Teltergames were my стоatch.,False,False
+31,172.28,175.76,Speaker_01,0.9,"Suruath, alleralach colors hizayo, khuto zee.",False,False
+32,175.76,177.76,Speaker_00,0.9,"Flash, you you have been tired.",False,False
+33,177.76,179.86,Speaker_01,0.9,"Now, now, who is shaa'e sse bath kar hai?",False,False
+34,179.86,183.2,Speaker_00,0.9,"Takhi me samadu kuru ki, apte, transporter ki hai sab rega.",False,False
+35,183.2,185.4,Speaker_01,0.9,Uni marash ko.,False,False
+36,185.4,187.84,Speaker_00,0.9,"Uni, Arigya.",False,False
+37,187.84,192.24,Speaker_01,0.9,Uni me tau abna...,False,False
+38,192.24,193.24,Speaker_00,0.9,Kafi ka' mein.,False,False
+39,193.24,200.24,Speaker_01,0.9,"So, we don't have any chance to call you sir.",False,False
+40,200.24,203.24,Speaker_00,0.9,"Sir, there is no such thing as my office in the office.",False,False
+41,204.24,207.24,Speaker_01,0.9,"Okay, can I show you? What do you want to say?",False,False
+42,208.24,211.24,Speaker_00,0.9,I am talking about Surat. I am also talking about Surat.,False,False
+43,211.24,212.24,Speaker_01,0.9,Surat is a new video.,False,False
+44,212.24,214.24,Speaker_00,0.9,Bombay is a new app now.,True,False
+45,214.24,216.24,Speaker_01,0.9,"Sir, what is your name?",False,False
+46,216.24,217.24,Speaker_00,0.9,Surat.,False,False
+47,217.24,218.24,Speaker_01,0.9,Surat.,False,False
+48,218.24,219.24,Speaker_00,0.9,Surat.,False,False
+49,219.24,220.24,Speaker_01,0.9,Surat.,False,False
+50,223.24,227.24,Speaker_00,0.9,"And, there is a 4 example in that this meter is for you.",False,True
+51,227.24,230.24,Speaker_01,0.9,"Not a meter, but 10 cups for you.",False,True
+52,230.24,232.24,Speaker_00,0.9,I am going to buy black color.,False,False
+53,232.24,235.24,Speaker_01,0.9,"And, if you want to buy a black color, then you will have to buy a green color.",False,False
+54,235.24,239.24,Speaker_00,0.9,"So, how much is the cost of the short film?",False,False
+55,241.24,243.24,Speaker_01,0.9,"Sir, what is your question?",False,False
+56,243.24,246.24,Speaker_00,0.9,You are talking about the short film.,False,False
+57,246.24,247.24,Speaker_01,0.9,We are talking about short films.,False,False
+58,247.24,248.24,Speaker_00,0.9,We are talking about short films.,False,False
+59,248.24,250.24,Speaker_01,0.9,We are talking about short films.,False,False
+60,250.24,252.24,Speaker_00,0.9,"So, we are talking about the road to road.",False,True
+61,252.24,255.24,Speaker_01,0.9,"If you are talking about short films, then as per your opinion,",False,False
+62,255.24,261.24,Speaker_00,0.9,"and if you are talking about the road, then you will have to be a 10-per meter.",False,True
+63,261.24,264.24,Speaker_01,0.9,I will tell you about your name.,False,False
+64,264.24,267.24,Speaker_00,0.9,"So, I will tell you about your details and catalog.",False,False
+65,267.24,269.24,Speaker_01,0.9,"So, what is your question?",False,False
+66,271.24,272.24,Speaker_00,0.9,"Okay, let's share it.",False,False
+67,275.24,276.24,Speaker_01,0.9,"And, please, let's go.",False,False
+68,276.24,277.24,Speaker_00,0.9,What is your question?,False,False
+69,277.24,279.24,Speaker_01,0.9,"And, what is your question?",False,False
+70,279.24,280.24,Speaker_00,0.9,I am asking you.,False,False
+71,280.24,283.24,Speaker_01,0.9,"Suraj Bhishoverma, I am going to tell you about the road to road to road.",False,True
+72,285.24,286.24,Speaker_00,0.9,Very few years.,False,False
+73,286.24,289.24,Speaker_01,0.9,You have to know your name and your name and your name.,False,False
+74,289.24,291.24,Speaker_00,0.9,"And, if you don't know your name, then you will have to be a 10-per meter.",False,True
+75,291.24,294.24,Speaker_01,0.9,"So, if you don't know your name, then you will have to be a 10-per meter.",False,True
+76,294.24,295.24,Speaker_00,0.9,"So, let's go.",False,False
+77,295.24,296.24,Speaker_01,0.9,Let's go.,False,False
+78,296.24,297.24,Speaker_00,0.9,Let's go.,False,False
+79,297.24,300.24,Speaker_01,0.9,"It means, if you don't know the road, then you will have to be a 10-per meter.",False,True
+80,300.24,303.24,Speaker_00,0.9,It is a very good name.,False,False
+81,303.24,304.24,Speaker_01,0.9,Very good name.,False,False
+82,304.24,305.24,Speaker_00,0.9,Whereops.,False,False
+83,305.24,306.24,Speaker_01,0.9,Indum solid name.,False,False
+84,306.24,307.24,Speaker_00,0.9,Suraj Bhai.,False,False

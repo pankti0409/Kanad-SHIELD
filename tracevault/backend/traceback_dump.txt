@@ -1,0 +1,136 @@
+Traceback (most recent call last):
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 183, in execute
+    self._adapt_connection._handle_exception(error)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 343, in _handle_exception
+    raise error
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 165, in execute
+    self.await_(_cursor.execute(operation, parameters))
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\aiosqlite\cursor.py", line 40, in execute
+    await self._execute(self._cursor.execute, sql, parameters)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\aiosqlite\cursor.py", line 32, in _execute
+    return await self._conn._execute(fn, *args, **kwargs)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\aiosqlite\core.py", line 160, in _execute
+    return await future
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\aiosqlite\core.py", line 63, in _connection_worker_thread
+    result = function()
+sqlite3.IntegrityError: FOREIGN KEY constraint failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\app\main.py", line 101, in request_context_middleware
+    response = await call_next(request)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\starlette\middleware\base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\starlette\middleware\gzip.py", line 29, in __call__
+    await responder(scope, receive, send)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\starlette\middleware\gzip.py", line 130, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\starlette\middleware\gzip.py", line 46, in __call__
+    await self.app(scope, receive, self.send_with_compression)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\fastapi\routing.py", line 2685, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\fastapi\routing.py", line 1766, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\fastapi\routing.py", line 2740, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\fastapi\routing.py", line 1786, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\fastapi\routing.py", line 1265, in handle
+    await app(scope, receive, send)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\fastapi\routing.py", line 151, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\fastapi\routing.py", line 137, in app
+    response = await f(request)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\fastapi\routing.py", line 691, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\fastapi\routing.py", line 345, in run_endpoint_function
+    return await dependant.call(**values)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\app\api\v1\routes\recordings.py", line 562, in upload_recording
+    await db.flush()
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 786, in flush
+    await greenlet_spawn(self.sync_session.flush, objects=objects)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 203, in greenlet_spawn
+    result = context.switch(value)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\orm\session.py", line 4353, in flush
+    self._flush(objects)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\orm\session.py", line 4488, in _flush
+    with util.safe_reraise():
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\util\langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\orm\session.py", line 4449, in _flush
+    flush_context.execute()
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\orm\unitofwork.py", line 465, in execute
+    rec.execute(self)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\orm\unitofwork.py", line 641, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\orm\persistence.py", line 94, in save_obj
+    _emit_insert_statements(
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\orm\persistence.py", line 1234, in _emit_insert_statements
+    result = connection.execute(
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1421, in execute
+    return meth(
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\sql\elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\engine\base.py", line 2365, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 183, in execute
+    self._adapt_connection._handle_exception(error)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 343, in _handle_exception
+    raise error
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 165, in execute
+    self.await_(_cursor.execute(operation, parameters))
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\aiosqlite\cursor.py", line 40, in execute
+    await self._execute(self._cursor.execute, sql, parameters)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\aiosqlite\cursor.py", line 32, in _execute
+    return await self._conn._execute(fn, *args, **kwargs)
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\aiosqlite\core.py", line 160, in _execute
+    return await future
+  File "C:\Users\PANKTI\Desktop\Kanad SHIELD\tracevault\backend\venv\lib\site-packages\aiosqlite\core.py", line 63, in _connection_worker_thread
+    result = function()
+sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) FOREIGN KEY constraint failed
+[SQL: INSERT INTO recordings (case_id, uploaded_by_id, original_filename, stored_filename, storage_path, processed_path, noise_reduced_path, sha256_hash, file_size_bytes, mime_type, codec, duration_seconds, sample_rate, channels, bitrate, bit_depth, processing_status, processing_started_at, processing_completed_at, processing_error, processing_progress, retry_count, celery_task_id, task_id, detected_language, detected_language_confidence, is_multilingual, risk_level, risk_score, threat_count, entity_count, keyword_count, speaker_count, transcription_confidence, word_count, upload_ip, evidence_version, integrity_verified, integrity_last_checked, warrant_number, pipeline_version, id, deleted_at, is_deleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING created_at, updated_at]
+[parameters: (None, '00000000-0000-0000-0000-000000000001', 'call-recording-1782130060766.wav', '19bfa963-0c84-401a-8e2d-7dd56cbe2d83.wav', 'storage\\uploads\\19bfa963-0c84-401a-8e2d-7dd56cbe2d83.wav', None, None, 'ed80695c17b667a03abb17250a7c5b9fdc7bff0c4239b71bd13f16917ce502d3', 3680044, 'audio/wav', None, None, None, None, None, None, 'QUEUED', None, None, None, 0, 0, None, 'c862111e-3aec-4409-9fde-8b0652c3863f', None, None, 0, None, None, 0, 0, 0, 0, None, 0, '127.0.0.1', 1, 1, None, 'WR-2026-9901', None, '19bfa963-0c84-401a-8e2d-7dd56cbe2d83', None, 0)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)

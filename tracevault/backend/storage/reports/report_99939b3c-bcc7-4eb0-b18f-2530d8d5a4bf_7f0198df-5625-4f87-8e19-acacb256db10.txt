@@ -1,0 +1,252 @@
+========================================================================
+TRACEVAULT FORENSIC INTELLIGENCE REPORT — FORENSIC AUDIT REPORT - CALL-RECORDING-1782130919643.WAV
+========================================================================
+Generated: 2026-07-25 12:06:44 UTC
+Evidence Integrity Status: SECURE (SHA-256 Cryptographic Verification)
+
+[EVIDENCE FILE METADATA]
+File Name:             call-recording-1782130919643.wav
+SHA-256 Checksum:      401158d4f89d47907ca96b950c49282ea3db38de65117be224f0532a09e7a886
+Duration:              307.4 seconds
+Assigned Case ID:      UNASSIGNED
+Court Warrant Reference: WR-2026-9901
+Language Processing:   hi
+
+[AUTOMATED CALL ANALYSIS SUMMARY]
+Executive Summary:     Call transcript processed (419 words). Threat indicators detected: violence, weapon_discussion.
+Primary Topic:         violence
+Risk Level:            MEDIUM (Score: 50.0)
+
+[THREAT AUDIT EVALUATION]
+Threat Flagged:        YES
+Threat Category:       violence
+Threat Audit Details:  None
+
+[EXTRACTED ENTITIES & INTELLIGENCE]
+Locations Discussed:   
+Times/Dates Discussed: 
+
+[DIARIZED TRANSCRIPT TIMELINE]
+------------------------------------------------------------------------
+[30.0s - 32.5s] Speaker_00 (90% Confidence):
+  "khushun Genya is 아주łby ."
+
+[32.7s - 34.5s] Speaker_01 (90% Confidence):
+  "одuppwel oточ google design"
+
+[34.7s - 37.2s] Speaker_00 (90% Confidence):
+  "medire and custom category"
+
+[50.5s - 52.0s] Speaker_01 (90% Confidence):
+  "tur socio rank"
+
+[52.0s - 54.8s] Speaker_00 (90% Confidence):
+  "Saeep Bakriye boss once and then saeいSami."
+
+[54.8s - 75.0s] Speaker_01 (90% Confidence):
+  "Ricky Zriedhryή ji bidhru baad ka madro Khudka fabrik ji jom ki banwar ne howhi"
+
+[76.7s - 80.5s] Speaker_00 (90% Confidence):
+  "説 taadt batter maite kay sabotta besides"
+
+[80.5s - 84.6s] Speaker_01 (90% Confidence):
+  "н kayown háure diz hasho two arc ko tayiao stones"
+
+[84.6s - 87.1s] Speaker_00 (90% Confidence):
+  "."
+
+[87.1s - 90.2s] Speaker_01 (90% Confidence):
+  "l frame we deserve to do"
+
+[90.2s - 102.8s] Speaker_00 (90% Confidence):
+  "ширoonWA garamあ allocate"
+
+[102.8s - 106.0s] Speaker_01 (90% Confidence):
+  "pr known"
+
+[106.0s - 118.4s] Speaker_00 (90% Confidence):
+  "A Pak увелич了.."
+
+[118.4s - 119.8s] Speaker_01 (90% Confidence):
+  "ena plants up à 5-5 inchandır свой duni"
+
+[119.8s - 124.0s] Speaker_00 (90% Confidence):
+  "bashe katum"
+
+[124.0s - 128.6s] Speaker_01 (90% Confidence):
+  "almashe harmanik ridge"
+
+[130.6s - 132.9s] Speaker_00 (90% Confidence):
+  "astralarim water is writes"
+
+[135.2s - 135.9s] Speaker_01 (90% Confidence):
+  "Again"
+
+[137.5s - 140.9s] Speaker_00 (90% Confidence):
+  "ich sometimes"
+
+[140.9s - 160.2s] Speaker_01 (90% Confidence):
+  "كان forcks with mask, mechanism fi"
+
+[160.2s - 169.7s] Speaker_00 (90% Confidence):
+  "Virtually we have come to one of the things where I wish to go to secular culture so such will be auspicious to go by viens poder trad gel"
+
+[170.0s - 173.7s] Speaker_01 (90% Confidence):
+  "–Sonar is in mind that we are regarding the language issues"
+
+[176.1s - 179.7s] Speaker_00 (90% Confidence):
+  "Now, now, what are you rider?"
+
+[179.7s - 182.6s] Speaker_01 (90% Confidence):
+  "We will have the account of Plut Hood"
+
+[183.6s - 186.3s] Speaker_00 (90% Confidence):
+  "So, we will meet you"
+
+[186.3s - 206.0s] Speaker_01 (90% Confidence):
+  "Water is survived as seen in vast rainfall these days is also available as well."
+
+[206.0s - 208.0s] Speaker_00 (90% Confidence):
+  "Kalkanthi kiya wo hai."
+
+[208.0s - 210.0s] Speaker_01 (90% Confidence):
+  "I am speaking about Suraj."
+
+[210.0s - 212.0s] Speaker_00 (90% Confidence):
+  "I am talking about Suraj."
+
+[212.0s - 214.0s] Speaker_01 (90% Confidence):
+  "Suraj is a new media."
+
+[214.0s - 216.0s] Speaker_00 (90% Confidence):
+  "Bomb media, appanam kiya wo hai."
+
+[216.0s - 218.0s] Speaker_01 (90% Confidence):
+  "Suraj."
+
+[218.0s - 220.0s] Speaker_00 (90% Confidence):
+  "Suraj."
+
+[220.0s - 222.0s] Speaker_01 (90% Confidence):
+  "Suraj."
+
+[222.0s - 228.0s] Speaker_00 (90% Confidence):
+  "And there is a 4 example in that this meter ki liye."
+
+[228.0s - 230.0s] Speaker_01 (90% Confidence):
+  "Not a meter."
+
+[230.0s - 232.0s] Speaker_00 (90% Confidence):
+  "I am going to buy 10 kPa."
+
+[232.0s - 234.0s] Speaker_01 (90% Confidence):
+  "I am going to buy black colour."
+
+[234.0s - 236.0s] Speaker_00 (90% Confidence):
+  "I am going to buy a black colour."
+
+[236.0s - 238.0s] Speaker_01 (90% Confidence):
+  "I am going to buy a black colour."
+
+[238.0s - 240.0s] Speaker_00 (90% Confidence):
+  "So, let us open it."
+
+[240.0s - 242.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[242.0s - 244.0s] Speaker_00 (90% Confidence):
+  "Greetings."
+
+[244.0s - 248.0s] Speaker_01 (90% Confidence):
+  "Now, we are talking about a small light."
+
+[248.0s - 250.0s] Speaker_00 (90% Confidence):
+  "We are talking about a small light."
+
+[250.0s - 252.0s] Speaker_01 (90% Confidence):
+  "We are talking about a small light."
+
+[252.0s - 254.0s] Speaker_00 (90% Confidence):
+  "If you are talking about a small light,"
+
+[254.0s - 256.0s] Speaker_01 (90% Confidence):
+  "then you can use your fingers as a mirror."
+
+[256.0s - 258.0s] Speaker_00 (90% Confidence):
+  "And if you are talking about a small light,"
+
+[258.0s - 262.0s] Speaker_01 (90% Confidence):
+  "then you can use a 10-per-meter."
+
+[262.0s - 264.0s] Speaker_00 (90% Confidence):
+  "Like, if you are talking about your name,"
+
+[264.0s - 268.0s] Speaker_01 (90% Confidence):
+  "then I am talking about the entire details and catalog."
+
+[268.0s - 270.0s] Speaker_00 (90% Confidence):
+  "What is the name of this?"
+
+[270.0s - 272.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[272.0s - 274.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[274.0s - 276.0s] Speaker_01 (90% Confidence):
+  "And there is a list."
+
+[276.0s - 278.0s] Speaker_00 (90% Confidence):
+  "Now, what is the name of Shabnam?"
+
+[278.0s - 280.0s] Speaker_01 (90% Confidence):
+  "And what is your source?"
+
+[280.0s - 282.0s] Speaker_00 (90% Confidence):
+  "Suraj is a Shabnam."
+
+[282.0s - 284.0s] Speaker_01 (90% Confidence):
+  "And there is a download."
+
+[284.0s - 286.0s] Speaker_00 (90% Confidence):
+  "Very, there is no name."
+
+[286.0s - 288.0s] Speaker_01 (90% Confidence):
+  "You can't find your name."
+
+[288.0s - 290.0s] Speaker_00 (90% Confidence):
+  "And if you are not using the form,"
+
+[290.0s - 292.0s] Speaker_01 (90% Confidence):
+  "then you can't find any name."
+
+[292.0s - 294.0s] Speaker_00 (90% Confidence):
+  "I am saying, I am saying,"
+
+[294.0s - 296.0s] Speaker_01 (90% Confidence):
+  "I am saying, I am a suraj."
+
+[296.0s - 298.0s] Speaker_00 (90% Confidence):
+  "Let's wear out."
+
+[298.0s - 300.0s] Speaker_01 (90% Confidence):
+  "It means, you can't find a business."
+
+[300.0s - 302.0s] Speaker_00 (90% Confidence):
+  "I am a suraj."
+
+[302.0s - 304.0s] Speaker_01 (90% Confidence):
+  "Very, I am a very, very big name."
+
+[304.0s - 305.0s] Speaker_00 (90% Confidence):
+  "Whereops."
+
+[305.0s - 306.0s] Speaker_01 (90% Confidence):
+  "Indum, solid name."
+
+[306.0s - 308.0s] Speaker_00 (90% Confidence):
+  "Suraj, bye."
+
+------------------------------------------------------------------------
+CONFIDENTIALITY NOTICE: This document contains legal evidence and restricted law enforcement data.
+========================================================================

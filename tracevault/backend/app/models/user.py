@@ -1,6 +1,7 @@
 """
 TraceVault User & Authentication Models
 All authentication-related database models.
+Uses generic SQLAlchemy types for cross-database compatibility.
 """
 from __future__ import annotations
 
@@ -13,14 +14,13 @@ from sqlalchemy import (
     Boolean,
     DateTime,
     ForeignKey,
-    Index,
     Integer,
+    JSON,
     String,
     Text,
     UniqueConstraint,
     Enum,
 )
-from sqlalchemy.dialects.postgresql import JSON, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base, BaseModel, SoftDeleteMixin, TimestampMixin
@@ -107,9 +107,7 @@ class User(BaseModel, SoftDeleteMixin):
     language: Mapped[str] = mapped_column(String(10), default="en", nullable=False)
 
     # Metadata
-    created_by: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True), nullable=True
-    )
+    created_by: Mapped[Optional[str]] = mapped_column(String(36), nullable=True)
     extra_data: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
 
     # Relationships
@@ -181,14 +179,9 @@ class User(BaseModel, SoftDeleteMixin):
 class UserSession(BaseModel):
     """Active user session tracking."""
     __tablename__ = "user_sessions"
-    __table_args__ = (
-        
-        
-        
-    )
 
-    user_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    user_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("users.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -215,13 +208,9 @@ class UserSession(BaseModel):
 class RefreshToken(BaseModel):
     """Refresh token storage for JWT rotation."""
     __tablename__ = "refresh_tokens"
-    __table_args__ = (
-        
-        
-    )
 
-    user_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    user_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("users.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -252,13 +241,9 @@ class RefreshToken(BaseModel):
 class PasswordResetToken(BaseModel):
     """One-time password reset token."""
     __tablename__ = "password_reset_tokens"
-    __table_args__ = (
-        
-        
-    )
 
-    user_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    user_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("users.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -278,5 +263,3 @@ class PasswordResetToken(BaseModel):
             not self.is_used
             and datetime.now(timezone.utc) < self.expires_at
         )
-
-

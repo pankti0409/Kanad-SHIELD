@@ -1,0 +1,591 @@
+========================================================================
+TRACEVAULT FORENSIC INTELLIGENCE REPORT — FORENSIC AUDIT REPORT - CALL-RECORDING-1782130060766.WAV
+========================================================================
+Generated: 2026-07-25 12:01:07 UTC
+Evidence Integrity Status: SECURE (SHA-256 Cryptographic Verification)
+
+[EVIDENCE FILE METADATA]
+File Name:             call-recording-1782130060766.wav
+SHA-256 Checksum:      ed80695c17b667a03abb17250a7c5b9fdc7bff0c4239b71bd13f16917ce502d3
+Duration:              230.0 seconds
+Assigned Case ID:      UNASSIGNED
+Court Warrant Reference: WR-2026-9901
+Language Processing:   hi
+
+[AUTOMATED CALL ANALYSIS SUMMARY]
+Executive Summary:     Call transcript processed (386 words). No explicit threat indicators detected.
+Primary Topic:         General Conversation
+Risk Level:            LOW (Score: 0.0)
+
+[THREAT AUDIT EVALUATION]
+Threat Flagged:        NO
+Threat Category:       none
+Threat Audit Details:  None
+
+[EXTRACTED ENTITIES & INTELLIGENCE]
+Locations Discussed:   bangalore
+Times/Dates Discussed: 
+
+[DIARIZED TRANSCRIPT TIMELINE]
+------------------------------------------------------------------------
+[0.0s - 1.0s] Speaker_00 (90% Confidence):
+  "Hello."
+
+[1.0s - 2.0s] Speaker_01 (90% Confidence):
+  "What are you saying?"
+
+[2.0s - 3.0s] Speaker_00 (90% Confidence):
+  "Tell me."
+
+[3.0s - 4.0s] Speaker_01 (90% Confidence):
+  "Tell me."
+
+[4.0s - 5.0s] Speaker_00 (90% Confidence):
+  "Tell me."
+
+[5.0s - 6.0s] Speaker_01 (90% Confidence):
+  "Tell me."
+
+[6.0s - 7.0s] Speaker_00 (90% Confidence):
+  "Namaste."
+
+[7.0s - 9.0s] Speaker_01 (90% Confidence):
+  "Sangeeta saying."
+
+[9.0s - 10.0s] Speaker_00 (90% Confidence):
+  "Vastanan Saris."
+
+[10.0s - 11.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[11.0s - 14.0s] Speaker_00 (90% Confidence):
+  "What is this?"
+
+[14.0s - 15.0s] Speaker_01 (90% Confidence):
+  "You."
+
+[15.0s - 16.0s] Speaker_00 (90% Confidence):
+  "You."
+
+[16.0s - 17.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[17.0s - 18.0s] Speaker_00 (90% Confidence):
+  "You."
+
+[18.0s - 20.0s] Speaker_01 (90% Confidence):
+  "You had come to my side at my side."
+
+[20.0s - 22.0s] Speaker_00 (90% Confidence):
+  "Did anyone see?"
+
+[22.0s - 25.0s] Speaker_01 (90% Confidence):
+  "Sir, you are looking for a book."
+
+[25.0s - 27.0s] Speaker_00 (90% Confidence):
+  "Who is the writer?"
+
+[27.0s - 28.0s] Speaker_01 (90% Confidence):
+  "I am the writer, what is it?"
+
+[28.0s - 29.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[29.0s - 31.0s] Speaker_01 (90% Confidence):
+  "I am the writer."
+
+[31.0s - 32.0s] Speaker_00 (90% Confidence):
+  "I am the writer."
+
+[32.0s - 33.0s] Speaker_01 (90% Confidence):
+  "I am the writer."
+
+[33.0s - 35.0s] Speaker_00 (90% Confidence):
+  "I was talking about her about her."
+
+[35.0s - 44.0s] Speaker_01 (90% Confidence):
+  "Who is the single actor?"
+
+[44.0s - 46.0s] Speaker_00 (90% Confidence):
+  "Vastan, your dreams come true."
+
+[46.0s - 49.0s] Speaker_01 (90% Confidence):
+  "She is a company."
+
+[49.0s - 50.0s] Speaker_00 (90% Confidence):
+  "Hello."
+
+[50.0s - 51.0s] Speaker_01 (90% Confidence):
+  "Vastan and Saris."
+
+[51.0s - 53.0s] Speaker_00 (90% Confidence):
+  "Vastan and Saris."
+
+[53.0s - 54.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[54.0s - 55.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[55.0s - 57.0s] Speaker_01 (90% Confidence):
+  "Now, if you don't look, you will be very good."
+
+[57.0s - 58.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[58.0s - 59.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[59.0s - 61.0s] Speaker_00 (90% Confidence):
+  "Check out Rahevi."
+
+[61.0s - 63.0s] Speaker_01 (90% Confidence):
+  "Any problem?"
+
+[63.0s - 64.0s] Speaker_00 (90% Confidence):
+  "No."
+
+[64.0s - 66.0s] Speaker_01 (90% Confidence):
+  "Any problem in a movie?"
+
+[66.0s - 67.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[67.0s - 68.0s] Speaker_01 (90% Confidence):
+  "Oh, look."
+
+[68.0s - 69.0s] Speaker_00 (90% Confidence):
+  "Hey, look."
+
+[69.0s - 70.0s] Speaker_01 (90% Confidence):
+  "Hey, look."
+
+[70.0s - 71.0s] Speaker_00 (90% Confidence):
+  "Look."
+
+[71.0s - 72.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[72.0s - 73.0s] Speaker_00 (90% Confidence):
+  "Look."
+
+[73.0s - 74.0s] Speaker_01 (90% Confidence):
+  "No."
+
+[74.0s - 75.0s] Speaker_00 (90% Confidence):
+  "No."
+
+[75.0s - 76.0s] Speaker_01 (90% Confidence):
+  "No."
+
+[76.0s - 77.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[77.0s - 78.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[78.0s - 80.0s] Speaker_00 (90% Confidence):
+  "Samaj Gaye, any confusion, thaji?"
+
+[80.0s - 82.0s] Speaker_01 (90% Confidence):
+  "Price, size, design."
+
+[82.0s - 83.0s] Speaker_00 (90% Confidence):
+  "No."
+
+[83.0s - 84.0s] Speaker_01 (90% Confidence):
+  "No."
+
+[84.0s - 85.0s] Speaker_00 (90% Confidence):
+  "No."
+
+[85.0s - 86.0s] Speaker_01 (90% Confidence):
+  "No."
+
+[86.0s - 87.0s] Speaker_00 (90% Confidence):
+  "No."
+
+[87.0s - 88.0s] Speaker_01 (90% Confidence):
+  "No."
+
+[88.0s - 89.0s] Speaker_00 (90% Confidence):
+  "No."
+
+[89.0s - 90.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[90.0s - 92.0s] Speaker_00 (90% Confidence):
+  "Samaj Gaye, any technical issue?"
+
+[92.0s - 93.0s] Speaker_01 (90% Confidence):
+  "What?"
+
+[93.0s - 94.0s] Speaker_00 (90% Confidence):
+  "A technical issue?"
+
+[94.0s - 95.0s] Speaker_01 (90% Confidence):
+  "A technical issue?"
+
+[95.0s - 96.0s] Speaker_00 (90% Confidence):
+  "No."
+
+[96.0s - 97.0s] Speaker_01 (90% Confidence):
+  "No."
+
+[97.0s - 98.0s] Speaker_00 (90% Confidence):
+  "No."
+
+[98.0s - 99.0s] Speaker_01 (90% Confidence):
+  "No."
+
+[99.0s - 100.0s] Speaker_00 (90% Confidence):
+  "No."
+
+[100.0s - 101.0s] Speaker_01 (90% Confidence):
+  "A technical issue?"
+
+[101.0s - 102.0s] Speaker_00 (90% Confidence):
+  "No."
+
+[102.0s - 103.0s] Speaker_01 (90% Confidence):
+  "No."
+
+[103.0s - 104.0s] Speaker_00 (90% Confidence):
+  "I have been working on a technical issue."
+
+[104.0s - 105.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[105.0s - 106.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[106.0s - 107.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[107.0s - 108.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[108.0s - 109.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[109.0s - 110.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[110.0s - 111.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[111.0s - 112.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[112.0s - 113.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[113.0s - 114.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[114.0s - 115.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[115.0s - 116.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[116.0s - 117.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[117.0s - 118.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[118.0s - 119.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[119.0s - 120.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[120.0s - 121.0s] Speaker_01 (90% Confidence):
+  "Thank you."
+
+[121.0s - 122.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[122.0s - 123.0s] Speaker_01 (90% Confidence):
+  "So, bookadunji?"
+
+[123.0s - 124.0s] Speaker_00 (90% Confidence):
+  "Bookadunji?"
+
+[124.0s - 125.0s] Speaker_01 (90% Confidence):
+  "Bookadunji?"
+
+[125.0s - 126.0s] Speaker_00 (90% Confidence):
+  "No."
+
+[126.0s - 127.0s] Speaker_01 (90% Confidence):
+  "Bookadunji?"
+
+[127.0s - 128.0s] Speaker_00 (90% Confidence):
+  "It's a famous article."
+
+[128.0s - 129.0s] Speaker_01 (90% Confidence):
+  "It's a page."
+
+[129.0s - 130.0s] Speaker_00 (90% Confidence):
+  "No."
+
+[130.0s - 131.0s] Speaker_01 (90% Confidence):
+  "Oh, no."
+
+[131.0s - 133.0s] Speaker_00 (90% Confidence):
+  "I have been working on a technical issue."
+
+[133.0s - 135.0s] Speaker_01 (90% Confidence):
+  "I have been working on a technical issue."
+
+[136.0s - 137.0s] Speaker_00 (90% Confidence):
+  "You have been working on a technical issue."
+
+[137.0s - 139.0s] Speaker_01 (90% Confidence):
+  "What is the name of the page?"
+
+[139.0s - 140.0s] Speaker_00 (90% Confidence):
+  "Hello."
+
+[140.0s - 141.0s] Speaker_01 (90% Confidence):
+  "Isn't it a page?"
+
+[141.0s - 142.0s] Speaker_00 (90% Confidence):
+  "One second, Rukyaji."
+
+[142.0s - 143.0s] Speaker_01 (90% Confidence):
+  "I will check."
+
+[143.0s - 144.0s] Speaker_00 (90% Confidence):
+  "I will check."
+
+[144.0s - 145.0s] Speaker_01 (90% Confidence):
+  "I will tell you."
+
+[145.0s - 146.0s] Speaker_00 (90% Confidence):
+  "Please."
+
+[146.0s - 148.0s] Speaker_01 (90% Confidence):
+  "One second."
+
+[148.0s - 149.0s] Speaker_00 (90% Confidence):
+  "Yeah."
+
+[149.0s - 150.0s] Speaker_01 (90% Confidence):
+  "Yes."
+
+[154.0s - 155.0s] Speaker_00 (90% Confidence):
+  "Yes."
+
+[155.0s - 156.0s] Speaker_01 (90% Confidence):
+  "The name is not a page."
+
+[156.0s - 157.0s] Speaker_00 (90% Confidence):
+  "No."
+
+[157.0s - 158.0s] Speaker_01 (90% Confidence):
+  "No."
+
+[158.0s - 159.0s] Speaker_00 (90% Confidence):
+  "You have been working on a technical issue."
+
+[159.0s - 160.0s] Speaker_01 (90% Confidence):
+  "No."
+
+[160.0s - 162.0s] Speaker_00 (90% Confidence):
+  "So, order, plowker, moonji."
+
+[162.0s - 163.0s] Speaker_01 (90% Confidence):
+  "Please, please."
+
+[163.0s - 164.0s] Speaker_00 (90% Confidence):
+  "Please."
+
+[164.0s - 165.0s] Speaker_01 (90% Confidence):
+  "Please."
+
+[165.0s - 166.0s] Speaker_00 (90% Confidence):
+  "Please."
+
+[166.0s - 167.0s] Speaker_01 (90% Confidence):
+  "Okay, madam."
+
+[167.0s - 168.0s] Speaker_00 (90% Confidence):
+  "Please."
+
+[168.0s - 169.0s] Speaker_01 (90% Confidence):
+  "Please."
+
+[169.0s - 170.0s] Speaker_00 (90% Confidence):
+  "Take care."
+
+[170.0s - 171.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[171.0s - 172.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[172.0s - 173.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[173.0s - 174.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[174.0s - 175.0s] Speaker_01 (90% Confidence):
+  "Thank you."
+
+[175.0s - 176.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[176.0s - 177.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[177.0s - 178.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[178.0s - 179.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[179.0s - 180.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[180.0s - 181.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[181.0s - 182.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[182.0s - 184.0s] Speaker_01 (90% Confidence):
+  "First main first cross moodla palya nagar"
+
+[184.0s - 187.0s] Speaker_00 (90% Confidence):
+  "Vavi road, Bangalore Pinko, 560772."
+
+[187.0s - 188.0s] Speaker_01 (90% Confidence):
+  "Yes."
+
+[188.0s - 189.0s] Speaker_00 (90% Confidence):
+  "Madam."
+
+[189.0s - 190.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[190.0s - 191.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[191.0s - 192.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[193.0s - 194.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[194.0s - 195.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[195.0s - 196.0s] Speaker_00 (90% Confidence):
+  "And quality case."
+
+[196.0s - 197.0s] Speaker_01 (90% Confidence):
+  "Madam."
+
+[197.0s - 198.0s] Speaker_00 (90% Confidence):
+  "So."
+
+[198.0s - 199.0s] Speaker_01 (90% Confidence):
+  "Hashting."
+
+[199.0s - 200.0s] Speaker_00 (90% Confidence):
+  "No."
+
+[200.0s - 201.0s] Speaker_01 (90% Confidence):
+  "Can I get a return?"
+
+[201.0s - 202.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[202.0s - 203.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[203.0s - 204.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[204.0s - 205.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[205.0s - 206.0s] Speaker_00 (90% Confidence):
+  "Madam."
+
+[206.0s - 207.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[207.0s - 208.0s] Speaker_00 (90% Confidence):
+  "Madam."
+
+[208.0s - 209.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[209.0s - 210.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[210.0s - 211.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[211.0s - 212.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[212.0s - 213.0s] Speaker_01 (90% Confidence):
+  "Total 250 rupees."
+
+[213.0s - 214.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[214.0s - 215.0s] Speaker_01 (90% Confidence):
+  "95 rupees."
+
+[215.0s - 216.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[216.0s - 218.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[218.0s - 219.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[219.0s - 220.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[221.0s - 222.0s] Speaker_00 (90% Confidence):
+  "So, final card Rati Uji."
+
+[222.0s - 223.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[223.0s - 224.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[224.0s - 225.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[225.0s - 226.0s] Speaker_00 (90% Confidence):
+  "Very."
+
+[226.0s - 227.0s] Speaker_01 (90% Confidence):
+  "Very."
+
+[227.0s - 228.0s] Speaker_00 (90% Confidence):
+  "Order place."
+
+[228.0s - 229.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[229.0s - 230.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[230.0s - 231.0s] Speaker_01 (90% Confidence):
+  "Thank you."
+
+------------------------------------------------------------------------
+CONFIDENTIALITY NOTICE: This document contains legal evidence and restricted law enforcement data.
+========================================================================

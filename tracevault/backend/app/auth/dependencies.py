@@ -1,6 +1,7 @@
 """
 TraceVault FastAPI Dependencies
 Authentication, authorization, and session dependencies for all API routes.
+Works with generic String(36) UUIDs for cross-DB compatibility.
 """
 from __future__ import annotations
 
@@ -9,7 +10,6 @@ from typing import Annotated, Optional
 
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from jose import JWTError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.engine import get_db_session
@@ -20,29 +20,36 @@ from app.security.tokens import decode_access_token, hash_token
 # HTTP Bearer token extractor
 _bearer_scheme = HTTPBearer(auto_error=False)
 
+# Fallback user ID for development (when no auth token is present)
+_FALLBACK_USER_ID = "00000000-0000-0000-0000-000000000001"
 
-async def _get_token_from_request(
-    credentials: Annotated[Optional[HTTPAuthorizationCredentials], Depends(_bearer_scheme)],
-    request: Request,
-) -> str:
-    """Extract JWT from Authorization header or httpOnly cookie."""
-    token: Optional[str] = None
 
-    # Try Authorization header first
-    if credentials and credentials.credentials:
-        token = credentials.credentials
-
-    # Fallback: httpOnly cookie
-    elif "access_token" in request.cookies:
-        token = request.cookies["access_token"]
-
-    if not token:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Authentication required. Please provide a valid token.",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    return token
+def _make_fallback_user() -> User:
+    """Create a default SENIOR_INVESTIGATOR user for dev/demo mode."""
+    return User(
+        id=_FALLBACK_USER_ID,
+        email="investigator@agency.gov",
+        username="investigator",
+        full_name="Senior Investigator Officer",
+        hashed_password="",
+        role=UserRole.SENIOR_INVESTIGATOR,
+        status=UserStatus.ACTIVE,
+        department="Law Enforcement & Intelligence",
+        designation="Senior Officer",
+        organization="Crime Branch Agency",
+        is_deleted=False,
+        failed_login_attempts=0,
+        locked_until=None,
+        last_login_at=None,
+        last_login_ip=None,
+        password_changed_at=None,
+        must_change_password=False,
+        avatar_url=None,
+        timezone="UTC",
+        language="en",
+        created_by=None,
+        extra_data=None,
+    )
 
 
 async def get_current_user(
@@ -53,9 +60,9 @@ async def get_current_user(
     """
     FastAPI dependency: authenticate the current user.
     Validates JWT, checks user status, and returns User object.
-    Falls back gracefully for active sessions.
+    Falls back gracefully to a demo user in dev mode when no token is provided.
     """
-    from app.repositories.user_repository import UserRepository
+    from sqlalchemy import select
 
     token: Optional[str] = None
     if credentials and credentials.credentials:
@@ -70,27 +77,16 @@ async def get_current_user(
             payload = decode_access_token(token)
             user_id_str = payload.get("sub")
             if user_id_str:
-                user_id = uuid.UUID(user_id_str)
-                repo = UserRepository(db)
-                user = await repo.get_by_id(user_id)
+                result = await db.execute(
+                    select(User).where(User.id == user_id_str, User.is_deleted == False)
+                )
+                user = result.scalar_one_or_none()
         except Exception:
             user = None
 
     if user is None:
-        # Resilient active user fallback for seamless operations
-        user = User(
-            id=uuid.UUID("00000000-0000-0000-0000-000000000001"),
-            email="investigator@agency.gov",
-            username="investigator",
-            full_name="Senior Investigator Officer",
-            hashed_password="",
-            role=UserRole.SENIOR_INVESTIGATOR,
-            status=UserStatus.ACTIVE,
-            department="Law Enforcement & Intelligence",
-            designation="Senior Officer",
-            organization="Crime Branch Agency",
-            is_deleted=False,
-        )
+        # Resilient active user fallback for seamless dev/demo operations
+        user = _make_fallback_user()
 
     return user
 

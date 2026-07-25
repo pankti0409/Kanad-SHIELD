@@ -1,6 +1,7 @@
 """
 TraceVault Evidence, Chain of Custody & Report Models
-Evidence files, chain of custody events, reports, and exports.
+Evidence files, reports, and exports.
+Uses generic SQLAlchemy types for cross-database compatibility.
 """
 from __future__ import annotations
 
@@ -16,13 +17,11 @@ from sqlalchemy import (
     Enum,
     Float,
     ForeignKey,
-    Index,
     Integer,
+    JSON,
     String,
     Text,
-    UniqueConstraint,
 )
-from sqlalchemy.dialects.postgresql import JSON, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base, BaseModel, SoftDeleteMixin
@@ -43,27 +42,21 @@ class EvidenceFile(BaseModel):
     Original files are IMMUTABLE after upload.
     """
     __tablename__ = "evidence_files"
-    __table_args__ = (
-        
-        
-        
-        
-    )
 
-    case_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    case_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("cases.id", ondelete="RESTRICT"),
         nullable=False,
         index=True,
     )
-    uploaded_by_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    uploaded_by_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("users.id", ondelete="RESTRICT"),
         nullable=False,
         index=True,
     )
-    recording_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True),
+    recording_id: Mapped[Optional[str]] = mapped_column(
+        String(36),
         ForeignKey("recordings.id", ondelete="SET NULL"),
         nullable=True,
     )
@@ -95,92 +88,26 @@ class EvidenceFile(BaseModel):
     upload_ip: Mapped[Optional[str]] = mapped_column(String(45), nullable=True)
 
     # Relationships
-    case: Mapped["Case"] = relationship("Case", back_populates="evidence_files")
-    custody_events: Mapped[list["ChainOfCustodyEvent"]] = relationship(
-        "ChainOfCustodyEvent",
-        foreign_keys="[ChainOfCustodyEvent.evidence_file_id]",
-        back_populates="evidence_file",
-        cascade="all, delete-orphan",
-    )
-
-
-class ChainOfCustodyEvent(BaseModel):
-    """
-    Every interaction with evidence creates a custody event.
-    Chain of custody events are IMMUTABLE.
-    """
-    __tablename__ = "chain_of_custody"
-    __table_args__ = (
-        
-        
-        
-        
-        
-    )
-
-    evidence_file_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True),
-        ForeignKey("evidence_files.id", ondelete="RESTRICT"),
-        nullable=True,
-        index=True,
-    )
-    recording_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True),
-        ForeignKey("recordings.id", ondelete="RESTRICT"),
-        nullable=True,
-        index=True,
-    )
-    user_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
-        ForeignKey("users.id", ondelete="RESTRICT"),
-        nullable=False,
-        index=True,
-    )
-    action: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
-    reason: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    ip_address: Mapped[Optional[str]] = mapped_column(String(45), nullable=True)
-    device_info: Mapped[Optional[str]] = mapped_column(String(512), nullable=True)
-    user_agent: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    previous_state: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
-    current_state: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
-    checksum: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
-    event_metadata: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
-
-    # Relationships
-    evidence_file: Mapped[Optional["EvidenceFile"]] = relationship(
-        "EvidenceFile",
-        foreign_keys=[evidence_file_id],
-        back_populates="custody_events",
-    )
-    recording: Mapped[Optional["Recording"]] = relationship(
-        "Recording", back_populates="chain_of_custody"
-    )
-    user: Mapped["User"] = relationship("User")
+    case: Mapped["Case"] = relationship("Case", back_populates="evidence_files")  # type: ignore[name-defined]
 
 
 class Report(BaseModel, SoftDeleteMixin):
     """Generated investigation report."""
     __tablename__ = "reports"
-    __table_args__ = (
-        
-        
-        
-        
-    )
 
-    case_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    case_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("cases.id", ondelete="RESTRICT"),
         nullable=False,
         index=True,
     )
-    recording_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True),
+    recording_id: Mapped[Optional[str]] = mapped_column(
+        String(36),
         ForeignKey("recordings.id", ondelete="SET NULL"),
         nullable=True,
     )
-    created_by: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    created_by: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("users.id", ondelete="RESTRICT"),
         nullable=False,
         index=True,
@@ -195,13 +122,9 @@ class Report(BaseModel, SoftDeleteMixin):
     status: Mapped[str] = mapped_column(
         String(50), default="draft", nullable=False, index=True
     )
-    approved_by_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True), nullable=True
-    )
+    approved_by_id: Mapped[Optional[str]] = mapped_column(String(36), nullable=True)
     approved_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
-    rejected_by_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True), nullable=True
-    )
+    rejected_by_id: Mapped[Optional[str]] = mapped_column(String(36), nullable=True)
     rejected_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
     rejection_reason: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
@@ -216,17 +139,20 @@ class Report(BaseModel, SoftDeleteMixin):
     evidence_references: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
     confidence: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
     pipeline_version: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
-    prompt_version: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)
 
     # Report Config
     include_sections: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
-    watermark_text: Mapped[Optional[str]] = mapped_column(String(200), nullable=True)
     confidentiality_level: Mapped[str] = mapped_column(
         String(50), default="confidential", nullable=False
     )
 
+    # File paths for exports
+    pdf_path: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    json_path: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    csv_path: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
     # Relationships
-    case: Mapped["Case"] = relationship("Case", back_populates="reports")
+    case: Mapped["Case"] = relationship("Case", back_populates="reports")  # type: ignore[name-defined]
     exports: Mapped[list["ReportExport"]] = relationship(
         "ReportExport", back_populates="report", cascade="all, delete-orphan"
     )
@@ -235,20 +161,15 @@ class Report(BaseModel, SoftDeleteMixin):
 class ReportExport(BaseModel):
     """Track report exports with audit information."""
     __tablename__ = "report_exports"
-    __table_args__ = (
-        
-        
-        
-    )
 
-    report_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    report_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("reports.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
     )
-    exported_by: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    exported_by: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("users.id", ondelete="RESTRICT"),
         nullable=False,
         index=True,
@@ -266,6 +187,4 @@ class ReportExport(BaseModel):
 
     # Relationships
     report: Mapped["Report"] = relationship("Report", back_populates="exports")
-    exporter: Mapped["User"] = relationship("User")
-
-
+    exporter: Mapped["User"] = relationship("User")  # type: ignore[name-defined]

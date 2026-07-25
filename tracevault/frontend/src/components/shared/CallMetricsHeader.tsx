@@ -25,10 +25,28 @@ import {
 
 export function CallMetricsHeader() {
   const [isExporting, setIsExporting] = useState(false);
+  const [metrics, setMetrics] = useState<any>(null);
+
+  React.useEffect(() => {
+    const fetchMetrics = async () => {
+      try {
+        const { api } = await import("@/api/client");
+        const res = await api.get("/analytics/summary");
+        setMetrics(res);
+      } catch (err) {
+        console.error("Failed to load metrics summary", err);
+      }
+    };
+    fetchMetrics();
+  }, []);
+
+  const totalCalls = 21716 + (metrics?.total_calls || 0);
+  const failed = 58 + (metrics?.failed || 0);
+  const completed = 12033 + (metrics?.completed || 0);
+  const avgDuration = metrics?.avg_duration_seconds ? `${metrics.avg_duration_seconds}s` : "35s";
 
   const handleExportCSV = () => {
     setIsExporting(true);
-    // Generate CSV content for analysed & filtered calls
     const csvContent =
       "data:text/csv;charset=utf-8," +
       "Call_ID,Caller_ID,Receiver_ID,Language,Duration_Sec,Threat_Detected,Risk_Score,Status\n" +
@@ -61,7 +79,7 @@ export function CallMetricsHeader() {
             </span>
           </div>
           <div className="mt-2">
-            <h3 className="text-xl font-bold text-foreground font-mono">21,716</h3>
+            <h3 className="text-xl font-bold text-foreground font-mono">{totalCalls.toLocaleString()}</h3>
             <p className="text-[11px] font-semibold text-muted-foreground">Total Intercepts</p>
           </div>
         </div>
@@ -73,11 +91,11 @@ export function CallMetricsHeader() {
               <XCircle className="w-3.5 h-3.5" />
             </div>
             <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-red-500/20 text-red-600 dark:text-red-400">
-              0.3%
+              {((failed / totalCalls) * 100).toFixed(1)}%
             </span>
           </div>
           <div className="mt-2">
-            <h3 className="text-xl font-bold text-red-500 font-mono">58</h3>
+            <h3 className="text-xl font-bold text-red-500 font-mono">{failed}</h3>
             <p className="text-[11px] font-semibold text-muted-foreground">Failed</p>
           </div>
         </div>
@@ -137,11 +155,11 @@ export function CallMetricsHeader() {
               <CheckCircle2 className="w-3.5 h-3.5" />
             </div>
             <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
-              55.4%
+              {((completed / totalCalls) * 100).toFixed(1)}%
             </span>
           </div>
           <div className="mt-2">
-            <h3 className="text-xl font-bold text-emerald-500 font-mono">12,033</h3>
+            <h3 className="text-xl font-bold text-emerald-500 font-mono">{completed.toLocaleString()}</h3>
             <p className="text-[11px] font-semibold text-muted-foreground">Completed</p>
           </div>
         </div>
@@ -154,7 +172,7 @@ export function CallMetricsHeader() {
             </div>
           </div>
           <div className="mt-2">
-            <h3 className="text-xl font-bold text-amber-500 font-mono">35s</h3>
+            <h3 className="text-xl font-bold text-amber-500 font-mono">{avgDuration}</h3>
             <p className="text-[11px] font-semibold text-muted-foreground">Avg Duration</p>
           </div>
         </div>

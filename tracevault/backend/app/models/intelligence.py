@@ -1,6 +1,7 @@
 """
 TraceVault AI Intelligence Models
 Entities, keywords, topics, emotions, threats, risk scores, and summaries.
+Uses generic SQLAlchemy types for cross-database compatibility.
 """
 from __future__ import annotations
 
@@ -13,13 +14,12 @@ from sqlalchemy import (
     Enum,
     Float,
     ForeignKey,
-    Index,
     Integer,
+    JSON,
     String,
     Text,
     UniqueConstraint,
 )
-from sqlalchemy.dialects.postgresql import JSON, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base, BaseModel
@@ -41,6 +41,8 @@ class ThreatCategory(str, PyEnum):
     HUMAN_TRAFFICKING = "human_trafficking"
     ILLEGAL_TRADE = "illegal_trade"
     SUSPICIOUS_COORDINATION = "suspicious_coordination"
+    COERCION = "coercion"
+    ILLEGAL_TRANSACTION = "illegal_transaction"
     OTHER = "other"
 
 
@@ -54,6 +56,7 @@ class EmotionType(str, PyEnum):
     CALM = "calm"
     EXCITED = "excited"
     FRUSTRATED = "frustrated"
+    URGENCY = "urgency"
     UNKNOWN = "unknown"
 
 
@@ -67,27 +70,19 @@ class SentimentType(str, PyEnum):
 class Entity(BaseModel):
     """Named entity extracted from transcripts."""
     __tablename__ = "entities"
-    __table_args__ = (
-        
-        
-        
-        
-    )
 
-    recording_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    recording_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("recordings.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
     )
-    transcript_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True),
+    transcript_id: Mapped[Optional[str]] = mapped_column(
+        String(36),
         ForeignKey("transcripts.id", ondelete="CASCADE"),
         nullable=True,
     )
-    segment_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True), nullable=True
-    )
+    segment_id: Mapped[Optional[str]] = mapped_column(String(36), nullable=True)
     entity_type: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
     entity_value: Mapped[str] = mapped_column(String(1000), nullable=False, index=True)
     normalized_value: Mapped[Optional[str]] = mapped_column(String(1000), nullable=True)
@@ -107,14 +102,9 @@ class Entity(BaseModel):
 class Keyword(BaseModel):
     """Keywords extracted from transcripts."""
     __tablename__ = "keywords"
-    __table_args__ = (
-        
-        
-        
-    )
 
-    recording_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    recording_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("recordings.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -133,13 +123,9 @@ class Keyword(BaseModel):
 class Topic(BaseModel):
     """Topic classification for recordings."""
     __tablename__ = "topics"
-    __table_args__ = (
-        
-        
-    )
 
-    recording_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    recording_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("recordings.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -153,21 +139,14 @@ class Topic(BaseModel):
 class EmotionAnalysis(BaseModel):
     """Emotion analysis for recording segments."""
     __tablename__ = "emotions"
-    __table_args__ = (
-        
-        
-        
-    )
 
-    recording_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    recording_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("recordings.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
     )
-    segment_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True), nullable=True
-    )
+    segment_id: Mapped[Optional[str]] = mapped_column(String(36), nullable=True)
     speaker_label: Mapped[Optional[str]] = mapped_column(String(20), nullable=True, index=True)
     emotion: Mapped[EmotionType] = mapped_column(
         Enum(EmotionType, name="emotion_type_enum"),
@@ -185,22 +164,14 @@ class EmotionAnalysis(BaseModel):
 class ThreatIndicator(BaseModel):
     """Detected threat indicators in recordings."""
     __tablename__ = "threats"
-    __table_args__ = (
-        
-        
-        
-        
-    )
 
-    recording_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    recording_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("recordings.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
     )
-    segment_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True), nullable=True
-    )
+    segment_id: Mapped[Optional[str]] = mapped_column(String(36), nullable=True)
     category: Mapped[ThreatCategory] = mapped_column(
         Enum(ThreatCategory, name="threat_category_enum"),
         nullable=False,
@@ -215,9 +186,7 @@ class ThreatIndicator(BaseModel):
     confidence: Mapped[float] = mapped_column(Float, nullable=False)
     is_reviewed: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False, index=True)
     review_status: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)
-    reviewed_by_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True), nullable=True
-    )
+    reviewed_by_id: Mapped[Optional[str]] = mapped_column(String(36), nullable=True)
     model_used: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
     reasoning: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     supporting_segments: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
@@ -228,12 +197,10 @@ class RiskScore(BaseModel):
     __tablename__ = "risk_scores"
     __table_args__ = (
         UniqueConstraint("recording_id", name="uq_risk_scores_recording"),
-        
-        
     )
 
-    recording_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    recording_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("recordings.id", ondelete="CASCADE"),
         nullable=False,
         unique=True,
@@ -255,13 +222,9 @@ class RiskScore(BaseModel):
 class ConversationSummary(BaseModel):
     """AI-generated conversation summaries."""
     __tablename__ = "summaries"
-    __table_args__ = (
-        
-        
-    )
 
-    recording_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    recording_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("recordings.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -271,49 +234,17 @@ class ConversationSummary(BaseModel):
     confidence: Mapped[float] = mapped_column(Float, nullable=False)
     model_used: Mapped[str] = mapped_column(String(100), nullable=False)
     model_version: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
-    prompt_version: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)
     processing_time_seconds: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
     evidence_references: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
     language: Mapped[str] = mapped_column(String(10), default="en", nullable=False)
 
 
-class RelationshipGraph(BaseModel):
-    """Entity relationships extracted from transcripts."""
-    __tablename__ = "relationship_graphs"
-    __table_args__ = (
-        
-        
-        
-    )
-
-    recording_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
-        ForeignKey("recordings.id", ondelete="CASCADE"),
-        nullable=False,
-        index=True,
-    )
-    source_entity: Mapped[str] = mapped_column(String(500), nullable=False, index=True)
-    source_type: Mapped[str] = mapped_column(String(100), nullable=False)
-    relationship_type: Mapped[str] = mapped_column(String(100), nullable=False)
-    target_entity: Mapped[str] = mapped_column(String(500), nullable=False, index=True)
-    target_type: Mapped[str] = mapped_column(String(100), nullable=False)
-    confidence: Mapped[float] = mapped_column(Float, nullable=False)
-    evidence_text: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    timestamp: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    speaker_label: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)
-
-
 class TimelineEvent(BaseModel):
     """Investigation timeline events generated from AI analysis."""
     __tablename__ = "timeline_events"
-    __table_args__ = (
-        
-        
-        
-    )
 
-    recording_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    recording_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("recordings.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -331,16 +262,54 @@ class TimelineEvent(BaseModel):
     is_flagged: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
 
+class EmbeddingMetadata(BaseModel):
+    """Metadata for vector embeddings stored in Qdrant."""
+    __tablename__ = "embeddings_metadata"
+
+    recording_id: Mapped[str] = mapped_column(
+        String(36),
+        ForeignKey("recordings.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    segment_id: Mapped[Optional[str]] = mapped_column(String(36), nullable=True, index=True)
+    qdrant_point_id: Mapped[str] = mapped_column(String(100), nullable=False, unique=True)
+    qdrant_collection: Mapped[str] = mapped_column(String(100), nullable=False)
+    text_chunk: Mapped[str] = mapped_column(Text, nullable=False)
+    chunk_index: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    total_chunks: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
+    model_used: Mapped[str] = mapped_column(String(100), nullable=False)
+    embedding_dimension: Mapped[int] = mapped_column(Integer, nullable=False)
+    embedding_metadata: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+
+
+class RelationshipGraph(BaseModel):
+    """Entity relationships extracted from transcripts."""
+    __tablename__ = "relationship_graphs"
+
+    recording_id: Mapped[str] = mapped_column(
+        String(36),
+        ForeignKey("recordings.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    source_entity: Mapped[str] = mapped_column(String(500), nullable=False, index=True)
+    source_type: Mapped[str] = mapped_column(String(100), nullable=False)
+    relationship_type: Mapped[str] = mapped_column(String(100), nullable=False)
+    target_entity: Mapped[str] = mapped_column(String(500), nullable=False, index=True)
+    target_type: Mapped[str] = mapped_column(String(100), nullable=False)
+    confidence: Mapped[float] = mapped_column(Float, nullable=False)
+    evidence_text: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    timestamp: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    speaker_label: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)
+
+
 class InvestigationRecommendation(BaseModel):
     """AI-generated investigation recommendations."""
     __tablename__ = "investigation_recommendations"
-    __table_args__ = (
-        
-        
-    )
 
-    recording_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    recording_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("recordings.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -353,34 +322,6 @@ class InvestigationRecommendation(BaseModel):
     supporting_evidence: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
     related_entities: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
     is_actioned: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
-    actioned_by_id: Mapped[Optional[uuid.UUID]] = mapped_column(UUID(as_uuid=True), nullable=True)
+    actioned_by_id: Mapped[Optional[str]] = mapped_column(String(36), nullable=True)
     model_used: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
-
-
-class EmbeddingMetadata(BaseModel):
-    """Metadata for vector embeddings stored in Qdrant."""
-    __tablename__ = "embeddings_metadata"
-    __table_args__ = (
-        
-        
-    )
-
-    recording_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
-        ForeignKey("recordings.id", ondelete="CASCADE"),
-        nullable=False,
-        index=True,
-    )
-    segment_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True), nullable=True, index=True
-    )
-    qdrant_point_id: Mapped[str] = mapped_column(String(100), nullable=False, unique=True)
-    qdrant_collection: Mapped[str] = mapped_column(String(100), nullable=False)
-    text_chunk: Mapped[str] = mapped_column(Text, nullable=False)
-    chunk_index: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
-    total_chunks: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
-    model_used: Mapped[str] = mapped_column(String(100), nullable=False)
-    embedding_dimension: Mapped[int] = mapped_column(Integer, nullable=False)
-    embedding_metadata: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
-
 

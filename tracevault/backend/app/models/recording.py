@@ -1,6 +1,7 @@
 """
 TraceVault Recording & Audio Processing Models
 Evidence recordings, processing jobs, transcripts, and speaker models.
+Uses generic SQLAlchemy types for cross-database compatibility.
 """
 from __future__ import annotations
 
@@ -16,13 +17,12 @@ from sqlalchemy import (
     Enum,
     Float,
     ForeignKey,
-    Index,
     Integer,
+    JSON,
     String,
     Text,
     UniqueConstraint,
 )
-from sqlalchemy.dialects.postgresql import ARRAY, JSON, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base, BaseModel, SoftDeleteMixin
@@ -64,24 +64,16 @@ class Recording(BaseModel, SoftDeleteMixin):
     SHA-256 hash ensures integrity.
     """
     __tablename__ = "recordings"
-    __table_args__ = (
-        
-        
-        
-        
-        
-        
-    )
 
     # Case Reference
-    case_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    case_id: Mapped[Optional[str]] = mapped_column(
+        String(36),
         ForeignKey("cases.id", ondelete="RESTRICT"),
-        nullable=False,
+        nullable=True,
         index=True,
     )
-    uploaded_by_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    uploaded_by_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("users.id", ondelete="RESTRICT"),
         nullable=False,
         index=True,
@@ -120,6 +112,7 @@ class Recording(BaseModel, SoftDeleteMixin):
     processing_progress: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     retry_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     celery_task_id: Mapped[Optional[str]] = mapped_column(String(200), nullable=True)
+    task_id: Mapped[Optional[str]] = mapped_column(String(200), nullable=True)
 
     # Language
     detected_language: Mapped[Optional[str]] = mapped_column(String(10), nullable=True, index=True)
@@ -145,6 +138,7 @@ class Recording(BaseModel, SoftDeleteMixin):
     evidence_version: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
     integrity_verified: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     integrity_last_checked: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+    warrant_number: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
 
     # Extra
     recording_metadata: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
@@ -152,7 +146,7 @@ class Recording(BaseModel, SoftDeleteMixin):
     model_versions: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
 
     # Relationships
-    case: Mapped["Case"] = relationship("Case", back_populates="recordings")
+    case: Mapped[Optional["Case"]] = relationship("Case", back_populates="recordings")
     uploader: Mapped["User"] = relationship("User", foreign_keys=[uploaded_by_id])
     transcript: Mapped[Optional["Transcript"]] = relationship(
         "Transcript", back_populates="recording", uselist=False
@@ -173,11 +167,10 @@ class Speaker(BaseModel):
     __tablename__ = "speakers"
     __table_args__ = (
         UniqueConstraint("recording_id", "speaker_label", name="uq_speakers_recording_label"),
-        
     )
 
-    recording_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    recording_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("recordings.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -201,11 +194,10 @@ class Transcript(BaseModel):
     __tablename__ = "transcripts"
     __table_args__ = (
         UniqueConstraint("recording_id", name="uq_transcripts_recording"),
-        
     )
 
-    recording_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    recording_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("recordings.id", ondelete="CASCADE"),
         nullable=False,
         unique=True,
@@ -235,20 +227,15 @@ class Transcript(BaseModel):
 class TranscriptSegment(BaseModel):
     """Individual segment of a transcript with timestamps and speaker info."""
     __tablename__ = "transcript_segments"
-    __table_args__ = (
-        
-        
-        
-    )
 
-    transcript_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    transcript_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("transcripts.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
     )
-    speaker_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True),
+    speaker_id: Mapped[Optional[str]] = mapped_column(
+        String(36),
         ForeignKey("speakers.id", ondelete="SET NULL"),
         nullable=True,
         index=True,
@@ -266,6 +253,7 @@ class TranscriptSegment(BaseModel):
     has_entity: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     has_keyword: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     emotion: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    emotion_confidence: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
     words: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)  # Word-level timestamps
 
     # Relationships
@@ -276,13 +264,9 @@ class TranscriptSegment(BaseModel):
 class ProcessingLog(BaseModel):
     """Logs for every stage of the AI processing pipeline."""
     __tablename__ = "processing_logs"
-    __table_args__ = (
-        
-        
-    )
 
-    recording_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+    recording_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("recordings.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -297,14 +281,39 @@ class ProcessingLog(BaseModel):
     confidence: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
     hardware_used: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
     memory_usage_mb: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    cpu_percent: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    gpu_percent: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
     retry_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     error_message: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    warnings: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
     output_summary: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
 
     # Relationship
     recording: Mapped["Recording"] = relationship("Recording", back_populates="processing_logs")
 
 
+class ChainOfCustodyEvent(BaseModel):
+    """Every interaction with a recording creates a custody event (immutable)."""
+    __tablename__ = "recording_chain_of_custody"
+
+    recording_id: Mapped[str] = mapped_column(
+        String(36),
+        ForeignKey("recordings.id", ondelete="RESTRICT"),
+        nullable=False,
+        index=True,
+    )
+    user_id: Mapped[str] = mapped_column(
+        String(36),
+        ForeignKey("users.id", ondelete="RESTRICT"),
+        nullable=False,
+        index=True,
+    )
+    action: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
+    reason: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    ip_address: Mapped[Optional[str]] = mapped_column(String(45), nullable=True)
+    device_info: Mapped[Optional[str]] = mapped_column(String(512), nullable=True)
+    previous_state: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    current_state: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    checksum: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    event_metadata: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+
+    # Relationships
+    recording: Mapped["Recording"] = relationship("Recording", back_populates="chain_of_custody")
+    user: Mapped["User"] = relationship("User")

@@ -12,6 +12,7 @@ python-multipart==0.0.12
 # Database
 sqlalchemy[asyncio]==2.0.36
 asyncpg==0.30.0
+aiosqlite>=0.20.0
 alembic==1.14.0
 
 # Pydantic v2 + Settings
@@ -55,6 +56,9 @@ speechbrain==1.0.0
 # Ollama Client
 ollama==0.4.2
 httpx==0.28.1
+
+# Google Gemini (NER + Threat Analysis)
+google-generativeai>=0.8.0
 
 # Audio Processing
 librosa==0.10.2

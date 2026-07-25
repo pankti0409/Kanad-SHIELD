@@ -1,0 +1,405 @@
+========================================================================
+TRACEVAULT FORENSIC INTELLIGENCE REPORT — FORENSIC AUDIT REPORT - CALL-RECORDING-1782130060766.WAV
+========================================================================
+Generated: 2026-07-25 12:24:51 UTC
+Evidence Integrity Status: SECURE (SHA-256 Cryptographic Verification)
+
+[EVIDENCE FILE METADATA]
+File Name:             call-recording-1782130060766.wav
+SHA-256 Checksum:      ed80695c17b667a03abb17250a7c5b9fdc7bff0c4239b71bd13f16917ce502d3
+Duration:              230.0 seconds
+Assigned Case ID:      UNASSIGNED
+Court Warrant Reference: WR-2026-9901
+Language Processing:   hi
+
+[AUTOMATED CALL ANALYSIS SUMMARY]
+Executive Summary:     Call transcript processed (392 words). No explicit threat indicators detected.
+Primary Topic:         General Conversation
+Risk Level:            LOW (Score: 0.0)
+
+[THREAT AUDIT EVALUATION]
+Threat Flagged:        NO
+Threat Category:       none
+Threat Audit Details:  None
+
+[EXTRACTED ENTITIES & INTELLIGENCE]
+Locations Discussed:   bangalore
+Times/Dates Discussed: 
+
+[DIARIZED TRANSCRIPT TIMELINE]
+------------------------------------------------------------------------
+[0.0s - 1.0s] Speaker_00 (90% Confidence):
+  "Hello."
+
+[1.0s - 2.0s] Speaker_01 (90% Confidence):
+  "What are you saying?"
+
+[2.0s - 3.0s] Speaker_00 (90% Confidence):
+  "Tell me."
+
+[3.0s - 4.0s] Speaker_01 (90% Confidence):
+  "Tell me."
+
+[4.0s - 5.0s] Speaker_00 (90% Confidence):
+  "Tell me."
+
+[5.0s - 6.0s] Speaker_01 (90% Confidence):
+  "Tell me."
+
+[6.0s - 7.0s] Speaker_00 (90% Confidence):
+  "Namaste."
+
+[7.0s - 9.0s] Speaker_01 (90% Confidence):
+  "Sangeeta saying."
+
+[9.0s - 10.0s] Speaker_00 (90% Confidence):
+  "Vastanan Saris."
+
+[10.0s - 11.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[11.0s - 14.0s] Speaker_00 (90% Confidence):
+  "What is this?"
+
+[14.0s - 15.0s] Speaker_01 (90% Confidence):
+  "You."
+
+[15.0s - 16.0s] Speaker_00 (90% Confidence):
+  "You."
+
+[16.0s - 17.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[17.0s - 18.0s] Speaker_00 (90% Confidence):
+  "You."
+
+[18.0s - 20.0s] Speaker_01 (90% Confidence):
+  "You had come to my side at my side."
+
+[20.0s - 22.0s] Speaker_00 (90% Confidence):
+  "Did anyone see?"
+
+[22.0s - 25.0s] Speaker_01 (90% Confidence):
+  "Sir, you are looking for a book."
+
+[25.0s - 27.0s] Speaker_00 (90% Confidence):
+  "Who is the writer?"
+
+[28.0s - 29.0s] Speaker_01 (90% Confidence):
+  "A doctor is trouble?"
+
+[29.0s - 30.0s] Speaker_00 (90% Confidence):
+  "Very good."
+
+[30.0s - 35.0s] Speaker_01 (90% Confidence):
+  "I got such an example from myself that you called Pee Satanj."
+
+[35.0s - 41.0s] Speaker_00 (90% Confidence):
+  "You were talking about him."
+
+[41.0s - 45.0s] Speaker_01 (90% Confidence):
+  "Goong Jee, singa millionaire Lal."
+
+[45.0s - 46.0s] Speaker_00 (90% Confidence):
+  "Vastan, how do you feel?"
+
+[46.0s - 47.0s] Speaker_01 (90% Confidence):
+  "It should be deferred."
+
+[47.0s - 50.0s] Speaker_00 (90% Confidence):
+  "Why did you take me here?"
+
+[50.0s - 51.0s] Speaker_01 (90% Confidence):
+  "Lolen ochat 걝 costly."
+
+[51.0s - 53.0s] Speaker_00 (90% Confidence):
+  "Vastan and some of your 思ies?"
+
+[53.0s - 55.0s] Speaker_01 (90% Confidence):
+  "Vastan and Sareis."
+
+[55.0s - 57.0s] Speaker_00 (90% Confidence):
+  "書y rainbow!!"
+
+[61.2s - 63.2s] Speaker_01 (90% Confidence):
+  "Did you take all these problems?"
+
+[63.2s - 66.9s] Speaker_00 (90% Confidence):
+  "no problem"
+
+[67.9s - 70.7s] Speaker_01 (90% Confidence):
+  "What kind of problem?"
+
+[70.7s - 73.0s] Speaker_00 (90% Confidence):
+  "Nothing"
+
+[73.0s - 76.0s] Speaker_01 (90% Confidence):
+  "a book"
+
+[79.6s - 83.7s] Speaker_00 (90% Confidence):
+  "check out"
+
+[83.7s - 84.8s] Speaker_01 (90% Confidence):
+  "najmniej個nesday нуж了,二e toon"
+
+[84.8s - 86.1s] Speaker_00 (90% Confidence):
+  "Hoje 6-6年 Ay ko channo target"
+
+[86.1s - 86.5s] Speaker_01 (90% Confidence):
+  "main娘"
+
+[86.5s - 88.0s] Speaker_00 (90% Confidence):
+  "Alla żebyößi"
+
+[89.2s - 90.6s] Speaker_01 (90% Confidence):
+  "Ok"
+
+[90.8s - 92.4s] Speaker_00 (90% Confidence):
+  "Ind陽職s"
+
+[93.7s - 94.8s] Speaker_01 (90% Confidence):
+  "Some position to do"
+
+[94.9s - 96.3s] Speaker_00 (90% Confidence):
+  "You can say anything"
+
+[96.3s - 97.7s] Speaker_01 (90% Confidence):
+  "want to watch when you return"
+
+[99.5s - 99.7s] Speaker_00 (90% Confidence):
+  "Ok"
+
+[100.2s - 101.3s] Speaker_01 (90% Confidence):
+  "He has come to do"
+
+[101.7s - 102.4s] Speaker_00 (90% Confidence):
+  "Other side"
+
+[102.4s - 103.1s] Speaker_01 (90% Confidence):
+  "Eating"
+
+[103.1s - 104.2s] Speaker_00 (90% Confidence):
+  "I will place another order"
+
+[105.6s - 106.0s] Speaker_01 (90% Confidence):
+  "Ok madam"
+
+[107.0s - 108.4s] Speaker_00 (90% Confidence):
+  "I can play about the time"
+
+[110.4s - 111.3s] Speaker_01 (90% Confidence):
+  "first"
+
+[111.4s - 112.4s] Speaker_00 (90% Confidence):
+  "Why dont squeeze in the Oi"
+
+[112.4s - 112.9s] Speaker_01 (90% Confidence):
+  "3"
+
+[112.9s - 113.0s] Speaker_00 (90% Confidence):
+  "Confirm"
+
+[113.0s - 119.0s] Speaker_01 (90% Confidence):
+  "Okay. Okay madam."
+
+[119.0s - 121.0s] Speaker_00 (90% Confidence):
+  "Thank you."
+
+[121.0s - 122.0s] Speaker_01 (90% Confidence):
+  "See you."
+
+[122.0s - 124.0s] Speaker_00 (90% Confidence):
+  "So, book has been done."
+
+[124.0s - 126.0s] Speaker_01 (90% Confidence):
+  "Book has been done."
+
+[126.0s - 129.0s] Speaker_00 (90% Confidence):
+  "Yes, it is a famous art."
+
+[129.0s - 131.0s] Speaker_01 (90% Confidence):
+  "It is a famous art."
+
+[131.0s - 132.0s] Speaker_00 (90% Confidence):
+  "Oh, it is a famous art."
+
+[132.0s - 134.0s] Speaker_01 (90% Confidence):
+  "It is a famous art."
+
+[134.0s - 136.0s] Speaker_00 (90% Confidence):
+  "It is a famous art."
+
+[136.0s - 137.0s] Speaker_01 (90% Confidence):
+  "It is a famous art."
+
+[137.0s - 139.0s] Speaker_00 (90% Confidence):
+  "It is a famous art."
+
+[140.0s - 141.0s] Speaker_01 (90% Confidence):
+  "Hello."
+
+[141.0s - 142.0s] Speaker_00 (90% Confidence):
+  "Isn't it a famous art?"
+
+[142.0s - 143.0s] Speaker_01 (90% Confidence):
+  "A second Rukeji."
+
+[143.0s - 145.0s] Speaker_00 (90% Confidence):
+  "I will check it."
+
+[145.0s - 147.0s] Speaker_01 (90% Confidence):
+  "Please."
+
+[147.0s - 149.0s] Speaker_00 (90% Confidence):
+  "A second ji."
+
+[149.0s - 151.0s] Speaker_01 (90% Confidence):
+  "Yes."
+
+[155.0s - 157.0s] Speaker_00 (90% Confidence):
+  "It is not a famous art."
+
+[157.0s - 158.0s] Speaker_01 (90% Confidence):
+  "No one has been talking about it."
+
+[158.0s - 159.0s] Speaker_00 (90% Confidence):
+  "You have been given the word."
+
+[159.0s - 160.0s] Speaker_01 (90% Confidence):
+  "It is not a tension."
+
+[160.0s - 161.0s] Speaker_00 (90% Confidence):
+  "So, order."
+
+[161.0s - 162.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[162.0s - 163.0s] Speaker_00 (90% Confidence):
+  "Please."
+
+[163.0s - 164.0s] Speaker_01 (90% Confidence):
+  "Please."
+
+[164.0s - 165.0s] Speaker_00 (90% Confidence):
+  "Come on."
+
+[165.0s - 166.0s] Speaker_01 (90% Confidence):
+  "Take a look."
+
+[166.0s - 167.0s] Speaker_00 (90% Confidence):
+  "Okay madam."
+
+[167.0s - 168.0s] Speaker_01 (90% Confidence):
+  "Take care."
+
+[168.0s - 169.0s] Speaker_00 (90% Confidence):
+  "Take care."
+
+[169.0s - 170.0s] Speaker_01 (90% Confidence):
+  "Take care."
+
+[170.0s - 171.0s] Speaker_00 (90% Confidence):
+  "Take care."
+
+[171.0s - 172.0s] Speaker_01 (90% Confidence):
+  "Bangalore valayadra."
+
+[172.0s - 173.0s] Speaker_00 (90% Confidence):
+  "Okay madam."
+
+[173.0s - 175.0s] Speaker_01 (90% Confidence):
+  "Thank you."
+
+[175.0s - 176.0s] Speaker_00 (90% Confidence):
+  "God bless you."
+
+[176.0s - 177.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[177.0s - 179.0s] Speaker_00 (90% Confidence):
+  "Bangalore valayadra."
+
+[179.0s - 181.0s] Speaker_01 (90% Confidence):
+  "This is 191st morning."
+
+[181.0s - 185.0s] Speaker_00 (90% Confidence):
+  "First main first cross,"
+
+[185.0s - 187.0s] Speaker_01 (90% Confidence):
+  "For the first morning,"
+
+[187.0s - 188.0s] Speaker_00 (90% Confidence):
+  "If we go to Bangalore,"
+
+[188.0s - 189.0s] Speaker_01 (90% Confidence):
+  "5600."
+
+[189.0s - 191.0s] Speaker_00 (90% Confidence):
+  "Yes madam, we go."
+
+[191.0s - 192.0s] Speaker_01 (90% Confidence):
+  "Take care."
+
+[192.0s - 193.0s] Speaker_00 (90% Confidence):
+  "Okay."
+
+[193.0s - 196.0s] Speaker_01 (90% Confidence):
+  "Kali ji, and quality kaya Maharam."
+
+[197.0s - 198.0s] Speaker_00 (90% Confidence):
+  "Oh, has he?"
+
+[198.0s - 200.0s] Speaker_01 (90% Confidence):
+  "He has not come yet. He can't sit yet."
+
+[202.0s - 203.0s] Speaker_00 (90% Confidence):
+  "Bhilko ji."
+
+[203.0s - 204.0s] Speaker_01 (90% Confidence):
+  "Hello."
+
+[206.0s - 207.0s] Speaker_00 (90% Confidence):
+  "Okay Maharam."
+
+[207.0s - 208.0s] Speaker_01 (90% Confidence):
+  "Come."
+
+[208.0s - 209.0s] Speaker_00 (90% Confidence):
+  "Kali ji."
+
+[211.0s - 212.0s] Speaker_01 (90% Confidence):
+  "Okay."
+
+[212.0s - 213.0s] Speaker_00 (90% Confidence):
+  "Total 250 rupee horayi ji."
+
+[214.0s - 216.0s] Speaker_01 (90% Confidence):
+  "95 rupee ji."
+
+[217.0s - 218.0s] Speaker_00 (90% Confidence):
+  "Okay Maharam."
+
+[218.0s - 219.0s] Speaker_01 (90% Confidence):
+  "Okay Kali ji."
+
+[220.0s - 222.0s] Speaker_00 (90% Confidence):
+  "So final kar retyu ji?"
+
+[222.0s - 224.0s] Speaker_01 (90% Confidence):
+  "Okay Maharam."
+
+[225.0s - 227.0s] Speaker_00 (90% Confidence):
+  "Very, very shookri ji."
+
+[227.0s - 228.0s] Speaker_01 (90% Confidence):
+  "Order place."
+
+[228.0s - 229.0s] Speaker_00 (90% Confidence):
+  "Okay Maharam."
+
+[229.0s - 230.0s] Speaker_01 (90% Confidence):
+  "Okay. Thank you Maharam."
+
+------------------------------------------------------------------------
+CONFIDENTIALITY NOTICE: This document contains legal evidence and restricted law enforcement data.
+========================================================================

@@ -1,0 +1,165 @@
+========================================================================
+TRACEVAULT FORENSIC INTELLIGENCE REPORT — FORENSIC AUDIT REPORT - CALL-RECORDING-1782130919643.WAV
+========================================================================
+Generated: 2026-07-25 11:23:29 UTC
+Evidence Integrity Status: SECURE (SHA-256 Cryptographic Verification)
+
+[EVIDENCE FILE METADATA]
+File Name:             call-recording-1782130919643.wav
+SHA-256 Checksum:      401158d4f89d47907ca96b950c49282ea3db38de65117be224f0532a09e7a886
+Duration:              307.4 seconds
+Assigned Case ID:      UNASSIGNED
+Court Warrant Reference: WR-2026-9901
+Language Processing:   hi
+
+[AUTOMATED CALL ANALYSIS SUMMARY]
+Executive Summary:     Call transcript processed (221 words). No explicit threat indicators detected.
+Primary Topic:         General Conversation
+Risk Level:            LOW (Score: 0.0)
+
+[THREAT AUDIT EVALUATION]
+Threat Flagged:        NO
+Threat Category:       none
+Threat Audit Details:  None
+
+[EXTRACTED ENTITIES & INTELLIGENCE]
+Locations Discussed:   surat
+Times/Dates Discussed: 
+
+[DIARIZED TRANSCRIPT TIMELINE]
+------------------------------------------------------------------------
+[30.0s - 48.4s] Speaker_00 (90% Confidence):
+  "所以 futvesh n u novelaerin"
+
+[48.4s - 52.1s] Speaker_01 (90% Confidence):
+  "autna high quality girl middle time he had a totally highly�ed person."
+
+[52.1s - 59.2s] Speaker_00 (90% Confidence):
+  "Bring saeger capsre duing Baba,"
+
+[59.9s - 65.5s] Speaker_01 (90% Confidence):
+  "ures Sum встреч Supreme所 klvndan пр scriptures."
+
+[66.8s - 72.2s] Speaker_00 (90% Confidence):
+  "2018 Jagann Mataela Vid deserveanyat"
+
+[72.2s - 72.8s] Speaker_01 (90% Confidence):
+  "alu,"
+
+[73.4s - 77.6s] Speaker_00 (90% Confidence):
+  "tabaji Masia alli vandpangu"
+
+[77.9s - 78.2s] Speaker_01 (90% Confidence):
+  "e protok bajwara pe loli"
+
+[78.2s - 101.8s] Speaker_00 (90% Confidence):
+  "誹 juad ład"
+
+[101.8s - 106.2s] Speaker_01 (90% Confidence):
+  "Jas toash mart-rare & Khlov Gir champion"
+
+[106.2s - 108.1s] Speaker_00 (90% Confidence):
+  "Sa youda feast"
+
+[108.1s - 123.2s] Speaker_01 (90% Confidence):
+  "Sat Il fan"
+
+[123.2s - 127.7s] Speaker_00 (90% Confidence):
+  "uralyoo.."
+
+[127.7s - 148.2s] Speaker_01 (90% Confidence):
+  "klmerish kayas"
+
+[148.2s - 156.4s] Speaker_00 (90% Confidence):
+  "You can change this painting to 3 andو2."
+
+[157.1s - 160.6s] Speaker_01 (90% Confidence):
+  "I am getting 30聞 of the painting."
+
+[160.6s - 164.9s] Speaker_00 (90% Confidence):
+  "I am not going to draw a negative creating effect on your painting."
+
+[164.9s - 172.0s] Speaker_01 (90% Confidence):
+  "såring bhoji"
+
+[172.0s - 174.8s] Speaker_00 (90% Confidence):
+  "surbud sm trabalho"
+
+[174.8s - 188.9s] Speaker_01 (90% Confidence):
+  "Aama kaali kaLA"
+
+[188.9s - 198.9s] Speaker_00 (90% Confidence):
+  "You can't complain about yourarch karate dances."
+
+[198.9s - 200.4s] Speaker_01 (90% Confidence):
+  "So eke get prak왔 preaches?"
+
+[200.4s - 204.0s] Speaker_00 (90% Confidence):
+  "Yes, truth heat ni shwati-mot Vin's Making Have Sinsisel Up."
+
+[204.0s - 207.7s] Speaker_01 (90% Confidence):
+  "Keke… молниashi fee ye Shah o beimceqan ke lagi."
+
+[207.7s - 213.3s] Speaker_00 (90% Confidence):
+  "Me surat Te Phi Bhaskaar willingness to offer us Kanh jahtari meuise regularly."
+
+[213.3s - 214.2s] Speaker_01 (90% Confidence):
+  "Long nghe Gehme Dadi Obhina."
+
+[244.2s - 260.0s] Speaker_00 (90% Confidence):
+  "데"
+
+[260.0s - 260.5s] Speaker_01 (90% Confidence):
+  "造pe meter ataspa Aur Swami Kodera"
+
+[262.2s - 266.4s] Speaker_00 (90% Confidence):
+  "伟se hala...."
+
+[267.0s - 269.7s] Speaker_01 (90% Confidence):
+  "Do you remember that yes sir.."
+
+[271.2s - 272.2s] Speaker_00 (90% Confidence):
+  "ka..."
+
+[274.5s - 276.0s] Speaker_01 (90% Confidence):
+  "And there is."
+
+[276.4s - 277.9s] Speaker_00 (90% Confidence):
+  "Your Bhupna very good"
+
+[278.1s - 279.7s] Speaker_01 (90% Confidence):
+  "What will your Swats see ?"
+
+[280.2s - 282.7s] Speaker_00 (90% Confidence):
+  "Durjubhishi самое Alabama"
+
+[285.9s - 286.8s] Speaker_01 (90% Confidence):
+  "Sorry, you are not aware."
+
+[287.5s - 288.4s] Speaker_00 (90% Confidence):
+  "Nam Cat fini vi"
+
+[289.1s - 289.6s] Speaker_01 (90% Confidence):
+  "And if there is square"
+
+[289.6s - 292.3s] Speaker_00 (90% Confidence):
+  "there is no need or any sin in your name"
+
+[292.3s - 293.9s] Speaker_01 (90% Confidence):
+  "I will take his name"
+
+[293.9s - 295.5s] Speaker_00 (90% Confidence):
+  "What I am doing is for sure"
+
+[295.5s - 300.1s] Speaker_01 (90% Confidence):
+  "this is the veut"
+
+[300.1s - 303.3s] Speaker_00 (90% Confidence):
+  "I am doing very well"
+
+[303.3s - 307.6s] Speaker_01 (90% Confidence):
+  "they are very famous"
+
+------------------------------------------------------------------------
+CONFIDENTIALITY NOTICE: This document contains legal evidence and restricted law enforcement data.
+========================================================================

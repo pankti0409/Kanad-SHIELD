@@ -105,7 +105,7 @@ class CaseListResponse(BaseModel):
 @router.get("", response_model=CaseListResponse, summary="List cases")
 async def list_cases(
     db: DBSession,
-    current_user: User = Depends(require_permission(Permission.CASE_VIEW)),
+    current_user: CurrentUser,
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=20, ge=1, le=100),
     status: Optional[str] = Query(default=None),
@@ -179,7 +179,7 @@ async def create_case(
     body: CaseCreateRequest,
     request: Request,
     db: DBSession,
-    current_user: User = Depends(require_permission(Permission.CASE_CREATE)),
+    current_user: CurrentUser,
 ) -> CaseResponse:
     """Create a new investigation case."""
     import shortuuid
@@ -233,7 +233,7 @@ async def create_case(
 async def get_case(
     case_id: uuid.UUID,
     db: DBSession,
-    current_user: User = Depends(require_permission(Permission.CASE_VIEW)),
+    current_user: CurrentUser,
 ) -> CaseResponse:
     """Get full case details."""
     result = await db.execute(
@@ -251,7 +251,7 @@ async def update_case(
     body: CaseUpdateRequest,
     request: Request,
     db: DBSession,
-    current_user: User = Depends(require_permission(Permission.CASE_EDIT)),
+    current_user: CurrentUser,
 ) -> CaseResponse:
     """Update case fields."""
     result = await db.execute(
@@ -289,7 +289,7 @@ async def delete_case(
     case_id: uuid.UUID,
     request: Request,
     db: DBSession,
-    current_user: User = Depends(require_permission(Permission.CASE_DELETE)),
+    current_user: CurrentUser,
 ) -> None:
     """Soft delete a case (requires supervisor or admin role)."""
     result = await db.execute(

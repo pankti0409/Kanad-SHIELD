@@ -8,6 +8,7 @@ export interface RecordingItem {
   format: string;
   sizeMb: number;
   duration: string;
+  duration_seconds?: number;
   language: string;
   caseNumber: string;
   warrantNumber: string;
