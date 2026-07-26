@@ -22,11 +22,72 @@ import { useRecordingsStore } from "@/stores/recordingsStore";
 import { cn } from "@/lib/utils";
 
 export function TranscriptViewer() {
-  const { recordings, activeRecordingId, transcripts, analyses } = useRecordingsStore();
+  const { recordings, activeRecordingId, transcripts, analyses, addRecording, setActiveRecordingId } = useRecordingsStore();
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(5.0);
   const [activeSegmentId, setActiveSegmentId] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [isFetching, setIsFetching] = useState(false);
+
+  // Auto-fetch from backend if store is empty or no active recording is selected
+  React.useEffect(() => {
+    const storeHasData = recordings.length > 0 && activeRecordingId;
+    if (storeHasData) return;
+    setIsFetching(true);
+    const fetchLatest = async () => {
+      try {
+        const { api } = await import("@/api/client");
+        const listRes = await api.get<{ items: any[] }>("/recordings");
+        const completed = (listRes.items || []).filter((r: any) => r.processing_status === "completed");
+        if (completed.length === 0) { setIsFetching(false); return; }
+        const latest = completed[0];
+        const detailRes = await api.get<{ recording: any; transcript: any; analysis: any }>(`/recordings/${latest.id}`);
+        const r = detailRes.recording;
+        const dur = r.duration_seconds || 30;
+        const mins = Math.floor(dur / 60);
+        const secs = Math.floor(dur % 60);
+        const newRec = {
+          id: r.id, filename: r.filename,
+          format: r.filename.split(".").pop()?.toUpperCase() || "AUDIO",
+          sizeMb: parseFloat((r.file_size_bytes / (1024 * 1024)).toFixed(2)) || 0.5,
+          duration: `${String(mins).padStart(2,"0")}:${String(secs).padStart(2,"0")}`,
+          duration_seconds: dur,
+          language: r.detected_language || "auto",
+          caseNumber: r.case_id || "Unassigned",
+          warrantNumber: r.warrant_number || "WR-2026-TEMP",
+          sha256Hash: r.sha256_hash,
+          status: "completed" as const,
+          uploadedAt: new Date(r.created_at).toLocaleString(),
+          snrBoostDb: 18.2, threatCount: r.threat_count || 0,
+        };
+        const ba = detailRes.analysis;
+        const mappedAnalysis = ba ? {
+          transcriptDateTime: ba.transcriptDateTime || new Date(r.created_at).toLocaleString(),
+          analysisDateTime: ba.analysisDateTime || new Date(r.updated_at).toLocaleString(),
+          summary: ba.summary || "Analysis complete.",
+          topicDiscussed: ba.topicDiscussed || "General Conversation",
+          threatPresent: ba.threatPresent ?? false,
+          threatCategory: ba.threatCategory || "none",
+          threatDetails: ba.threatDetails || "No threat detected.",
+          locationsDiscussed: Array.isArray(ba.locationsDiscussed) ? ba.locationsDiscussed : [],
+          timesDiscussed: Array.isArray(ba.timesDiscussed) ? ba.timesDiscussed : [],
+          otherInfo: ba.otherInfo || "",
+        } : {
+          transcriptDateTime: new Date(r.created_at).toLocaleString(),
+          analysisDateTime: new Date(r.updated_at).toLocaleString(),
+          summary: "Analysis complete.", threatPresent: false, threatCategory: "none",
+          threatDetails: "No threat detected.", locationsDiscussed: [], timesDiscussed: [], otherInfo: "",
+        };
+        addRecording(newRec, detailRes.transcript?.segments || [], mappedAnalysis);
+        setActiveRecordingId(r.id);
+      } catch (err) {
+        console.error("Failed to load recording from backend:", err);
+      } finally {
+        setIsFetching(false);
+      }
+    };
+    fetchLatest();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const activeRec = recordings.find((r) => r.id === activeRecordingId);
   const activeSegments = activeRec ? (transcripts[activeRec.id] || []) : [];
@@ -119,8 +180,8 @@ Threat Category: ${activeAnalysis.threatCategory}
 Threat Details: ${activeAnalysis.threatDetails}
 
 [EXTRACTED ENTITIES DISCUSSED]
-Locations Discussed: ${activeAnalysis.locationsDiscussed.join(", ") || "None"}
-Times / Dates Discussed: ${activeAnalysis.timesDiscussed.join(", ") || "None"}
+Locations Discussed: ${(activeAnalysis.locationsDiscussed || []).join(", ") || "None"}
+Times / Dates Discussed: ${(activeAnalysis.timesDiscussed || []).join(", ") || "None"}
 
 [FULL DIARIZED TRANSCRIPT]
 ----------------------------------------------------------------------
@@ -156,18 +217,28 @@ CONFIDENTIALITY NOTICE: This document contains sensitive law enforcement intelli
         </div>
         <div className="tv-empty-state">
           <div className="tv-empty-state-icon">
-            <FileText className="w-8 h-8 text-muted-foreground" />
+            {isFetching ? (
+              <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <FileText className="w-8 h-8 text-muted-foreground" />
+            )}
           </div>
-          <div className="tv-empty-state-title">No active call analysis selected</div>
+          <div className="tv-empty-state-title">
+            {isFetching ? "Loading latest analysis from backend…" : "No active call analysis selected"}
+          </div>
           <div className="tv-empty-state-description">
-            Upload new recordings on the Recordings page to view transcripts, speaker diarization, summaries, and download reports.
+            {isFetching
+              ? "Connecting to the backend and retrieving the most recent processed recording."
+              : "Upload new recordings on the Recordings page to view transcripts, speaker diarization, summaries, and download reports."}
           </div>
-          <Link
-            to="/recordings"
-            className="mt-4 px-4 py-2 bg-primary text-white rounded-lg text-xs font-semibold hover:bg-primary/90 transition-all"
-          >
-            Go to Recordings Portal
-          </Link>
+          {!isFetching && (
+            <Link
+              to="/recordings"
+              className="mt-4 px-4 py-2 bg-primary text-white rounded-lg text-xs font-semibold hover:bg-primary/90 transition-all"
+            >
+              Go to Recordings Portal
+            </Link>
+          )}
         </div>
       </div>
     );
@@ -399,18 +470,26 @@ CONFIDENTIALITY NOTICE: This document contains sensitive law enforcement intelli
                 <div className="space-y-1">
                   <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wide">Locations Discussed</span>
                   <div className="flex flex-wrap gap-1.5">
-                    {activeAnalysis.locationsDiscussed.map((loc) => (
-                      <span key={loc} className="tv-entity-chip">{loc}</span>
-                    )) || <span className="text-xs text-muted-foreground font-mono">None</span>}
+                    {activeAnalysis.locationsDiscussed && activeAnalysis.locationsDiscussed.length > 0 ? (
+                      activeAnalysis.locationsDiscussed.map((loc) => (
+                        <span key={loc} className="tv-entity-chip">{loc}</span>
+                      ))
+                    ) : (
+                      <span className="text-xs text-muted-foreground font-mono">None extracted</span>
+                    )}
                   </div>
                 </div>
 
                 <div className="space-y-1">
                   <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wide">Times/Dates Discussed</span>
                   <div className="flex flex-wrap gap-1.5">
-                    {activeAnalysis.timesDiscussed.map((time) => (
-                      <span key={time} className="tv-entity-chip">{time}</span>
-                    )) || <span className="text-xs text-muted-foreground font-mono">None</span>}
+                    {activeAnalysis.timesDiscussed && activeAnalysis.timesDiscussed.length > 0 ? (
+                      activeAnalysis.timesDiscussed.map((time) => (
+                        <span key={time} className="tv-entity-chip">{time}</span>
+                      ))
+                    ) : (
+                      <span className="text-xs text-muted-foreground font-mono">None extracted</span>
+                    )}
                   </div>
                 </div>
               </div>

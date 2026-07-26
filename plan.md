@@ -112,3 +112,5 @@ Do not unnecessarily replace.
 Do not regress.
 
 The final system should be a superset of the current functionality, with all existing features preserved and all requested enhancements fully integrated.
+
+read and execute plan.md but make sure you do not touch or break anything in working system. also make sure you do not interrupt anything in trascript generation thing 

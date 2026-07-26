@@ -81,6 +81,62 @@ export function RecordingsPage() {
     return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   };
 
+  // Auto-sync backend recordings into local store on mount
+  React.useEffect(() => {
+    if (recordings.length > 0) return; // store already has data, skip
+    const loadFromBackend = async () => {
+      try {
+        const listRes = await api.get<{ items: any[] }>("/recordings");
+        const completed = (listRes.items || []).filter((r: any) => r.processing_status === "completed");
+        for (const r of completed) {
+          try {
+            const detailRes = await api.get<{ recording: any; transcript: any; analysis: any }>(`/recordings/${r.id}`);
+            const rec = detailRes.recording;
+            const dur = rec.duration_seconds || 30;
+            const newRec = {
+              id: rec.id, filename: rec.filename,
+              format: rec.filename.split(".").pop()?.toUpperCase() || "AUDIO",
+              sizeMb: parseFloat((rec.file_size_bytes / (1024 * 1024)).toFixed(2)) || 0.5,
+              duration: formatDurationStr(dur), duration_seconds: dur,
+              language: rec.detected_language || "auto",
+              caseNumber: rec.case_id || "Unassigned",
+              warrantNumber: rec.warrant_number || "WR-2026-TEMP",
+              sha256Hash: rec.sha256_hash, status: "completed" as const,
+              uploadedAt: new Date(rec.created_at).toLocaleString(),
+              snrBoostDb: 18.2, threatCount: rec.threat_count || 0,
+            };
+            const ba = detailRes.analysis;
+            const mappedAnalysis = ba ? {
+              transcriptDateTime: ba.transcriptDateTime || new Date(rec.created_at).toLocaleString(),
+              analysisDateTime: ba.analysisDateTime || new Date(rec.updated_at).toLocaleString(),
+              summary: ba.summary || "Analysis complete.",
+              topicDiscussed: ba.topicDiscussed || "General Conversation",
+              threatPresent: ba.threatPresent ?? false,
+              threatCategory: ba.threatCategory || "none",
+              threatDetails: ba.threatDetails || "No threat detected.",
+              locationsDiscussed: Array.isArray(ba.locationsDiscussed) ? ba.locationsDiscussed : [],
+              timesDiscussed: Array.isArray(ba.timesDiscussed) ? ba.timesDiscussed : [],
+              otherInfo: ba.otherInfo || "",
+            } : {
+              transcriptDateTime: new Date(rec.created_at).toLocaleString(),
+              analysisDateTime: new Date(rec.updated_at).toLocaleString(),
+              summary: "Analysis complete.", threatPresent: false, threatCategory: "none",
+              threatDetails: "No threat detected.", locationsDiscussed: [], timesDiscussed: [], otherInfo: "",
+            };
+            addRecording(newRec, detailRes.transcript?.segments || [], mappedAnalysis);
+          } catch (e) {
+            console.warn("Failed to load detail for recording", r.id, e);
+          }
+        }
+        if (completed.length > 0) setActiveRecordingId(completed[0].id);
+      } catch (err) {
+        console.error("Failed to sync recordings from backend:", err);
+      }
+    };
+    loadFromBackend();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+
   const handleFileUpload = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
 
@@ -163,6 +219,7 @@ export function RecordingsPage() {
               format: r.filename.split(".").pop()?.toUpperCase() || "AUDIO",
               sizeMb: parseFloat((r.file_size_bytes / (1024 * 1024)).toFixed(2)) || 0.5,
               duration: formatDurationStr(durSec),
+              duration_seconds: durSec,
               language: r.detected_language || "English / Auto",
               caseNumber: r.case_id || "Unassigned",
               warrantNumber: r.warrant_number || "WR-2026-TEMP",
@@ -173,7 +230,20 @@ export function RecordingsPage() {
               threatCount: r.threat_count || 0,
             };
 
-            addRecording(newRec, pollRes.transcript?.segments || [], pollRes.analysis || {
+            // Map backend analysis fields to frontend CallAnalysis shape
+            const backendAnalysis = pollRes.analysis;
+            const mappedAnalysis = backendAnalysis ? {
+              transcriptDateTime: backendAnalysis.transcriptDateTime || new Date(r.created_at).toLocaleString(),
+              analysisDateTime: backendAnalysis.analysisDateTime || new Date(r.updated_at).toLocaleString(),
+              summary: backendAnalysis.summary || "Analysis complete.",
+              topicDiscussed: backendAnalysis.topicDiscussed || "General Conversation",
+              threatPresent: backendAnalysis.threatPresent ?? false,
+              threatCategory: backendAnalysis.threatCategory || "none",
+              threatDetails: backendAnalysis.threatDetails || "No threat detected.",
+              locationsDiscussed: Array.isArray(backendAnalysis.locationsDiscussed) ? backendAnalysis.locationsDiscussed : [],
+              timesDiscussed: Array.isArray(backendAnalysis.timesDiscussed) ? backendAnalysis.timesDiscussed : [],
+              otherInfo: backendAnalysis.otherInfo || "",
+            } : {
               transcriptDateTime: new Date(r.created_at).toLocaleString(),
               analysisDateTime: new Date(r.updated_at).toLocaleString(),
               summary: "Analysis complete.",
@@ -183,7 +253,9 @@ export function RecordingsPage() {
               locationsDiscussed: [],
               timesDiscussed: [],
               otherInfo: "",
-            });
+            };
+
+            addRecording(newRec, pollRes.transcript?.segments || [], mappedAnalysis);
 
             updateItem({ status: "Completed", progress: 100 });
           } else if (status === "failed" || status === "cancelled") {
