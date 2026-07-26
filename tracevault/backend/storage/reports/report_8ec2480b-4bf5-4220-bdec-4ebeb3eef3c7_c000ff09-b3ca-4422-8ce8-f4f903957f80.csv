@@ -1,0 +1,177 @@
+Sequence,Start (s),End (s),Speaker,Confidence,Text,Has Threat,Has Entity
+0,0.0,1.0,Speaker_00,0.9,Hello.,False,False
+1,1.0,2.0,Speaker_01,0.9,What are you saying?,False,False
+2,2.0,3.0,Speaker_00,0.9,Tell me.,False,False
+3,3.0,4.0,Speaker_01,0.9,Tell me.,False,False
+4,4.0,5.0,Speaker_00,0.9,Tell me.,False,False
+5,5.0,6.0,Speaker_01,0.9,Tell me.,False,False
+6,6.0,7.0,Speaker_00,0.9,Namaste.,False,False
+7,7.0,9.0,Speaker_01,0.9,Sangeeta saying.,False,False
+8,9.0,10.0,Speaker_00,0.9,Vastanan Saris.,False,False
+9,10.0,11.0,Speaker_01,0.9,Okay.,False,False
+10,11.0,14.0,Speaker_00,0.9,What is this?,False,False
+11,14.0,15.0,Speaker_01,0.9,You.,False,False
+12,15.0,16.0,Speaker_00,0.9,You.,False,False
+13,16.0,17.0,Speaker_01,0.9,Okay.,False,False
+14,17.0,18.0,Speaker_00,0.9,You.,False,False
+15,18.0,20.0,Speaker_01,0.9,You had come to my side at my side.,False,False
+16,20.0,22.0,Speaker_00,0.9,Did anyone see?,False,False
+17,22.0,25.0,Speaker_01,0.9,"Sir, you are looking for a book.",False,False
+18,25.0,27.0,Speaker_00,0.9,Who is the writer?,False,False
+19,27.0,28.0,Speaker_01,0.9,"Sir, I am Sir Pato.",False,False
+20,28.0,29.0,Speaker_00,0.9,Okay.,False,False
+21,29.0,30.0,Speaker_01,0.9,I am Suresh Pato.,False,False
+22,30.0,31.0,Speaker_00,0.9,Who is he?,False,False
+23,31.0,33.0,Speaker_01,0.9,I am talking about his wife.,False,False
+24,33.0,34.0,Speaker_00,0.9,Who is he?,False,False
+25,34.0,35.0,Speaker_01,0.9,Pinky.,False,False
+26,35.0,36.0,Speaker_00,0.9,I am talking about his wife.,False,False
+27,36.0,38.0,Speaker_01,0.9,Who is he?,False,False
+28,38.0,39.0,Speaker_00,0.9,Pinky.,False,False
+29,39.0,40.0,Speaker_01,0.9,Sorry.,False,False
+30,40.0,46.0,Speaker_00,0.9,"Vastan, your dream is to come to a company.",False,False
+31,46.0,47.0,Speaker_01,0.9,Is it?,False,False
+32,47.0,48.0,Speaker_00,0.9,Yes.,False,False
+33,48.0,50.0,Speaker_01,0.9,Vastan and Saris.,False,False
+34,50.0,51.0,Speaker_00,0.9,Vastan and Saris.,False,False
+35,51.0,52.0,Speaker_01,0.9,Vastan and Saris.,False,False
+36,52.0,53.0,Speaker_00,0.9,Okay.,False,False
+37,53.0,55.0,Speaker_01,0.9,You have not come to my side.,False,False
+38,55.0,57.0,Speaker_00,0.9,You have not come to my side.,False,False
+39,57.0,58.0,Speaker_01,0.9,I am talking about my wife.,False,False
+40,58.0,59.0,Speaker_00,0.9,Yes.,False,False
+41,59.0,61.0,Speaker_01,0.9,Check out my wife.,False,False
+42,61.0,62.0,Speaker_00,0.9,Any problem?,False,False
+43,62.0,63.0,Speaker_01,0.9,No.,False,False
+44,63.0,65.0,Speaker_00,0.9,Any problem?,False,False
+45,65.0,66.0,Speaker_01,0.9,Any problem?,False,False
+46,66.0,67.0,Speaker_00,0.9,Okay.,False,False
+47,67.0,69.0,Speaker_01,0.9,You have not come to my side.,False,False
+48,69.0,71.0,Speaker_00,0.9,You have not come to my side.,False,False
+49,71.0,72.0,Speaker_01,0.9,Okay.,False,False
+50,72.0,73.0,Speaker_00,0.9,You have not come to my side.,False,False
+51,73.0,74.0,Speaker_01,0.9,No.,False,False
+52,74.0,75.0,Speaker_00,0.9,No.,False,False
+53,75.0,76.0,Speaker_01,0.9,No.,False,False
+54,76.0,77.0,Speaker_00,0.9,No.,False,False
+55,77.0,78.0,Speaker_01,0.9,Okay.,False,False
+56,78.0,79.0,Speaker_00,0.9,Samaj Gaye.,False,False
+57,79.0,80.0,Speaker_01,0.9,Any confusion?,False,False
+58,80.0,81.0,Speaker_00,0.9,Price?,False,False
+59,81.0,82.0,Speaker_01,0.9,Size?,False,False
+60,82.0,83.0,Speaker_00,0.9,Design?,False,False
+61,84.0,85.0,Speaker_01,0.9,No.,False,False
+62,85.0,87.0,Speaker_00,0.9,I have not come to my side.,False,False
+63,87.0,89.0,Speaker_01,0.9,But I have not come to my side.,False,False
+64,89.0,90.0,Speaker_00,0.9,Okay.,False,False
+65,90.0,91.0,Speaker_01,0.9,Samaj Gaye.,False,False
+66,91.0,93.0,Speaker_00,0.9,Any technical issue?,False,False
+67,93.0,95.0,Speaker_01,0.9,Any technical issue?,False,False
+68,95.0,97.0,Speaker_00,0.9,Any technical issue?,False,False
+69,97.0,99.0,Speaker_01,0.9,I have come to my side.,False,False
+70,99.0,100.0,Speaker_00,0.9,Okay.,False,False
+71,100.0,101.0,Speaker_01,0.9,Technical issue?,False,False
+72,101.0,102.0,Speaker_00,0.9,Any problem?,False,False
+73,102.0,103.0,Speaker_01,0.9,Yes.,False,False
+74,103.0,104.0,Speaker_00,0.9,I have been working on the order.,False,False
+75,104.0,106.0,Speaker_01,0.9,Okay.,False,False
+76,106.0,107.0,Speaker_00,0.9,Madam.,False,False
+77,107.0,109.0,Speaker_01,0.9,I can not pay you.,False,False
+78,109.0,110.0,Speaker_00,0.9,Okay.,False,False
+79,110.0,111.0,Speaker_01,0.9,Sir.,False,False
+80,111.0,112.0,Speaker_00,0.9,Sir.,False,False
+81,112.0,113.0,Speaker_01,0.9,Sir.,False,False
+82,113.0,114.0,Speaker_00,0.9,Sir.,False,False
+83,114.0,115.0,Speaker_01,0.9,Sir.,False,False
+84,115.0,116.0,Speaker_00,0.9,Okay.,False,False
+85,116.0,117.0,Speaker_01,0.9,Okay.,False,False
+86,117.0,118.0,Speaker_00,0.9,Okay.,False,False
+87,118.0,119.0,Speaker_01,0.9,Okay.,False,False
+88,119.0,120.0,Speaker_00,0.9,Madam.,False,False
+89,120.0,121.0,Speaker_01,0.9,Thank you.,False,False
+90,121.0,122.0,Speaker_00,0.9,Sir.,False,False
+91,122.0,124.0,Speaker_01,0.9,"So, what is the work done?",False,False
+92,124.0,126.0,Speaker_00,0.9,How is the book?,False,False
+93,126.0,127.0,Speaker_01,0.9,Yes.,False,False
+94,127.0,129.0,Speaker_00,0.9,It is a very hard day.,False,False
+95,129.0,132.0,Speaker_01,0.9,I have not come to my side.,False,False
+96,132.0,134.0,Speaker_00,0.9,I have not come to my side.,False,False
+97,134.0,135.0,Speaker_01,0.9,I have not come to my side.,False,False
+98,135.0,137.0,Speaker_00,0.9,I have not come to my side.,False,False
+99,137.0,139.0,Speaker_01,0.9,What is the matter?,False,False
+100,139.0,140.0,Speaker_00,0.9,Hello.,False,False
+101,140.0,141.0,Speaker_01,0.9,Isn't it a good day?,False,False
+102,141.0,143.0,Speaker_00,0.9,"One second, Rukyaji.",False,False
+103,143.0,144.0,Speaker_01,0.9,I will check.,False,False
+104,144.0,145.0,Speaker_00,0.9,I will tell you.,False,False
+105,145.0,146.0,Speaker_01,0.9,Please.,False,False
+106,146.0,148.0,Speaker_00,0.9,One second.,False,False
+107,148.0,149.0,Speaker_01,0.9,Yeah.,False,False
+108,149.0,150.0,Speaker_00,0.9,Yes.,False,False
+109,154.0,155.0,Speaker_01,0.9,Yes.,False,False
+110,155.0,156.0,Speaker_00,0.9,It is not a payment.,False,False
+111,156.0,157.0,Speaker_01,0.9,No.,False,False
+112,157.0,158.0,Speaker_00,0.9,No.,False,False
+113,158.0,159.0,Speaker_01,0.9,You have come to my side.,False,False
+114,159.0,160.0,Speaker_00,0.9,I have not come to my side.,False,False
+115,160.0,161.0,Speaker_01,0.9,"So, order.",False,False
+116,161.0,162.0,Speaker_00,0.9,Okay.,False,False
+117,162.0,163.0,Speaker_01,0.9,Please.,False,False
+118,163.0,164.0,Speaker_00,0.9,Please.,False,False
+119,164.0,165.0,Speaker_01,0.9,Come on.,False,False
+120,166.0,167.0,Speaker_00,0.9,Okay.,False,False
+121,167.0,168.0,Speaker_01,0.9,Madam.,False,False
+122,168.0,169.0,Speaker_00,0.9,Okay.,False,False
+123,169.0,170.0,Speaker_01,0.9,Take care.,False,False
+124,170.0,171.0,Speaker_00,0.9,Okay.,False,False
+125,171.0,172.0,Speaker_01,0.9,Okay.,False,False
+126,172.0,173.0,Speaker_00,0.9,Okay.,False,False
+127,173.0,174.0,Speaker_01,0.9,Madam.,False,False
+128,174.0,175.0,Speaker_00,0.9,You have come to my side.,False,False
+129,177.0,178.0,Speaker_01,0.9,Okay.,False,False
+130,178.0,179.0,Speaker_00,0.9,Okay.,False,False
+131,179.0,180.0,Speaker_01,0.9,Okay.,False,False
+132,180.0,181.0,Speaker_00,0.9,Okay.,False,False
+133,181.0,183.0,Speaker_01,0.9,First main first cross.,False,False
+134,183.0,184.0,Speaker_00,0.9,First main first cross.,False,False
+135,184.0,185.0,Speaker_01,0.9,"If we wrote,",False,False
+136,185.0,187.0,Speaker_00,0.9,56007.,False,True
+137,187.0,188.0,Speaker_01,0.9,Yes.,False,False
+138,188.0,189.0,Speaker_00,0.9,Madam.,False,False
+139,189.0,190.0,Speaker_01,0.9,Okay.,False,False
+140,190.0,191.0,Speaker_00,0.9,Okay.,False,False
+141,191.0,192.0,Speaker_01,0.9,Okay.,False,False
+142,192.0,193.0,Speaker_00,0.9,Okay.,False,False
+143,193.0,194.0,Speaker_01,0.9,Okay.,False,False
+144,194.0,195.0,Speaker_00,0.9,Okay.,False,False
+145,195.0,197.0,Speaker_01,0.9,And the quality case is not good.,False,False
+146,197.0,198.0,Speaker_00,0.9,Oh.,False,False
+147,198.0,199.0,Speaker_01,0.9,Yes.,False,False
+148,199.0,200.0,Speaker_00,0.9,No.,False,False
+149,200.0,201.0,Speaker_01,0.9,Can I write it?,False,False
+150,201.0,202.0,Speaker_00,0.9,Okay.,False,False
+151,202.0,203.0,Speaker_01,0.9,Okay.,False,False
+152,203.0,204.0,Speaker_00,0.9,Okay.,False,False
+153,204.0,206.0,Speaker_01,0.9,Okay.,False,False
+154,206.0,207.0,Speaker_00,0.9,Okay.,False,False
+155,207.0,208.0,Speaker_01,0.9,Okay.,False,False
+156,208.0,209.0,Speaker_00,0.9,Okay.,False,False
+157,209.0,210.0,Speaker_01,0.9,Okay.,False,False
+158,210.0,211.0,Speaker_00,0.9,Okay.,False,False
+159,211.0,212.0,Speaker_01,0.9,Okay.,False,False
+160,212.0,214.0,Speaker_00,0.9,Total 250 rupees.,False,True
+161,214.0,215.0,Speaker_01,0.9,95 rupees.,False,True
+162,215.0,216.0,Speaker_00,0.9,Okay.,False,False
+163,216.0,218.0,Speaker_01,0.9,Okay.,False,False
+164,218.0,219.0,Speaker_00,0.9,Okay.,False,False
+165,219.0,220.0,Speaker_01,0.9,Okay.,False,False
+166,220.0,221.0,Speaker_00,0.9,Okay.,False,False
+167,221.0,223.0,Speaker_01,0.9,Okay.,False,False
+168,223.0,224.0,Speaker_00,0.9,Okay.,False,False
+169,224.0,225.0,Speaker_01,0.9,Okay.,False,False
+170,225.0,226.0,Speaker_00,0.9,Okay.,False,False
+171,226.0,227.0,Speaker_01,0.9,Okay.,False,False
+172,227.0,228.0,Speaker_00,0.9,Okay.,False,False
+173,228.0,229.0,Speaker_01,0.9,Okay.,False,False
+174,229.0,230.0,Speaker_00,0.9,Okay.,False,False
+175,230.0,231.0,Speaker_01,0.9,Thank you.,False,False

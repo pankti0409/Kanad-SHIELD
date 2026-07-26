@@ -1,0 +1,39 @@
+{
+  "metadata": {
+    "filename": "sample_threat_call.mp3",
+    "sha256_hash": "4ca8b06fb42c4aa86379766da4234a2310599b9adbe5485500a6c773ff7c8838",
+    "duration_seconds": 3.0,
+    "warrant_number": "WR-2026-TEST",
+    "case_id": "00000000-0000-0000-0000-000000000000",
+    "language": "en"
+  },
+  "analysis": {
+    "summary": "Call transcript processed (7 words). No explicit threat indicators detected.",
+    "primary_topic": "General Conversation",
+    "threat_present": false,
+    "threat_category": "none",
+    "risk_score": 0.0,
+    "risk_level": "low",
+    "entities": [],
+    "keywords": [],
+    "locations_discussed": [],
+    "times_discussed": []
+  },
+  "segments": [
+    {
+      "id": "5599f149-2dcc-4897-adb7-6d334420c4ad",
+      "transcript_id": "",
+      "speaker_label": "Speaker_00",
+      "sequence_number": 0,
+      "start_time": 0.0,
+      "end_time": 3.0,
+      "text": "[No audible speech detected in recording: aef99983-9f31-4c62-a1be-39acfd0c8de3.mp3]",
+      "confidence": 0.0,
+      "has_threat": false,
+      "has_entity": true,
+      "has_keyword": true,
+      "word_count": 7,
+      "character_count": 83
+    }
+  ]
+}

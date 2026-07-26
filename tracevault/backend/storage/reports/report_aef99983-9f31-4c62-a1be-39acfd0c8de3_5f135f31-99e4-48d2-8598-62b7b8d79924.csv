@@ -1,0 +1,2 @@
+Sequence,Start (s),End (s),Speaker,Confidence,Text,Has Threat,Has Entity
+0,0.0,3.0,Speaker_00,0.0,[No audible speech detected in recording: aef99983-9f31-4c62-a1be-39acfd0c8de3.mp3],False,True
