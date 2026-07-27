@@ -1,0 +1,84 @@
+{
+  "metadata": {
+    "filename": "call-recording-1782130919643.wav",
+    "sha256_hash": "401158d4f89d47907ca96b950c49282ea3db38de65117be224f0532a09e7a886",
+    "duration_seconds": 307.40725,
+    "warrant_number": "WR-2026-9901",
+    "case_id": "UNASSIGNED",
+    "language": "hi"
+  },
+  "analysis": {
+    "summary": "Call transcript processed (17 words). No explicit threat indicators detected.",
+    "primary_topic": "General Conversation",
+    "threat_present": false,
+    "threat_category": "none",
+    "risk_score": 0.0,
+    "risk_level": "low",
+    "entities": [],
+    "keywords": [],
+    "locations_discussed": [],
+    "times_discussed": []
+  },
+  "segments": [
+    {
+      "id": "c21980a0-f80c-4195-b24b-bd4cd3361941",
+      "transcript_id": "",
+      "speaker_label": "Speaker_00",
+      "sequence_number": 0,
+      "start_time": 300.0,
+      "end_time": 302.0,
+      "text": "आदनाम वेरोगसे.",
+      "confidence": 0.9,
+      "has_threat": false,
+      "has_entity": false,
+      "has_keyword": false,
+      "word_count": 2,
+      "character_count": 14
+    },
+    {
+      "id": "d1c00681-019f-457b-8729-eb6cc9e97834",
+      "transcript_id": "",
+      "speaker_label": "Speaker_01",
+      "sequence_number": 1,
+      "start_time": 303.0,
+      "end_time": 305.0,
+      "text": "ज़ाद वेर वेर पस वेरपस वेर वेर पसे.",
+      "confidence": 0.9,
+      "has_threat": false,
+      "has_entity": false,
+      "has_keyword": false,
+      "word_count": 8,
+      "character_count": 34
+    },
+    {
+      "id": "0373ab7f-8a6c-4b84-a050-f02acd0ff0d0",
+      "transcript_id": "",
+      "speaker_label": "Speaker_00",
+      "sequence_number": 2,
+      "start_time": 305.0,
+      "end_time": 306.5,
+      "text": "आदन सालेदा में.",
+      "confidence": 0.9,
+      "has_threat": false,
+      "has_entity": false,
+      "has_keyword": false,
+      "word_count": 3,
+      "character_count": 15
+    },
+    {
+      "id": "93df0305-e7c1-4c59-aec9-628bcaf1a8a5",
+      "transcript_id": "",
+      "speaker_label": "Speaker_01",
+      "sequence_number": 3,
+      "start_time": 306.5,
+      "end_time": 308.0,
+      "text": "सूरेज पाी बेर पसे.",
+      "confidence": 0.9,
+      "has_threat": false,
+      "has_entity": false,
+      "has_keyword": false,
+      "word_count": 4,
+      "character_count": 18
+    }
+  ]
+}

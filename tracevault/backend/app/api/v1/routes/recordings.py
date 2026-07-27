@@ -378,6 +378,16 @@ async def _run_pipeline(recording_id: str, file_path: str, language: str) -> Non
             # Update recording counters
             risk_score = analysis.get("risk_score", 0.0)
             risk_level_str = analysis.get("risk_level", "low")
+            # Map string risk_level to RiskLevel enum (default to LOW if unrecognized)
+            from app.models.recording import RiskLevel
+            _risk_level_map = {
+                "very_low": RiskLevel.VERY_LOW,
+                "low": RiskLevel.LOW,
+                "medium": RiskLevel.MEDIUM,
+                "high": RiskLevel.HIGH,
+                "critical": RiskLevel.CRITICAL,
+            }
+            risk_level_enum = _risk_level_map.get(risk_level_str.lower(), RiskLevel.LOW)
             await s.execute(
                 update(Recording)
                 .where(Recording.id == recording_id)
@@ -388,6 +398,7 @@ async def _run_pipeline(recording_id: str, file_path: str, language: str) -> Non
                     word_count=len(full_text.split()),
                     transcription_confidence=stt_result.get("confidence", 0.85),
                     risk_score=risk_score,
+                    risk_level=risk_level_enum,
                 )
             )
 
@@ -561,6 +572,10 @@ async def upload_recording(
     db.add(recording)
     await db.flush()
     await db.refresh(recording)
+    # CRITICAL: Commit BEFORE launching the background task.
+    # asyncio.create_task() fires immediately — if DB is not committed,
+    # the pipeline will fail to find the recording.
+    await db.commit()
 
     # Launch background pipeline (asyncio.create_task = no Redis required)
     asyncio.create_task(
@@ -573,7 +588,7 @@ async def upload_recording(
 
     return RecordingUploadResponse(
         recording=RecordingResponse.from_model(recording),
-        message="Recording uploaded and queued for processing. Poll GET /recordings/{id} for progress.",
+        message="Recording uploaded and queued for AI processing. Poll GET /recordings/{id} for status updates.",
         task_id=task_id,
     )
 

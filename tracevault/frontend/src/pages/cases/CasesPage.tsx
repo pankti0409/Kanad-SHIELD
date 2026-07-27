@@ -21,7 +21,11 @@ import { Link } from "react-router-dom";
 import { Case, CasePriority, CaseStatus } from "@/types";
 import { cn } from "@/lib/utils";
 
-const MOCK_CASES: Case[] = [
+interface ExtendedCase extends Case {
+  minister?: string;
+}
+
+const MOCK_CASES: ExtendedCase[] = [
   {
     id: "case-101",
     case_number: "TV-2026-0091",
@@ -36,6 +40,7 @@ const MOCK_CASES: Case[] = [
     created_by: "usr-01",
     created_at: "2026-07-18T10:00:00Z",
     updated_at: "2026-07-21T08:00:00Z",
+    minister: "amit_shah",
   },
   {
     id: "case-102",
@@ -51,6 +56,7 @@ const MOCK_CASES: Case[] = [
     created_by: "usr-02",
     created_at: "2026-07-15T14:30:00Z",
     updated_at: "2026-07-20T16:20:00Z",
+    minister: "nirmala_sitharaman",
   },
   {
     id: "case-103",
@@ -66,6 +72,7 @@ const MOCK_CASES: Case[] = [
     created_by: "usr-01",
     created_at: "2026-07-02T09:15:00Z",
     updated_at: "2026-07-19T11:45:00Z",
+    minister: "rajnath_singh",
   },
 ];
 
@@ -73,14 +80,15 @@ export function CasesPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const [selectedPriority, setSelectedPriority] = useState<string>("all");
+  const [selectedMinister, setSelectedMinister] = useState<string>("all");
 
   const filteredCases = MOCK_CASES.filter((c) => {
-    const matchesSearch =
-      c.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      c.case_number.toLowerCase().includes(searchTerm.toLowerCase());
+    // Search using search numbers (case_number) only
+    const matchesSearch = c.case_number.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = selectedStatus === "all" || c.status === selectedStatus;
     const matchesPriority = selectedPriority === "all" || c.priority === selectedPriority;
-    return matchesSearch && matchesStatus && matchesPriority;
+    const matchesMinister = selectedMinister === "all" || c.minister === selectedMinister;
+    return matchesSearch && matchesStatus && matchesPriority && matchesMinister;
   });
 
   return (
@@ -107,12 +115,24 @@ export function CasesPage() {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search cases by title or number..."
+            placeholder="Search cases by number only..."
             className="w-full bg-transparent text-xs text-foreground placeholder:text-muted-foreground outline-none"
           />
         </div>
 
         <div className="flex items-center gap-2 w-full sm:w-auto">
+          {/* Minister Filter */}
+          <select
+            value={selectedMinister}
+            onChange={(e) => setSelectedMinister(e.target.value)}
+            className="bg-card border border-border text-xs text-foreground rounded-lg px-3 py-1.5 outline-none"
+          >
+            <option value="all">All Ministers</option>
+            <option value="amit_shah">Hon. Amit Shah (Home Affairs)</option>
+            <option value="rajnath_singh">Hon. Rajnath Singh (Defence)</option>
+            <option value="nirmala_sitharaman">Hon. Nirmala Sitharaman (Finance)</option>
+          </select>
+
           {/* Status Filter */}
           <select
             value={selectedStatus}

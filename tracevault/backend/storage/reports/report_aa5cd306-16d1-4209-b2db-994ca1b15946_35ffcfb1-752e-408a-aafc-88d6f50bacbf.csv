@@ -1,0 +1,72 @@
+Sequence,Start (s),End (s),Speaker,Confidence,Text,Has Threat,Has Entity
+0,0.0,3.22,Speaker_00,0.9,wasteran and aurforce,False,False
+1,3.22,6.02,Speaker_01,0.9,abt,False,False
+2,6.02,8.02,Speaker_00,0.9,celestial,False,False
+3,8.02,9.04,Speaker_01,0.9,verghan,False,False
+4,9.04,12.92,Speaker_00,0.9,ai,False,False
+5,13.38,14.58,Speaker_01,0.9,hav,False,False
+6,14.58,22.36,Speaker_00,0.9,tur,False,False
+7,22.36,24.18,Speaker_01,0.9,vil,False,False
+8,24.18,25.4,Speaker_00,0.9,ai,False,False
+9,25.4,26.8,Speaker_01,0.9,h,False,False
+10,26.8,27.72,Speaker_00,0.9,cha,False,False
+11,57.72,63.72,Speaker_01,0.9,oking,False,False
+12,63.72,79.72,Speaker_00,0.9,problem,False,False
+13,109.72,111.72,Speaker_01,0.9,بلکول جی,False,False
+14,111.72,113.72,Speaker_00,0.9,COD PELLO,False,False
+15,113.72,115.72,Speaker_01,0.9,بلکول جی,False,False
+16,115.72,117.72,Speaker_00,0.9,OK,False,False
+17,117.72,119.72,Speaker_01,0.9,OK,False,False
+18,119.72,121.72,Speaker_00,0.9,COD,False,False
+19,121.72,123.72,Speaker_01,0.9,تو بوک کر دن جی,False,False
+20,123.72,125.72,Speaker_00,0.9,بوک مگے کا,False,False
+21,125.72,127.72,Speaker_01,0.9,نا بوکہ,False,False
+22,127.72,129.72,Speaker_00,0.9,پیم آڈ ہے پیم آڈ ہے,False,False
+23,129.72,133.72,Speaker_01,0.9,ابو پی کرنے کے لیے ٹریکی ہے,False,False
+24,133.72,135.72,Speaker_00,0.9,پیم آڈ ہے بون رہ گا,False,False
+25,135.72,137.72,Speaker_01,0.9,بیم آڈ ہے بون رہ گا,False,False
+26,137.72,139.72,Speaker_00,0.9,بیم آڈ ہے کیا مرن,False,False
+27,139.72,141.72,Speaker_01,0.9,آڈ ہے بون رہ گا,False,False
+28,141.72,143.72,Speaker_00,0.9,ایک سکن رکیے جی,False,False
+29,143.72,145.72,Speaker_01,0.9,میں چک کر کے باتاتی ہوں,False,False
+30,145.72,147.72,Speaker_00,0.9,بیم آڈ,False,False
+31,147.72,149.72,Speaker_01,0.9,ایک سکن جی,False,False
+32,149.72,151.72,Speaker_00,0.9,بیم,False,False
+33,153.72,155.72,Speaker_01,0.9,جی,False,False
+34,155.72,157.72,Speaker_00,0.9,بیم آڈ ہے,False,False
+35,157.72,159.72,Speaker_01,0.9,کئی بات نہیں,False,False
+36,159.72,161.72,Speaker_00,0.9,آپ سیودی پیلے لی جی,False,False
+37,161.72,163.72,Speaker_01,0.9,آپ کلیش کر دی جی,False,False
+38,163.72,165.72,Speaker_00,0.9,تو بے کا,False,False
+39,165.72,167.72,Speaker_01,0.9,آپ OK مرن,False,False
+40,167.72,169.72,Speaker_00,0.9,کر دی جی,False,False
+41,169.72,171.72,Speaker_01,0.9,باگلور باہلہ ادرس,False,False
+42,171.72,173.72,Speaker_00,0.9,OK مرن,False,False
+43,173.72,175.72,Speaker_01,0.9,آپ داگلور کارض باہجہ ہے,False,False
+44,175.72,177.72,Speaker_00,0.9,ایک سکن,False,False
+45,177.72,179.72,Speaker_01,0.9,باگلور باہلہ ادرس,False,False
+46,179.72,181.72,Speaker_00,0.9,نمبر 17 آنہ پورنےشوری نگر,False,True
+47,181.72,185.72,Speaker_01,0.9,پسٹ مین پسٹ کروس مدلہ پالیا نگر باہوی روڑ باگلور پینکورٹ,False,False
+48,185.72,187.72,Speaker_00,0.9,17,False,True
+49,187.72,189.72,Speaker_01,0.9,yes madam,False,False
+50,189.72,191.72,Speaker_00,0.9,yes madam,False,False
+51,191.72,193.72,Speaker_01,0.9,quality,False,False
+52,193.72,195.72,Speaker_00,0.9,quality case,False,False
+53,195.72,197.72,Speaker_01,0.9,madam,False,False
+54,197.72,199.72,Speaker_00,0.9,yes madam,False,False
+55,199.72,201.72,Speaker_01,0.9,پسٹھ نہیں آئے گے تو وہ ریٹم کرتا ہے,False,False
+56,201.72,203.72,Speaker_00,0.9,absolutely,False,False
+57,203.72,205.72,Speaker_01,0.9,yes,False,False
+58,205.72,207.72,Speaker_00,0.9,OK madam,False,False
+59,207.72,209.72,Speaker_01,0.9,done,False,False
+60,209.72,211.72,Speaker_00,0.9,yes,False,False
+61,211.72,213.72,Speaker_01,0.9,total 1250 روپے ہو رہای جی,False,True
+62,213.72,215.72,Speaker_00,0.9,95 روپے سیوڈی چاہج انگگرودے,False,True
+63,215.72,217.72,Speaker_01,0.9,OK madam,False,False
+64,217.72,219.72,Speaker_00,0.9,OK کر دی,False,False
+65,219.72,221.72,Speaker_01,0.9,تو فائنل کر دی جی,False,False
+66,221.72,223.72,Speaker_00,0.9,OK madam,False,False
+67,223.72,225.72,Speaker_01,0.9,yes madam,False,False
+68,225.72,227.72,Speaker_00,0.9,very much,False,False
+69,227.72,229.72,Speaker_01,0.9,order place,False,False
+70,229.72,231.72,Speaker_00,0.9,OK thank you madam,False,False

@@ -149,11 +149,7 @@ async def list_cases(
         count_q = count_q.where(Case.category == category)
     if search:
         pattern = f"%{search}%"
-        search_filter = or_(
-            Case.title.ilike(pattern),
-            Case.description.ilike(pattern),
-            Case.case_number.ilike(pattern),
-        )
+        search_filter = Case.case_number.ilike(pattern)
         q = q.where(search_filter)
         count_q = count_q.where(search_filter)
 

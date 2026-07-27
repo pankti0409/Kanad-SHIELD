@@ -97,8 +97,38 @@ class WhisperTranscriptionEngine:
                         return float(frames) / rate
         except Exception:
             pass
+        # Try pydub for accurate duration across all formats
+        try:
+            from pydub import AudioSegment
+            audio = AudioSegment.from_file(str(path))
+            return len(audio) / 1000.0
+        except Exception:
+            pass
         size_bytes = path.stat().st_size
         return min(max(3.0, round(size_bytes / 32000.0, 1)), 7200.0)
+
+    def _preprocess_audio(self, path: Path) -> Path:
+        """
+        Convert audio to 16kHz mono WAV for reliable Whisper transcription.
+        Returns path to the (possibly converted) WAV file.
+        Falls back to the original file if pydub is unavailable.
+        """
+        # Already a WAV — just return as-is
+        if path.suffix.lower() in (".wav", ".wave"):
+            return path
+
+        try:
+            from pydub import AudioSegment
+            audio = AudioSegment.from_file(str(path))
+            # Normalize: 16kHz mono
+            audio = audio.set_frame_rate(16000).set_channels(1)
+            wav_path = path.with_suffix(".converted.wav")
+            audio.export(str(wav_path), format="wav")
+            logger.info("audio_preprocessed", original=path.name, output=wav_path.name)
+            return wav_path
+        except Exception as exc:
+            logger.warning("audio_preprocess_failed_fallback", error=str(exc), path=str(path))
+            return path  # Fall back to original file, let Whisper attempt it directly
 
     # ── Transcription backends ────────────────────────────────────────────
 
@@ -225,6 +255,7 @@ class WhisperTranscriptionEngine:
         """
         Transcribe audio file. Returns segments with timestamps and metadata.
         Runs blocking model inference in a thread executor to avoid blocking the event loop.
+        Automatically preprocesses non-WAV audio (MP3, M4A, OGG, etc.) to 16kHz mono WAV.
         """
         path = Path(audio_path)
         if not path.exists():
@@ -235,10 +266,13 @@ class WhisperTranscriptionEngine:
 
         loop = asyncio.get_event_loop()
 
+        # Preprocess audio: convert to 16kHz mono WAV for best Whisper compatibility
+        processed_path = await loop.run_in_executor(None, self._preprocess_audio, path)
+
         # Try faster-whisper first
         if HAS_FASTER_WHISPER:
             result = await loop.run_in_executor(
-                None, self._transcribe_faster_whisper, path, lang
+                None, self._transcribe_faster_whisper, processed_path, lang
             )
             if result.get("full_text"):
                 return self._format_result(result, duration)
@@ -246,18 +280,21 @@ class WhisperTranscriptionEngine:
         # Try openai-whisper
         if HAS_OPENAI_WHISPER:
             result = await loop.run_in_executor(
-                None, self._transcribe_openai_whisper, path, lang
+                None, self._transcribe_openai_whisper, processed_path, lang
             )
             if result.get("full_text"):
                 return self._format_result(result, duration)
 
-        # Try SpeechRecognition (WAV only)
-        if HAS_SPEECH_RECOGNITION and path.suffix.lower() in (".wav", ".wave"):
-            result = await loop.run_in_executor(
-                None, self._transcribe_speech_recognition, path
-            )
-            if result.get("full_text"):
-                return self._format_result(result, duration)
+        # Try SpeechRecognition — use processed WAV path
+        if HAS_SPEECH_RECOGNITION:
+            sr_path = processed_path if processed_path.suffix.lower() in (".wav", ".wave") else path
+            if sr_path.suffix.lower() in (".wav", ".wave"):
+                result = await loop.run_in_executor(
+                    None, self._transcribe_speech_recognition, sr_path
+                )
+                if result.get("full_text"):
+                    return self._format_result(result, duration)
+
 
         # No speech detected / no backend available
         logger.warning("no_transcription_backend_succeeded", audio=str(path))

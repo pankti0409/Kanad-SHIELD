@@ -6,7 +6,7 @@ from typing import Optional, List, Dict, Any
 from fastapi import APIRouter, Request, status
 from pydantic import BaseModel
 
-from app.auth.dependencies import CurrentUser
+from app.auth.dependencies import CurrentUser, DBSession
 from app.ai.copilot.copilot_engine import CopilotEngine
 
 router = APIRouter(prefix="/copilot", tags=["AI Copilot"])
@@ -42,6 +42,7 @@ async def chat_with_copilot(
     body: CopilotChatRequest,
     current_user: CurrentUser,
     request: Request,
+    db: DBSession,
 ) -> CopilotChatResponse:
     """
     Generate context-aware AI Copilot answer using Gemini / LLM engine.
@@ -50,6 +51,7 @@ async def chat_with_copilot(
     engine = CopilotEngine()
     res = await engine.generate_response(
         query=body.query,
+        session=db,
         case_id=body.case_id,
         recording_id=body.recording_id,
         chat_history=body.chat_history,

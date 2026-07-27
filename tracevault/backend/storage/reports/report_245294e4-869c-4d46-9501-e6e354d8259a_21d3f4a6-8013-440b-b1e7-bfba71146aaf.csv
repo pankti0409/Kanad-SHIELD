@@ -1,0 +1,5 @@
+Sequence,Start (s),End (s),Speaker,Confidence,Text,Has Threat,Has Entity
+0,300.0,302.0,Speaker_00,0.9,आदनाम वेरोगसे.,False,False
+1,303.0,305.0,Speaker_01,0.9,ज़ाद वेर वेर पस वेरपस वेर वेर पसे.,False,False
+2,305.0,306.5,Speaker_00,0.9,आदन सालेदा में.,False,False
+3,306.5,308.0,Speaker_01,0.9,सूरेज पाी बेर पसे.,False,False

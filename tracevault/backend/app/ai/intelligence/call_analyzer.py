@@ -56,9 +56,11 @@ class CallAnalyzer:
 
             import google.generativeai as genai
             genai.configure(api_key=api_key)
-            self._gemini_client = genai.GenerativeModel("gemini-1.5-flash")
+            # gemini-2.0-flash is the current stable model (gemini-1.5-flash was deprecated)
+            gemini_model = "gemini-2.0-flash"
+            self._gemini_client = genai.GenerativeModel(gemini_model)
             self._gemini_ready = True
-            logger.info("gemini_client_ready")
+            logger.info("gemini_client_ready", model=gemini_model)
         except Exception as exc:
             logger.warning("gemini_init_failed", error=str(exc))
             self._gemini_ready = False
@@ -128,7 +130,7 @@ CRITICAL RULES:
             if text.startswith("```"):
                 text = re.sub(r"```(?:json)?\s*", "", text).rstrip("```").strip()
             data = json.loads(text)
-            data["model_used"] = "gemini-1.5-flash"
+            data["model_used"] = "gemini-2.0-flash"
             return data
         except json.JSONDecodeError as exc:
             logger.warning("gemini_json_parse_failed", error=str(exc))
