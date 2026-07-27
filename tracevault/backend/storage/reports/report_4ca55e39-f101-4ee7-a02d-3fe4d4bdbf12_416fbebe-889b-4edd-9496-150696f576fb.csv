@@ -1,0 +1,66 @@
+Sequence,Start (s),End (s),Speaker,Confidence,Text,Has Threat,Has Entity
+0,0.0,4.56,Speaker_00,0.9,Catch the food don Kapichi,False,False
+1,4.56,8.56,Speaker_01,0.9,Kapichi,False,False
+2,8.56,12.6,Speaker_00,0.9,Kapichi,False,False
+3,12.6,15.96,Speaker_01,0.9,Kapizi,False,False
+4,15.96,17.88,Speaker_00,0.9,Kapichi,False,False
+5,17.88,20.12,Speaker_01,0.9,Kapiji,False,False
+6,20.12,24.36,Speaker_00,0.9,Kap condi,False,False
+7,24.36,26.96,Speaker_01,0.9,called,False,False
+8,26.96,29.96,Speaker_00,0.9,electrical,False,False
+9,59.96,63.34,Speaker_01,0.9,भर ग़ू वु भो बैू केा?,False,False
+10,63.34,64.26,Speaker_00,0.9,"भुर कauftीःिवुदुform, ाूगल மुदूदुद्गुुदु यलॹ ln",False,False
+11,67.26,69.26,Speaker_01,0.9,नेपैु लिखटो वादुुद नह söy电 Declaration,False,False
+12,69.26,75.86,Speaker_00,0.9,प目 reasonable,False,False
+13,79.06,84.88,Speaker_01,0.9,िहूरे दार्पिया Ohh,False,False
+14,85.16,91.32,Speaker_00,0.9,चहहलं न पपाशपिया,False,False
+15,92.24,97.16,Speaker_01,0.9,र� coordinates,False,False
+16,97.16,102.16,Speaker_00,0.9,4th am Jhagjivan Halt Bhushpur Arav Bihar 802-312 India,False,True
+17,102.16,103.16,Speaker_01,0.9,This is the same.,False,False
+18,103.16,104.16,Speaker_00,0.9,Yes.,False,False
+19,104.16,105.16,Speaker_01,0.9,Okay.,False,False
+20,105.16,106.16,Speaker_00,0.9,This is the same.,False,False
+21,106.16,107.16,Speaker_01,0.9,Okay.,False,False
+22,107.16,108.16,Speaker_00,0.9,Okay.,False,False
+23,108.16,110.16,Speaker_01,0.9,And what will you do with the payment?,False,False
+24,110.16,112.16,Speaker_00,0.9,What is the count delivery?,False,False
+25,113.16,115.16,Speaker_01,0.9,Are you doing on COD?,False,False
+26,115.16,116.16,Speaker_00,0.9,Yes.,False,False
+27,119.16,121.16,Speaker_01,0.9,What do you say?,False,False
+28,121.16,122.16,Speaker_00,0.9,Okay.,False,False
+29,122.16,125.16,Speaker_01,0.9,I was asking you that are you doing on COD?,False,False
+30,127.16,128.16,Speaker_00,0.9,I don't understand.,False,False
+31,128.16,129.16,Speaker_01,0.9,Sorry.,False,False
+32,129.16,136.16,Speaker_00,0.9,I was asking you that you will give cash on delivery or you will get the money to get the money.,False,False
+33,136.16,137.16,Speaker_01,0.9,Yes.,False,False
+34,137.16,138.16,Speaker_00,0.9,Okay.,False,False
+35,138.16,139.16,Speaker_01,0.9,Okay.,False,False
+36,139.16,141.16,Speaker_00,0.9,Total is 969 rupees.,False,True
+37,141.16,144.16,Speaker_01,0.9,And 95 rupees is COD charge included.,False,True
+38,144.16,146.16,Speaker_00,0.9,Okay.,False,False
+39,146.16,147.16,Speaker_01,0.9,Okay.,False,False
+40,147.16,149.16,Speaker_00,0.9,Okay.,False,False
+41,149.16,154.16,Speaker_01,0.9,So what do I order for you to pay the order?,False,False
+42,154.16,155.16,Speaker_00,0.9,Yes.,False,False
+43,155.16,156.16,Speaker_01,0.9,You are right.,False,False
+44,156.16,157.16,Speaker_00,0.9,Yes.,False,False
+45,157.16,158.16,Speaker_01,0.9,Okay.,False,False
+46,158.16,159.16,Speaker_00,0.9,Okay.,False,False
+47,159.16,160.16,Speaker_01,0.9,Okay.,False,False
+48,160.16,161.16,Speaker_00,0.9,Yes.,False,False
+49,161.16,162.16,Speaker_01,0.9,So final.,False,False
+50,162.16,163.16,Speaker_00,0.9,You order.,False,False
+51,163.16,164.16,Speaker_01,0.9,Yes.,False,False
+52,164.16,165.16,Speaker_00,0.9,I will give you the final.,False,False
+53,165.16,167.16,Speaker_01,0.9,Thank you very much.,False,False
+54,167.16,169.16,Speaker_00,0.9,I would have ordered.,False,False
+55,169.16,171.16,Speaker_01,0.9,You will get 15 days in order.,False,True
+56,171.16,172.16,Speaker_00,0.9,Okay.,False,False
+57,172.16,173.16,Speaker_01,0.9,Okay.,False,False
+58,173.16,174.16,Speaker_00,0.9,Okay.,False,False
+59,174.16,175.16,Speaker_01,0.9,Okay.,False,False
+60,175.16,176.16,Speaker_00,0.9,Thank you.,False,False
+61,176.16,177.16,Speaker_01,0.9,Okay.,False,False
+62,177.16,178.16,Speaker_00,0.9,Thank you.,False,False
+63,178.16,179.16,Speaker_01,0.9,Thanks.,False,False
+64,179.16,180.16,Speaker_00,0.9,Have a good day.,False,False

@@ -152,10 +152,7 @@ export function RecordingsPage() {
     setIsUploading(true);
     setProcessingQueue((prev) => [...initialQueue, ...prev]);
 
-    for (let i = 0; i < fileList.length; i++) {
-      const file = fileList[i];
-      const queueId = initialQueue[i].id;
-
+    const processSingleFile = async (file: File, queueId: string) => {
       const updateItem = (patch: Partial<ProcessingCallItem>) => {
         setProcessingQueue((prev) =>
           prev.map((item) => (item.id === queueId ? { ...item, ...patch } : item))
@@ -230,7 +227,6 @@ export function RecordingsPage() {
               threatCount: r.threat_count || 0,
             };
 
-            // Map backend analysis fields to frontend CallAnalysis shape
             const backendAnalysis = pollRes.analysis;
             const mappedAnalysis = backendAnalysis ? {
               transcriptDateTime: backendAnalysis.transcriptDateTime || new Date(r.created_at).toLocaleString(),
@@ -256,7 +252,6 @@ export function RecordingsPage() {
             };
 
             addRecording(newRec, pollRes.transcript?.segments || [], mappedAnalysis);
-
             updateItem({ status: "Completed", progress: 100 });
           } else if (status === "failed" || status === "cancelled") {
             isDone = true;
@@ -273,7 +268,14 @@ export function RecordingsPage() {
         const detailMsg = err?.detail || err?.error || err?.message || "Failed to process audio recording.";
         updateItem({ status: "Error", progress: 0, error: detailMsg });
       }
-    }
+    };
+
+    // Run all uploads concurrently in parallel
+    await Promise.all(
+      fileList.map((file, idx) => processSingleFile(file, initialQueue[idx].id))
+    );
+
+    setIsUploading(false);
   };
 
   return (

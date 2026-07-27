@@ -223,7 +223,7 @@ class WhisperTranscriptionEngine:
             logger.warning("openai_whisper_transcribe_failed", error=str(exc))
             return {}
 
-    def _transcribe_speech_recognition(self, path: Path) -> dict[str, Any]:
+    def _transcribe_speech_recognition(self, path: Path, language: Optional[str] = None) -> dict[str, Any]:
         if not HAS_SPEECH_RECOGNITION:
             return {}
         try:
@@ -231,11 +231,21 @@ class WhisperTranscriptionEngine:
             r = sr.Recognizer()
             with sr.AudioFile(str(path)) as source:
                 audio_data = r.record(source)
-                text = r.recognize_google(audio_data)
+                
+                lang_code = "en-US"
+                if language and language != "auto":
+                    lang_map = {
+                        "en": "en-US", "hi": "hi-IN", "es": "es-ES", "fr": "fr-FR",
+                        "de": "de-DE", "it": "it-IT", "zh": "zh-CN", "ja": "ja-JP",
+                        "ru": "ru-RU", "pt": "pt-BR", "ar": "ar-SA",
+                    }
+                    lang_code = lang_map.get(language.lower()[:2], language)
+                
+                text = r.recognize_google(audio_data, language=lang_code)
             duration = self._probe_audio_duration(path)
             return {
                 "full_text": text.strip(),
-                "detected_language": "en",
+                "detected_language": language if (language and language != "auto") else "en",
                 "duration": duration,
                 "confidence": 0.80,
                 "segments": [{"sequence_number": 0, "start": 0.0, "end": duration, "text": text.strip(), "confidence": 0.80}],
@@ -277,24 +287,23 @@ class WhisperTranscriptionEngine:
             if result.get("full_text"):
                 return self._format_result(result, duration)
 
-        # Try openai-whisper
+        # Try SpeechRecognition next (much faster online fallback than CPU-based openai-whisper)
+        if HAS_SPEECH_RECOGNITION:
+            sr_path = processed_path if processed_path.suffix.lower() in (".wav", ".wave") else path
+            if sr_path.suffix.lower() in (".wav", ".wave"):
+                result = await loop.run_in_executor(
+                    None, self._transcribe_speech_recognition, sr_path, lang
+                )
+                if result.get("full_text"):
+                    return self._format_result(result, duration)
+
+        # Try openai-whisper as last resort
         if HAS_OPENAI_WHISPER:
             result = await loop.run_in_executor(
                 None, self._transcribe_openai_whisper, processed_path, lang
             )
             if result.get("full_text"):
                 return self._format_result(result, duration)
-
-        # Try SpeechRecognition — use processed WAV path
-        if HAS_SPEECH_RECOGNITION:
-            sr_path = processed_path if processed_path.suffix.lower() in (".wav", ".wave") else path
-            if sr_path.suffix.lower() in (".wav", ".wave"):
-                result = await loop.run_in_executor(
-                    None, self._transcribe_speech_recognition, sr_path
-                )
-                if result.get("full_text"):
-                    return self._format_result(result, duration)
-
 
         # No speech detected / no backend available
         logger.warning("no_transcription_backend_succeeded", audio=str(path))
