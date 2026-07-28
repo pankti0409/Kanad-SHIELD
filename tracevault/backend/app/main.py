@@ -76,11 +76,11 @@ def create_application() -> FastAPI:
     # --------------------------------------------------------
     # Middleware Stack (order matters — outer to inner)
     # --------------------------------------------------------
-
     # 1. CORS
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.security.ALLOWED_ORIGINS,
+        allow_origin_regex="https?://.*",
         allow_credentials=True,
         allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
         allow_headers=["*"],

@@ -11,7 +11,14 @@ import axios, {
 } from "axios";
 import { ApiError } from "@/types";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+const getBaseUrl = () => {
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL;
+  }
+  const hostname = typeof window !== "undefined" ? window.location.hostname : "localhost";
+  return `http://${hostname}:8000`;
+};
+const BASE_URL = getBaseUrl();
 
 // Token storage keys
 const ACCESS_TOKEN_KEY = "tv_access_token";

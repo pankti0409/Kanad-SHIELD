@@ -1,0 +1,99 @@
+{
+  "metadata": {
+    "filename": "call-recording-1782130919643.wav",
+    "sha256_hash": "401158d4f89d47907ca96b950c49282ea3db38de65117be224f0532a09e7a886",
+    "duration_seconds": 307.40725,
+    "warrant_number": "WR-2026-9901",
+    "case_id": "UNASSIGNED",
+    "language": "en"
+  },
+  "analysis": {
+    "summary": "Call transcript processed (58 words). No explicit threat indicators detected.",
+    "primary_topic": "General Conversation",
+    "threat_present": false,
+    "threat_category": "none",
+    "risk_score": 0.0,
+    "risk_level": "low",
+    "entities": [],
+    "keywords": [],
+    "locations_discussed": [],
+    "times_discussed": []
+  },
+  "segments": [
+    {
+      "id": "094021d5-6d69-4f18-9d64-3dc7dd2bb806",
+      "transcript_id": "",
+      "speaker_label": "Speaker_00",
+      "sequence_number": 0,
+      "start_time": 0.0,
+      "end_time": 70.32,
+      "text": "hello namaste bhaiya main Ashish bol raha hun Lakshmi factory se kaise",
+      "confidence": 0.8,
+      "has_threat": false,
+      "has_entity": false,
+      "has_keyword": false,
+      "word_count": 12,
+      "character_count": 70
+    },
+    {
+      "id": "ee2cb170-cadf-4230-b5a7-d6632d6eda3a",
+      "transcript_id": "",
+      "speaker_label": "Speaker_01",
+      "sequence_number": 1,
+      "start_time": 70.32,
+      "end_time": 128.59,
+      "text": "hain aap sab badhiya hai bhai ekadam maje mein aap kya kam",
+      "confidence": 0.8,
+      "has_threat": false,
+      "has_entity": false,
+      "has_keyword": false,
+      "word_count": 12,
+      "character_count": 58
+    },
+    {
+      "id": "a9aa86a1-05cc-4431-8d15-439897e35cfd",
+      "transcript_id": "",
+      "speaker_label": "Speaker_00",
+      "sequence_number": 2,
+      "start_time": 128.59,
+      "end_time": 191.88,
+      "text": "karte hain kapde ka kam hai aapka clothing brand Shuru Kiya Hai",
+      "confidence": 0.8,
+      "has_threat": false,
+      "has_entity": false,
+      "has_keyword": false,
+      "word_count": 12,
+      "character_count": 63
+    },
+    {
+      "id": "480ad00f-794d-48e6-9dc0-8a3ebe16f899",
+      "transcript_id": "",
+      "speaker_label": "Speaker_01",
+      "sequence_number": 3,
+      "start_time": 191.88,
+      "end_time": 248.14,
+      "text": "yah to bahut acchi baat hai to aap khud ke design banate",
+      "confidence": 0.8,
+      "has_threat": false,
+      "has_entity": false,
+      "has_keyword": false,
+      "word_count": 12,
+      "character_count": 56
+    },
+    {
+      "id": "465211a0-cfd9-49e3-b917-81a46a0e54fa",
+      "transcript_id": "",
+      "speaker_label": "Speaker_00",
+      "sequence_number": 4,
+      "start_time": 248.14,
+      "end_time": 307.41,
+      "text": "hain ya FIR fabric Lekar manufacturing Karvate Hain To Itna",
+      "confidence": 0.8,
+      "has_threat": false,
+      "has_entity": false,
+      "has_keyword": false,
+      "word_count": 10,
+      "character_count": 59
+    }
+  ]
+}

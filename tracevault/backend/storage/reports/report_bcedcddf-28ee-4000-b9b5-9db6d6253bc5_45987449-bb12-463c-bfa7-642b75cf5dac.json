@@ -1,0 +1,41 @@
+{
+  "metadata": {
+    "filename": "call-recording-1782130060766.wav",
+    "sha256_hash": "ed80695c17b667a03abb17250a7c5b9fdc7bff0c4239b71bd13f16917ce502d3",
+    "duration_seconds": 230.0,
+    "warrant_number": "WR-2026-9901",
+    "case_id": "UNASSIGNED",
+    "language": "en"
+  },
+  "analysis": {
+    "summary": "Call transcript processed (93 words). No explicit threat indicators detected.",
+    "primary_topic": "General Conversation",
+    "threat_present": false,
+    "threat_category": "none",
+    "risk_score": 0.0,
+    "risk_level": "low",
+    "entities": [],
+    "keywords": [],
+    "locations_discussed": [
+      "bangalore"
+    ],
+    "times_discussed": []
+  },
+  "segments": [
+    {
+      "id": "6e41ec42-52f5-4074-8b19-0f5e1e98ef14",
+      "transcript_id": "",
+      "speaker_label": "Speaker_00",
+      "sequence_number": 0,
+      "start_time": 0.0,
+      "end_time": 230.0,
+      "text": "hello Kya Meri Baat Suno Ji se ho rahi hai namaste Sangeeta bol rahi hun bus stand Ansari Se aapane Achcha ji aapane Hamari site per card mein sari dala tha Koi dikkat I Thi kaun si madam sari add ki thi na main uske bare mein baat kar rahi hun aapka kaun sa hello hello check out problem Nahin hua hai koi baat nahin per Le Lijiye tension Nahin to order address number 17 Nagar first man first cross Mulla palaya Nagarbhavi road Bangalore PIN code 5 6 0 0 7 2",
+      "confidence": 0.8,
+      "has_threat": false,
+      "has_entity": true,
+      "has_keyword": true,
+      "word_count": 93,
+      "character_count": 460
+    }
+  ]
+}

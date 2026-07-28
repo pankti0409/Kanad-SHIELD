@@ -1,0 +1,6 @@
+Sequence,Start (s),End (s),Speaker,Confidence,Text,Has Threat,Has Entity
+0,0.0,70.32,Speaker_00,0.8,hello namaste bhaiya main Ashish bol raha hun Lakshmi factory se kaise,False,False
+1,70.32,128.59,Speaker_01,0.8,hain aap sab badhiya hai bhai ekadam maje mein aap kya kam,False,False
+2,128.59,191.88,Speaker_00,0.8,karte hain kapde ka kam hai aapka clothing brand Shuru Kiya Hai,False,False
+3,191.88,248.14,Speaker_01,0.8,yah to bahut acchi baat hai to aap khud ke design banate,False,False
+4,248.14,307.41,Speaker_00,0.8,hain ya FIR fabric Lekar manufacturing Karvate Hain To Itna,False,False

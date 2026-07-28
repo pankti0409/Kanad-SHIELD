@@ -228,6 +228,7 @@ class WhisperTranscriptionEngine:
             return {}
         try:
             import speech_recognition as sr
+            import re
             r = sr.Recognizer()
             with sr.AudioFile(str(path)) as source:
                 audio_data = r.record(source)
@@ -242,13 +243,61 @@ class WhisperTranscriptionEngine:
                     lang_code = lang_map.get(language.lower()[:2], language)
                 
                 text = r.recognize_google(audio_data, language=lang_code)
+            
+            raw_text = text.strip()
             duration = self._probe_audio_duration(path)
+
+            # Split into sentence-level segments
+            sentence_ends = re.compile(r'([.!?।]+)\s*')
+            parts = sentence_ends.split(raw_text)
+            sentences = []
+            for j in range(0, len(parts) - 1, 2):
+                sent = parts[j] + parts[j+1]
+                if sent.strip():
+                    sentences.append(sent.strip())
+            if len(parts) % 2 == 1 and parts[-1].strip():
+                sentences.append(parts[-1].strip())
+            
+            # If no sentence boundaries are present, split into chunks of ~12 words
+            has_punctuation = any(p in raw_text for p in ['.', '!', '?', '।'])
+            if not has_punctuation or not sentences:
+                words = raw_text.split()
+                chunk_size = 12
+                sentences = []
+                for idx in range(0, len(words), chunk_size):
+                    chunk = " ".join(words[idx:idx+chunk_size])
+                    if chunk:
+                        sentences.append(chunk)
+
+            if not sentences:
+                sentences = [raw_text]
+
+            # Generate segments with proportional timeline timestamps
+            total_chars = sum(len(s) for s in sentences)
+            current_time = 0.0
+            raw_segments = []
+            for idx, sent in enumerate(sentences):
+                char_ratio = len(sent) / total_chars if total_chars > 0 else 1.0
+                sent_duration = duration * char_ratio
+                
+                start_time = round(current_time, 2)
+                end_time = round(current_time + sent_duration, 2)
+                current_time = end_time
+                
+                raw_segments.append({
+                    "sequence_number": idx,
+                    "start": start_time,
+                    "end": end_time,
+                    "text": sent,
+                    "confidence": 0.80,
+                })
+
             return {
-                "full_text": text.strip(),
+                "full_text": raw_text,
                 "detected_language": language if (language and language != "auto") else "en",
                 "duration": duration,
                 "confidence": 0.80,
-                "segments": [{"sequence_number": 0, "start": 0.0, "end": duration, "text": text.strip(), "confidence": 0.80}],
+                "segments": raw_segments,
                 "model_used": "speech-recognition-google",
             }
         except Exception as exc:

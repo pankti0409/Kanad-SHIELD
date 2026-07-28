@@ -82,18 +82,17 @@ class SpeakerDiarizer:
         segments: list[dict],
     ) -> list[str]:
         """
-        Energy-based heuristic speaker assignment.
-        Uses RMS energy per segment — high energy vs low energy as proxy for 2 speakers.
-        Falls back to alternating 2-speaker assignment if librosa unavailable.
+        Extract Mel-Frequency Cepstral Coefficients (MFCCs) voice prints for each segment
+        and cluster them using multi-dimensional K-Means to identify distinct speakers.
+        Falls back to simple alternating speaker assignment if librosa is unavailable.
         """
         if not HAS_LIBROSA or len(segments) == 0:
-            # Simple alternating 2-speaker fallback
             return [f"Speaker_0{(i % 2)}" for i in range(len(segments))]
 
         try:
+            import numpy as np
             y, sr = librosa.load(audio_path, sr=16000, mono=True)
-            labels = []
-            energies = []
+            features = []
 
             for seg in segments:
                 start_s = seg.get("start", 0.0)
@@ -102,19 +101,57 @@ class SpeakerDiarizer:
                 end_idx = min(int(end_s * sr), len(y))
 
                 if start_idx >= end_idx or start_idx >= len(y):
-                    energies.append(0.0)
+                    features.append(np.zeros(13))
                 else:
                     chunk = y[start_idx:end_idx]
-                    rms = float(np.sqrt(np.mean(chunk ** 2)))
-                    energies.append(rms)
+                    # Pad short segments for valid FFT analysis
+                    if len(chunk) < 512:
+                        chunk = np.pad(chunk, (0, 512 - len(chunk)), 'constant')
+                    
+                    n_fft = min(512, len(chunk))
+                    hop_length = n_fft // 4
+                    
+                    # Extract 13 Mel-Frequency Cepstral Coefficients (MFCCs)
+                    mfcc = librosa.feature.mfcc(y=chunk, sr=sr, n_mfcc=13, n_fft=n_fft, hop_length=hop_length)
+                    # Average features across time frames to get segment voice print
+                    mfcc_mean = np.mean(mfcc, axis=1)
+                    features.append(mfcc_mean)
 
-            if len(energies) == 0:
+            if len(features) == 0:
                 return [f"Speaker_0{(i % 2)}" for i in range(len(segments))]
 
-            # Median split: above median = Speaker_01, below = Speaker_00
-            median_e = float(np.median(energies))
-            for e in energies:
-                labels.append("Speaker_01" if e >= median_e else "Speaker_00")
+            # Convert to matrix: shape (N, 13)
+            X = np.array(features)
+            N, D = X.shape
+
+            if N <= 2:
+                return [f"Speaker_0{i}" for i in range(N)]
+
+            # Multi-dimensional K-Means clustering (K=2)
+            c0 = X[np.argmin(np.sum(X, axis=1))]
+            c1 = X[np.argmax(np.sum(X, axis=1))]
+
+            if np.allclose(c0, c1):
+                return [f"Speaker_00" for _ in range(N)]
+
+            labels_idx = np.zeros(N, dtype=int)
+            for _ in range(15):  # Iterative convergence
+                d0 = np.sum((X - c0) ** 2, axis=1)
+                d1 = np.sum((X - c1) ** 2, axis=1)
+                new_labels = (d0 > d1).astype(int)
+
+                if np.array_equal(labels_idx, new_labels):
+                    break
+                labels_idx = new_labels
+
+                g0 = X[labels_idx == 0]
+                g1 = X[labels_idx == 1]
+                if len(g0) > 0:
+                    c0 = np.mean(g0, axis=0)
+                if len(g1) > 0:
+                    c1 = np.mean(g1, axis=0)
+
+            labels = [f"Speaker_0{labels_idx[i]}" for i in range(N)]
             return labels
 
         except Exception as exc:

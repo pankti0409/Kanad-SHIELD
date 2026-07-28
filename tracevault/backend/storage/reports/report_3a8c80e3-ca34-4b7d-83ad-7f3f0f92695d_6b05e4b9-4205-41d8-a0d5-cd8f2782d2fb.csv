@@ -1,0 +1,10 @@
+Sequence,Start (s),End (s),Speaker,Confidence,Text,Has Threat,Has Entity
+0,0.0,20.48,Speaker_00,0.8,hello kya meri baat Amarjeet ji se ho rahi hai ji namaste,False,False
+1,20.48,43.84,Speaker_01,0.8,Sangeeta bol rahi hun bus stand Ansari se boliye Achcha ji aapane,False,False
+2,43.84,63.96,Speaker_00,0.8,Hamari site per card mein sari dala tha Koi dikkat I Thi,False,False
+3,63.96,88.4,Speaker_01,0.8,kya dalte vah Jo aapane white soft Silk Pashmina Kashmiri print sari,False,False
+4,88.4,107.44,Speaker_00,0.8,add ki thi na Usi ke bare problem samajh Gai vyast ho,False,False
+5,107.44,130.8,Speaker_01,0.8,gaye the AAP koi baat nahin aapka order final address Bhojpur Ara,False,False
+6,130.8,156.31,Speaker_00,0.8,Bihar 802312 India payment cash on delivery yani Saman milane per paise,False,True
+7,156.31,178.23,Speaker_01,0.8,Denge na total 9695 COD charge included Hai To Kya main aapka,False,True
+8,178.23,184.7,Speaker_00,0.8,order pakka Samjho,False,False
