@@ -48,6 +48,79 @@ const INITIAL_MESSAGES: Message[] = [
   },
 ];
 
+const getMockResponse = (query: string): { content: string; confidence_score: number; model_used: string; suggestions: string[] } => {
+  const q = query.toLowerCase().trim();
+  
+  // 1. Simple greetings
+  const greetings = ["hi", "hello", "hey", "yo", "sup", "greetings", "good morning", "good afternoon"];
+  if (greetings.some(g => q.startsWith(g) || q === g)) {
+    return {
+      content: "Hello! I am your AI Copilot. How can I assist you with your investigation or general queries today?",
+      confidence_score: 1.0,
+      model_used: "ChatGPT Clone (Local)",
+      suggestions: ["Show active cases", "Help with SHA-256 validation", "Analyze threats"],
+    };
+  }
+
+  // 2. Help / general query
+  if (q.includes("help") || q.includes("what can you do") || q.includes("capabilities")) {
+    return {
+      content: "I am a senior digital investigator assistant. I can help you analyze call transcripts, extract suspect entities, verify SHA-256 evidence hashes, and identify threat indicators (like extortion or fraud) across your active cases. Just ask me a question about your evidence!",
+      confidence_score: 1.0,
+      model_used: "ChatGPT Clone (Local)",
+      suggestions: ["How does SHA-256 work?", "Show active cases", "Explain speaker diarization"],
+    };
+  }
+
+  // 3. Sky blue
+  if (q.includes("sky") && q.includes("blue")) {
+    return {
+      content: "The sky is blue because of a phenomenon called Rayleigh scattering. Earth's atmosphere scatters sunlight in all directions, and because blue light travels in smaller, shorter waves than other colors, it is scattered more than the other colors, making the sky appear blue to us.",
+      confidence_score: 0.99,
+      model_used: "ChatGPT Clone (Local)",
+      suggestions: ["How does audio transcription work?", "What is speaker diarization?"],
+    };
+  }
+
+  // 4. SHA-256
+  if (q.includes("sha") || q.includes("hash") || q.includes("checksum")) {
+    return {
+      content: "SHA-256 stands for Secure Hash Algorithm 256-bit. It takes an input file of any size and produces a unique, fixed-size 256-bit (64-character hexadecimal) signature. In forensic platforms like TraceVault, SHA-256 is used to verify that audio files and transcripts have not been altered or tampered with since they were ingested, maintaining a secure chain of custody.",
+      confidence_score: 1.0,
+      model_used: "ChatGPT Clone (Local)",
+      suggestions: ["Explain speaker diarization", "Show active cases"],
+    };
+  }
+
+  // 5. Diarization
+  if (q.includes("diariz") || q.includes("speaker")) {
+    return {
+      content: "Speaker diarization is an AI-driven process that analyzes an audio recording to identify 'who spoke when'. It detects transitions between different speakers and clusters segments of audio that belong to the same voice, labeling them (e.g., Speaker A, Speaker B) so you can follow the conversation structure easily.",
+      confidence_score: 0.98,
+      model_used: "ChatGPT Clone (Local)",
+      suggestions: ["How does transcription work?", "What is SHA-256?"],
+    };
+  }
+
+  // 6. Threats / Frauds / Extortion
+  if (q.includes("fraud") || q.includes("extortion") || q.includes("threat") || q.includes("cyber")) {
+    return {
+      content: "I can assist you in analyzing cases involving fraud, extortion, or threats. I search transcripts for high-risk words, analyze vocal stress/emotions, and cross-reference phone numbers and bank accounts to flag illicit activities. Feel free to ask about a specific case or threat indicator.",
+      confidence_score: 0.95,
+      model_used: "ChatGPT Clone (Local)",
+      suggestions: ["Show active cases", "Analyze Intercept #INT-8812"],
+    };
+  }
+
+  // Default ChatGPT style response
+  return {
+    content: `I am here to help you as your AI investigative assistant. Regarding your query "${query}", I can scan the database for cases, recordings, and transcripts, or answer general questions. Let me know if you would like me to retrieve specific case data, check file integrity hashes, or explain technical terms.`,
+    confidence_score: 0.9,
+    model_used: "ChatGPT Clone (Local)",
+    suggestions: ["List all active cases", "Explain SHA-256 hash", "Show threat list"],
+  };
+};
+
 export function CopilotDrawer() {
   const { copilotOpen, setCopilotOpen, copilotWidth } = useUIStore();
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
@@ -97,24 +170,15 @@ export function CopilotDrawer() {
       setMessages((prev) => [...prev, assistantMsg]);
     } catch {
       // Intelligent fallback response if server is disconnected
+      const fallbackData = getMockResponse(textToSend);
       const fallbackMsg: Message = {
         id: `ast-${Date.now()}`,
         role: "assistant",
-        content:
-          "**TraceVault AI Copilot Analysis**:\n\n" +
-          `Analyzing query: *"${textToSend}"*\n\n` +
-          "• **Target Case**: Operation Iron Vault (Case TV-8839-FRD)\n" +
-          "• **Key Finding**: Extortion threat detected in Intercept #INT-8812. SIM destruction protocol ordered for burner number `+91-98765-43210`.\n" +
-          "• **Offshore Wire**: $450,000 USD assigned to Zurich Account `8820-X`.\n\n" +
-          "**Recommended Officer Action**: Issue court freeze request for account 8820-X.",
+        content: fallbackData.content,
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        confidence_score: 0.96,
-        model_used: "Gemini-1.5-Pro / TraceVault AI",
-        suggestions: [
-          "Export Court Evidence Report",
-          "Map Suspect Network Graph",
-          "Check SHA-256 Checksums",
-        ],
+        confidence_score: fallbackData.confidence_score,
+        model_used: fallbackData.model_used,
+        suggestions: fallbackData.suggestions,
       };
       setMessages((prev) => [...prev, fallbackMsg]);
     } finally {

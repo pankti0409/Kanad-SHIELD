@@ -191,4 +191,4 @@ GOAL
 
 The AI Investigation Copilot should feel like a senior digital investigator with complete access to the authorised evidence stored in TraceVault.
 
-It should not merely generate responses—it should retrieve, reason over, correlate, and explain information from the system while remaining fully grounded in the underlying evidence.
+It should not merely generate responses—it should retrieve, reason over, correlate, and explain information from the system while remaining fully grounded in the underlying evidence.![alt text](image.png)

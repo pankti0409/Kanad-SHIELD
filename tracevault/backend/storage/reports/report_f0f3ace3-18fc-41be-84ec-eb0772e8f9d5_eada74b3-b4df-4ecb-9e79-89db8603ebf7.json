@@ -1,0 +1,84 @@
+{
+  "metadata": {
+    "filename": "videoplayback.mp3",
+    "sha256_hash": "33aae35cc930528edc383c6c675d3472a88815d53ee53651da5db70836baff71",
+    "duration_seconds": 58.0906875,
+    "warrant_number": "WR-2026-9901",
+    "case_id": "UNASSIGNED",
+    "language": "en"
+  },
+  "analysis": {
+    "summary": "Call transcript processed (40 words). No explicit threat indicators detected.",
+    "primary_topic": "General Conversation",
+    "threat_present": false,
+    "threat_category": "none",
+    "risk_score": 0.0,
+    "risk_level": "low",
+    "entities": [],
+    "keywords": [],
+    "locations_discussed": [],
+    "times_discussed": []
+  },
+  "segments": [
+    {
+      "id": "cfa535df-b07e-4fff-b89e-fd62e164076d",
+      "transcript_id": "",
+      "speaker_label": "Speaker_00",
+      "sequence_number": 0,
+      "start_time": 0.0,
+      "end_time": 14.59,
+      "text": "are you there map in love I am not drinking you mam",
+      "confidence": 0.8,
+      "has_threat": false,
+      "has_entity": false,
+      "has_keyword": false,
+      "word_count": 12,
+      "character_count": 51
+    },
+    {
+      "id": "6540bc10-d1d9-4acd-965f-df0def407569",
+      "transcript_id": "",
+      "speaker_label": "Speaker_01",
+      "sequence_number": 1,
+      "start_time": 14.59,
+      "end_time": 31.19,
+      "text": "have to press to this is called connect it's a lights Bank",
+      "confidence": 0.8,
+      "has_threat": false,
+      "has_entity": false,
+      "has_keyword": false,
+      "word_count": 12,
+      "character_count": 58
+    },
+    {
+      "id": "0c921d55-f800-4d24-86f7-f24c8ecd309d",
+      "transcript_id": "",
+      "speaker_label": "Speaker_00",
+      "sequence_number": 2,
+      "start_time": 31.19,
+      "end_time": 52.37,
+      "text": "you right debit card that you without knowledge and without registration I",
+      "confidence": 0.8,
+      "has_threat": false,
+      "has_entity": false,
+      "has_keyword": false,
+      "word_count": 12,
+      "character_count": 74
+    },
+    {
+      "id": "a3a44238-504c-4ca1-b9cf-403535757da6",
+      "transcript_id": "",
+      "speaker_label": "Speaker_01",
+      "sequence_number": 3,
+      "start_time": 52.37,
+      "end_time": 58.09,
+      "text": "am telling you ma'am",
+      "confidence": 0.8,
+      "has_threat": false,
+      "has_entity": false,
+      "has_keyword": false,
+      "word_count": 4,
+      "character_count": 20
+    }
+  ]
+}

@@ -16,10 +16,12 @@ import {
   User,
   MoreVertical,
   ArrowUpDown,
+  XCircle,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Case, CasePriority, CaseStatus } from "@/types";
 import { cn } from "@/lib/utils";
+import { api } from "@/api/client";
 
 interface ExtendedCase extends Case {
   minister?: string;
@@ -80,15 +82,70 @@ export function CasesPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const [selectedPriority, setSelectedPriority] = useState<string>("all");
-  const [selectedMinister, setSelectedMinister] = useState<string>("all");
 
-  const filteredCases = MOCK_CASES.filter((c) => {
+  const [cases, setCases] = useState<ExtendedCase[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // New Case Form State
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newCaseTitle, setNewCaseTitle] = useState("");
+  const [newCaseDescription, setNewCaseDescription] = useState("");
+  const [newCasePriority, setNewCasePriority] = useState("medium");
+  const [newCaseCategory, setNewCaseCategory] = useState("general");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const fetchCases = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get<any>("/cases");
+      if (res && res.items && res.items.length > 0) {
+        setCases(res.items);
+      } else {
+        setCases(MOCK_CASES);
+      }
+    } catch (err) {
+      console.error("Failed to fetch cases", err);
+      setCases(MOCK_CASES);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchCases();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newCaseTitle.trim()) return;
+    setIsSubmitting(true);
+    try {
+      await api.post("/cases", {
+        title: newCaseTitle,
+        description: newCaseDescription,
+        priority: newCasePriority,
+        category: newCaseCategory,
+      });
+      setNewCaseTitle("");
+      setNewCaseDescription("");
+      setNewCasePriority("medium");
+      setNewCaseCategory("general");
+      setIsModalOpen(false);
+      await fetchCases();
+    } catch (err) {
+      console.error("Failed to create case", err);
+      alert("Error: Failed to create case. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const filteredCases = cases.filter((c) => {
     // Search using search numbers (case_number) only
     const matchesSearch = c.case_number.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = selectedStatus === "all" || c.status === selectedStatus;
     const matchesPriority = selectedPriority === "all" || c.priority === selectedPriority;
-    const matchesMinister = selectedMinister === "all" || c.minister === selectedMinister;
-    return matchesSearch && matchesStatus && matchesPriority && matchesMinister;
+    return matchesSearch && matchesStatus && matchesPriority;
   });
 
   return (
@@ -101,7 +158,10 @@ export function CasesPage() {
             Manage investigation cases, digital chain of custody, and team assignments.
           </p>
         </div>
-        <button className="px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg text-xs font-semibold shadow-glow-primary transition-all flex items-center gap-2">
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg text-xs font-semibold shadow-glow-primary transition-all flex items-center gap-2"
+        >
           <Plus className="w-4 h-4" />
           <span>New Case</span>
         </button>
@@ -121,17 +181,6 @@ export function CasesPage() {
         </div>
 
         <div className="flex items-center gap-2 w-full sm:w-auto">
-          {/* Minister Filter */}
-          <select
-            value={selectedMinister}
-            onChange={(e) => setSelectedMinister(e.target.value)}
-            className="bg-card border border-border text-xs text-foreground rounded-lg px-3 py-1.5 outline-none"
-          >
-            <option value="all">All Ministers</option>
-            <option value="amit_shah">Hon. Amit Shah (Home Affairs)</option>
-            <option value="rajnath_singh">Hon. Rajnath Singh (Defence)</option>
-            <option value="nirmala_sitharaman">Hon. Nirmala Sitharaman (Finance)</option>
-          </select>
 
           {/* Status Filter */}
           <select
@@ -208,6 +257,103 @@ export function CasesPage() {
           </Link>
         ))}
       </div>
+
+      {/* New Case Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-card border border-border rounded-xl shadow-2xl w-full max-w-md overflow-hidden"
+          >
+            <div className="px-5 py-4 border-b border-border flex items-center justify-between bg-muted/20">
+              <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+                <FolderOpen className="w-4 h-4 text-primary" />
+                Create New Case
+              </h3>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="p-1 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-all"
+              >
+                <XCircle className="w-4 h-4" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleSubmit} className="p-5 space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-muted-foreground">Case Title *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Operation Golden Ring"
+                  value={newCaseTitle}
+                  onChange={(e) => setNewCaseTitle(e.target.value)}
+                  className="w-full bg-muted/40 border border-border rounded-lg px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-primary"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-muted-foreground">Description</label>
+                <textarea
+                  placeholder="Provide description of the investigation..."
+                  value={newCaseDescription}
+                  onChange={(e) => setNewCaseDescription(e.target.value)}
+                  rows={3}
+                  className="w-full bg-muted/40 border border-border rounded-lg px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-primary resize-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-muted-foreground">Priority</label>
+                  <select
+                    value={newCasePriority}
+                    onChange={(e) => setNewCasePriority(e.target.value)}
+                    className="w-full bg-muted/40 border border-border rounded-lg px-3 py-2 text-xs text-foreground outline-none focus:ring-1 focus:ring-primary font-medium"
+                  >
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                    <option value="critical">Critical</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-muted-foreground">Category</label>
+                  <select
+                    value={newCaseCategory}
+                    onChange={(e) => setNewCaseCategory(e.target.value)}
+                    className="w-full bg-muted/40 border border-border rounded-lg px-3 py-2 text-xs text-foreground outline-none focus:ring-1 focus:ring-primary font-medium"
+                  >
+                    <option value="general">General</option>
+                    <option value="fraud">Fraud</option>
+                    <option value="extortion">Extortion</option>
+                    <option value="narcotics">Narcotics</option>
+                    <option value="cyber">Cyber</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-border flex items-center justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-3 py-1.5 rounded-lg border border-border hover:bg-muted text-xs font-semibold transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting || !newCaseTitle.trim()}
+                  className="px-3 py-1.5 bg-primary text-white hover:bg-primary/90 disabled:opacity-50 rounded-lg text-xs font-semibold shadow-glow-primary transition-all flex items-center gap-1.5"
+                >
+                  {isSubmitting ? "Creating..." : "Create Case"}
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }

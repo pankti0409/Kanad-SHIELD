@@ -12,7 +12,6 @@ import {
   FileBarChart2,
   BarChart3,
   Settings,
-  Bell,
   ChevronLeft,
   ChevronRight,
   Lock,
@@ -77,7 +76,6 @@ export function Sidebar() {
   const { user, logout } = useAuthStore();
   const location = useLocation();
   const navigate = useNavigate();
-  const [notifCount] = React.useState(3);
 
   const isActive = (href: string) => {
     if (href === "/") return location.pathname === "/";
@@ -216,37 +214,6 @@ export function Sidebar() {
 
       {/* Bottom Section */}
       <div className="border-t border-sidebar-border p-2 space-y-0.5 flex-shrink-0">
-        {/* Notifications */}
-        <Link to="/notifications">
-          <div
-            className={cn(
-              "tv-nav-item relative",
-              sidebarCollapsed && "justify-center px-2"
-            )}
-          >
-            <div className="relative">
-              <Bell className="w-4 h-4 text-sidebar-foreground/60" />
-              {notifCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
-                  {notifCount > 9 ? "9+" : notifCount}
-                </span>
-              )}
-            </div>
-            <AnimatePresence>
-              {!sidebarCollapsed && (
-                <motion.span
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="text-sm font-medium"
-                >
-                  Notifications
-                </motion.span>
-              )}
-            </AnimatePresence>
-          </div>
-        </Link>
-
         {/* User Profile & Log Out */}
         <div className={cn(
           "flex items-center justify-between gap-2 px-2 py-2 rounded-lg",

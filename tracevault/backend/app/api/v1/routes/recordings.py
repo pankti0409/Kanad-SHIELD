@@ -31,6 +31,7 @@ router = APIRouter(prefix="/recordings", tags=["Recordings"])
 ALLOWED_EXTENSIONS = {
     ".wav", ".mp3", ".m4a", ".flac", ".ogg", ".opus",
     ".amr", ".wma", ".mp4", ".mkv", ".webm", ".3gp", ".aac",
+    ".mpeg",
 }
 
 MAX_FILE_SIZE_BYTES = 500 * 1024 * 1024  # 500 MB
@@ -547,7 +548,7 @@ async def upload_recording(
         ".flac": "audio/flac", ".ogg": "audio/ogg", ".opus": "audio/opus",
         ".aac": "audio/aac", ".wma": "audio/x-ms-wma", ".mp4": "video/mp4",
         ".mkv": "video/x-matroska", ".webm": "video/webm", ".3gp": "video/3gpp",
-        ".amr": "audio/amr",
+        ".amr": "audio/amr", ".mpeg": "video/mpeg",
     }
     mime_type = mime_map.get(suffix, "audio/octet-stream")
 

@@ -36,6 +36,7 @@ const SUPPORTED_FORMATS = [
   { ext: "AMR", desc: "Cellular Call Intercept Recording" },
   { ext: "MP4 / MKV", desc: "Call Video & Screen Capture" },
   { ext: "3GP", desc: "Legacy Mobile Intercept Format" },
+  { ext: "MPEG", desc: "MPEG Audio / Video Container" },
 ];
 
 interface RecordingUploadResponse {
@@ -357,7 +358,7 @@ export function RecordingsPage() {
         >
           <input
             type="file"
-            accept="audio/*,video/*,.wav,.mp3,.m4a,.flac,.ogg,.opus,.amr,.wma,.mp4,.mkv,.webm,.3gp,.aac"
+            accept="audio/*,video/*,.wav,.mp3,.m4a,.flac,.ogg,.opus,.amr,.wma,.mp4,.mkv,.webm,.3gp,.aac,.mpeg"
             multiple
             onChange={(e) => handleFileUpload(e.target.files)}
             onDragEnter={() => setIsDragging(true)}
@@ -377,7 +378,7 @@ export function RecordingsPage() {
                 Drop your call recording(s) here or <span className="text-primary underline">browse audio files</span>
               </h4>
               <p className="text-xs text-muted-foreground mt-1">
-                Supports: <span className="font-semibold text-foreground">.wav, .mp3, .m4a, .flac, .ogg, .opus, .amr, .mp4, .mkv, .3gp</span> up to 2 GB
+                Supports: <span className="font-semibold text-foreground">.wav, .mp3, .m4a, .flac, .ogg, .opus, .amr, .mp4, .mkv, .3gp, .mpeg</span> up to 2 GB
               </p>
             </div>
           </div>
@@ -505,23 +506,15 @@ export function RecordingsPage() {
             {recordings.map((rec) => (
               <div
                 key={rec.id}
-                className="p-4 rounded-xl border border-border bg-card/60 hover:bg-muted/30 transition-all space-y-2 relative group/item"
+                className="p-4 rounded-xl border border-border bg-card/60 hover:bg-muted/30 transition-all space-y-2 relative"
               >
-                <button
-                  onClick={() => deleteRecording(rec.id)}
-                  className="absolute top-4 right-4 p-1.5 text-muted-foreground hover:text-red-500 hover:bg-red-500/10 rounded-md transition-colors opacity-0 group-hover/item:opacity-100"
-                  title="Delete Recording"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-mono font-bold text-xs">
                       {rec.format}
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-foreground pr-8">{rec.filename}</h4>
+                      <h4 className="text-sm font-bold text-foreground">{rec.filename}</h4>
                       <div className="flex items-center gap-2 text-xs text-muted-foreground">
                         <span>{rec.duration}</span>
                         <span>•</span>
@@ -534,7 +527,7 @@ export function RecordingsPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 pr-8 sm:pr-0">
+                  <div className="flex items-center gap-2">
                     <span className="px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-500 text-xs font-semibold border border-emerald-500/20">
                       +{rec.snrBoostDb} dB SNR
                     </span>
@@ -546,6 +539,13 @@ export function RecordingsPage() {
                       className="px-3 py-1.5 bg-primary text-white text-xs font-semibold rounded-lg shadow-glow-primary hover:bg-primary/90 transition-all"
                     >
                       View Transcript
+                    </button>
+                    <button
+                      onClick={() => deleteRecording(rec.id)}
+                      className="p-1.5 text-muted-foreground hover:text-red-500 hover:bg-red-500/10 rounded-md transition-colors"
+                      title="Delete Recording"
+                    >
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                 </div>

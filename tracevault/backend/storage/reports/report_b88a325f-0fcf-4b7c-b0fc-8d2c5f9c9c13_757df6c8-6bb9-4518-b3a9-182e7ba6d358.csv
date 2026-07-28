@@ -1,0 +1,5 @@
+Sequence,Start (s),End (s),Speaker,Confidence,Text,Has Threat,Has Entity
+0,0.0,15.38,Speaker_00,0.8,are you there map in love I am not ring you ma'am,False,False
+1,15.38,32.96,Speaker_01,0.8,have to press to this is called connect it's a lots Bank,False,False
+2,32.96,55.25,Speaker_00,0.8,you right debit card that you without knowledge transition I am telling,False,False
+3,55.25,58.08,Speaker_01,0.8,you ma'am,False,False

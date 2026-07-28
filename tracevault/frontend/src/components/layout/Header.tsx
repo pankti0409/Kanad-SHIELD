@@ -12,7 +12,6 @@ import {
   Moon,
   Command,
   ShieldAlert,
-  Activity,
   ChevronDown,
 } from "lucide-react";
 import { useUIStore } from "@/stores/uiStore";
@@ -70,11 +69,6 @@ export function Header() {
 
       {/* Action Controls */}
       <div className="flex items-center gap-2">
-        {/* System Health Indicator */}
-        <div className="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-medium">
-          <Activity className="w-3 h-3 animate-pulse" />
-          <span>Pipeline Ready</span>
-        </div>
 
         {/* AI Copilot Toggle */}
         <motion.button

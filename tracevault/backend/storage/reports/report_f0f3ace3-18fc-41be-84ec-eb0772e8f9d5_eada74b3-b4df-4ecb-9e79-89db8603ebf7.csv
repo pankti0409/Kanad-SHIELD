@@ -1,0 +1,5 @@
+Sequence,Start (s),End (s),Speaker,Confidence,Text,Has Threat,Has Entity
+0,0.0,14.59,Speaker_00,0.8,are you there map in love I am not drinking you mam,False,False
+1,14.59,31.19,Speaker_01,0.8,have to press to this is called connect it's a lights Bank,False,False
+2,31.19,52.37,Speaker_00,0.8,you right debit card that you without knowledge and without registration I,False,False
+3,52.37,58.09,Speaker_01,0.8,am telling you ma'am,False,False

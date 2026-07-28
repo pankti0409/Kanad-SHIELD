@@ -1,0 +1,5 @@
+Sequence,Start (s),End (s),Speaker,Confidence,Text,Has Threat,Has Entity
+0,0.0,3.98,Speaker_00,0.8,Mujhe WhatsApp per Kisi Ne investment tips ke liye group mein add,False,False
+1,3.98,7.47,Speaker_01,0.8,kiya bola safe Hai RBI se approved Hai is app mein safely,False,False
+2,7.47,11.39,Speaker_00,0.8,invest karo Maine Apni bachat ka 2000 rupya Dal Diya unke bataya,False,True
+3,11.39,15.06,Speaker_01,0.8,aapane pahli bar return Mila aur dusri bar Mein Sahara paisa,False,False

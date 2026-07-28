@@ -201,15 +201,10 @@ export function CallMetricsHeader() {
               <div className="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center">
                 <Users className="w-3.5 h-3.5" />
               </div>
-              <Info className="w-3.5 h-3.5 text-muted-foreground cursor-pointer" />
             </div>
             <h3 className="text-2xl font-extrabold text-blue-600 dark:text-blue-400 font-mono">55.4%</h3>
             <p className="text-xs font-bold text-foreground mt-0.5">Reach Rate</p>
             <span className="text-[10px] text-muted-foreground">12033 answered / 21716 total</span>
-
-            <div className="hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-6 h-6 rounded-full bg-card border border-border flex items-center justify-center text-muted-foreground">
-              <ArrowRight className="w-3 h-3" />
-            </div>
           </div>
 
           {/* Engagement Rate (Soft Amber) */}
@@ -218,15 +213,10 @@ export function CallMetricsHeader() {
               <div className="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center">
                 <Clock className="w-3.5 h-3.5" />
               </div>
-              <Info className="w-3.5 h-3.5 text-muted-foreground cursor-pointer" />
             </div>
             <h3 className="text-2xl font-extrabold text-amber-600 dark:text-amber-400 font-mono">49.7%</h3>
             <p className="text-xs font-bold text-foreground mt-0.5">Engagement Rate</p>
             <span className="text-[10px] text-muted-foreground">5980 long calls / 12033 answered</span>
-
-            <div className="hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-6 h-6 rounded-full bg-card border border-border flex items-center justify-center text-muted-foreground">
-              <ArrowRight className="w-3.5 h-3.5" />
-            </div>
           </div>
 
           {/* Conversion Rate (Soft Emerald) */}
@@ -235,15 +225,10 @@ export function CallMetricsHeader() {
               <div className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
                 <TrendingUp className="w-3.5 h-3.5" />
               </div>
-              <Info className="w-3.5 h-3.5 text-muted-foreground cursor-pointer" />
             </div>
             <h3 className="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">2.4%</h3>
             <p className="text-xs font-bold text-foreground mt-0.5">Conversion Rate</p>
             <span className="text-[10px] text-muted-foreground">145 converted / 5980 engaged</span>
-
-            <div className="hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-6 h-6 rounded-full bg-card border border-border flex items-center justify-center text-muted-foreground">
-              <ArrowRight className="w-3.5 h-3.5" />
-            </div>
           </div>
 
           {/* Overall Conversion (Soft Purple) */}
@@ -252,7 +237,6 @@ export function CallMetricsHeader() {
               <div className="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-600 dark:text-purple-400 flex items-center justify-center">
                 <CheckCircle2 className="w-3.5 h-3.5" />
               </div>
-              <Info className="w-3.5 h-3.5 text-muted-foreground cursor-pointer" />
             </div>
             <h3 className="text-2xl font-extrabold text-purple-600 dark:text-purple-400 font-mono">0.7%</h3>
             <p className="text-xs font-bold text-foreground mt-0.5">Overall Conversion</p>

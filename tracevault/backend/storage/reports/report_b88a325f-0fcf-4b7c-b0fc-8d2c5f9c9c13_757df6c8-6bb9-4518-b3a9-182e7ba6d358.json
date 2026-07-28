@@ -1,0 +1,84 @@
+{
+  "metadata": {
+    "filename": "test2.aac",
+    "sha256_hash": "ac85bd548da2501aa43943d92423b043ab1b44cd4d7c3f13fae47036878d37e9",
+    "duration_seconds": 58.073125,
+    "warrant_number": "WR-2026-9901",
+    "case_id": "UNASSIGNED",
+    "language": "en"
+  },
+  "analysis": {
+    "summary": "Call transcript processed (38 words). No explicit threat indicators detected.",
+    "primary_topic": "General Conversation",
+    "threat_present": false,
+    "threat_category": "none",
+    "risk_score": 0.0,
+    "risk_level": "low",
+    "entities": [],
+    "keywords": [],
+    "locations_discussed": [],
+    "times_discussed": []
+  },
+  "segments": [
+    {
+      "id": "a3e46589-2ea6-4306-899a-2b459fbce1ed",
+      "transcript_id": "",
+      "speaker_label": "Speaker_00",
+      "sequence_number": 0,
+      "start_time": 0.0,
+      "end_time": 15.38,
+      "text": "are you there map in love I am not ring you ma'am",
+      "confidence": 0.8,
+      "has_threat": false,
+      "has_entity": false,
+      "has_keyword": false,
+      "word_count": 12,
+      "character_count": 49
+    },
+    {
+      "id": "2b156748-bfdd-4a57-806c-7706a93e2cc8",
+      "transcript_id": "",
+      "speaker_label": "Speaker_01",
+      "sequence_number": 1,
+      "start_time": 15.38,
+      "end_time": 32.96,
+      "text": "have to press to this is called connect it's a lots Bank",
+      "confidence": 0.8,
+      "has_threat": false,
+      "has_entity": false,
+      "has_keyword": false,
+      "word_count": 12,
+      "character_count": 56
+    },
+    {
+      "id": "7c83c707-84ca-49b2-b3d3-88095b7830d8",
+      "transcript_id": "",
+      "speaker_label": "Speaker_00",
+      "sequence_number": 2,
+      "start_time": 32.96,
+      "end_time": 55.25,
+      "text": "you right debit card that you without knowledge transition I am telling",
+      "confidence": 0.8,
+      "has_threat": false,
+      "has_entity": false,
+      "has_keyword": false,
+      "word_count": 12,
+      "character_count": 71
+    },
+    {
+      "id": "e105139b-92e4-4999-8007-fee033129439",
+      "transcript_id": "",
+      "speaker_label": "Speaker_01",
+      "sequence_number": 3,
+      "start_time": 55.25,
+      "end_time": 58.08,
+      "text": "you ma'am",
+      "confidence": 0.8,
+      "has_threat": false,
+      "has_entity": false,
+      "has_keyword": false,
+      "word_count": 2,
+      "character_count": 9
+    }
+  ]
+}

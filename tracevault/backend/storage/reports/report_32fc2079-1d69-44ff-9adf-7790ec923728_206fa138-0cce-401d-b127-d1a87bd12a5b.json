@@ -1,0 +1,84 @@
+{
+  "metadata": {
+    "filename": "test1.mpeg",
+    "sha256_hash": "1fbccf23cc79da4334de5af5b2583e36c86aa4c5cbd7512e6decadbcdf8f0ea7",
+    "duration_seconds": 15.05,
+    "warrant_number": "WR-2026-9901",
+    "case_id": "UNASSIGNED",
+    "language": "en"
+  },
+  "analysis": {
+    "summary": "Call transcript processed (47 words). No explicit threat indicators detected.",
+    "primary_topic": "General Conversation",
+    "threat_present": false,
+    "threat_category": "none",
+    "risk_score": 0.0,
+    "risk_level": "low",
+    "entities": [],
+    "keywords": [],
+    "locations_discussed": [],
+    "times_discussed": []
+  },
+  "segments": [
+    {
+      "id": "495df309-c194-4988-ae51-188fa4a30365",
+      "transcript_id": "",
+      "speaker_label": "Speaker_00",
+      "sequence_number": 0,
+      "start_time": 0.0,
+      "end_time": 3.98,
+      "text": "Mujhe WhatsApp per Kisi Ne investment tips ke liye group mein add",
+      "confidence": 0.8,
+      "has_threat": false,
+      "has_entity": false,
+      "has_keyword": false,
+      "word_count": 12,
+      "character_count": 65
+    },
+    {
+      "id": "ee7724fc-8471-48dc-9d84-9bb595f5f012",
+      "transcript_id": "",
+      "speaker_label": "Speaker_01",
+      "sequence_number": 1,
+      "start_time": 3.98,
+      "end_time": 7.47,
+      "text": "kiya bola safe Hai RBI se approved Hai is app mein safely",
+      "confidence": 0.8,
+      "has_threat": false,
+      "has_entity": false,
+      "has_keyword": false,
+      "word_count": 12,
+      "character_count": 57
+    },
+    {
+      "id": "166367be-eb74-48e1-93cc-1285b110b1d8",
+      "transcript_id": "",
+      "speaker_label": "Speaker_00",
+      "sequence_number": 2,
+      "start_time": 7.47,
+      "end_time": 11.39,
+      "text": "invest karo Maine Apni bachat ka 2000 rupya Dal Diya unke bataya",
+      "confidence": 0.8,
+      "has_threat": false,
+      "has_entity": true,
+      "has_keyword": true,
+      "word_count": 12,
+      "character_count": 64
+    },
+    {
+      "id": "3b22c3cc-a955-4204-98d1-ee34aa729396",
+      "transcript_id": "",
+      "speaker_label": "Speaker_01",
+      "sequence_number": 3,
+      "start_time": 11.39,
+      "end_time": 15.06,
+      "text": "aapane pahli bar return Mila aur dusri bar Mein Sahara paisa",
+      "confidence": 0.8,
+      "has_threat": false,
+      "has_entity": false,
+      "has_keyword": false,
+      "word_count": 11,
+      "character_count": 60
+    }
+  ]
+}
