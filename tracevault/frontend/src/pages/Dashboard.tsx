@@ -16,7 +16,6 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { CallMetricsHeader } from "@/components/shared/CallMetricsHeader";
 import { useRecordingsStore } from "@/stores/recordingsStore";
 import { cn } from "@/lib/utils";
 
@@ -111,10 +110,6 @@ export function Dashboard() {
           })}
         </div>
       )}
-
-      {/* Call Flow & Metrics Header Row */}
-      <CallMetricsHeader />
-
 
 
       {/* Main Grid: Recent Recordings / Priority Intercepts */}
